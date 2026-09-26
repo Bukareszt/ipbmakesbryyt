@@ -9,8 +9,6 @@
 | 3 (2027/28) | P2 (component C3, few real data, RQ3): ICML or CVPR 2028; P3 (the whole method in both testbeds, RQ4): NeurIPS 2028 | C3 code | — | Mid-term; 3-month visit (sem. 6) |
 | 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Method release | — | Dissertation |
 
-P1–P3 present one method, component by component and then as a whole; P4 is optional.
-
 **Foreign research visit (candidate hosts, not yet contacted).** (1) Z. Kira's group, Georgia Tech:
 EmbodiedSplat [5]. (2) Multi-robot Systems Lab, Stanford University (M. Schwager): Gaussian-splatting scene
 models. A European host (Erasmus+ route) working on active reconstruction or sim-to-real
@@ -20,16 +18,18 @@ transfer, and a foreign co-author for P2, are sought with the supervisor in sem.
 Jaguar 4x4, ROS 2) and, if available, a PWr manipulator; a written agreement is task T3.2 (Nov 2026).
 
 **Risks and mitigation** (semester affected).
-- *One component gives no gain* (3–5): its budget curve still answers its RQ, and H4 is still tested (§7).
-- *Twin uncertainty is poorly calibrated* (3–4): two estimators and an ensemble fallback, checked
-  against the reference.
+- *One component gives no gain* (3–5): its budget curve still answers its RQ; H4 is still tested.
+- *Twin uncertainty is poorly calibrated* (3–4): two estimators and an ensemble fallback.
 - *Proxy reality is easier than reality* (4–7): separate sources for twin and reference; tiers B and C
   check the direction (§9).
-- *Real-only learning is strong at small budgets* (6): gains saturate quickly in a known location [12];
-  H4 is reported as a full budget curve.
-- *Scooping* (3–6): twin-based robot learning moves fast [3–7, 13]; early preprints, monthly monitoring.
-- *Dataset licence or robot access* (3, 5): other public scans with reference geometry, own phone captures
-  of PWr rooms; without a robot, tier C moves by a semester and hypotheses are still decided on tier A.
+- *Real-only fine-tuning is strong at small budgets* (6): gains saturate quickly in a known location
+  [13]; H4 is reported as a full budget curve.
+- *Compute* (3–7): ~23k H100-hours (§9); WCSS and PLGrid grants in sem. 3; LoRA and small VLAs for
+  development; if short, fewer seeds and one VLA.
+- *Crowded field, scooping* (3–6): VLA fine-tuning in simulation and world models is crowded, and twin
+  RL for VLAs exists [17, 21]; we claim only the real-data budget of the loop; early preprints.
+- *Licences, robot access* (3, 5, 7): OpenVLA weights carry Llama 2 terms and some checkpoints are
+  gated, so openpi's π0 is the fallback; without a robot, tier C moves by a semester (tier A decides).
 - *Rejection at a top venue* (4–7): each paper has a resubmission path inside the 200-point set 2–4 months
   later (NeurIPS → CVPR → ICML → ECCV/ICCV).
 
@@ -38,6 +38,17 @@ part of the dissertation.
 
 **Ethics and data.** Own captures are anonymized (GDPR); public datasets are used under their licences.
 
+<!--
+Wave 15-U (issue #32), 2026-09-26: pivot decision v5 (VLA/VLM + world models). Outputs table unchanged; the
+line "P1-P3 present one method ... P4 is optional" was cut for the page limit (the table already says it). Risks: "real-only learning" -> "real-only fine-tuning" of the same pretrained VLA
+(H4(a), §7 v5), Suomela [12] -> [13]. New: compute (~23k H100-hours = our estimate, §9 and
+research/vla-wm-crowdedness.md §4, UNVERIFIED until the T3.1 pilot); crowded field / scooping (S2 counts Q1
+126, Q2 183 papers in 2026 to 26 Sep; TwinRL arXiv:2602.09023 = §6 [17], VLAW arXiv:2602.12063 = §6 [21];
+replaces the old twin-based scooping list [3-7, 13]); VLA licences merged with dataset licence and robot
+access (OpenVLA README: models "derived from Llama-2" and "subject to the Llama Community License"; HF
+a8cheng/navila-llama3-8b-8f without a licence tag; facebook/nwm and Cosmos-Predict2 gated; openpi
+Apache-2.0). "Twin uncertainty is poorly calibrated" kept.
+-->
 <!--
 Wave 14 (issue #30), 2026-09-26: pivot decision v4 (framing only). Outputs table: P1-P3 described by method
 component (P1 = C1 + first C2, P2 = C3, P3 = the whole method in both testbeds, H4); venues unchanged; code column "C3 code" / "Method release". "P1-P3 are the linked

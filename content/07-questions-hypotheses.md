@@ -1,53 +1,87 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
 **Goal and thesis.** The goal is **a method** for learning in the real-to-sim-to-real loop that reaches a
-given real-world performance with **significantly less real data** than existing approaches. It is one
-pipeline of three components, one per loop step: (C1) task-aware, uncertainty-guided capture to build
-the twin; (C2) uncertainty-aware learning of the policy or model in the imperfect twin; (C3) active
-selection of a few real-world data to correct twin and model. The twin's uncertainty and the model's
-representations guide all three. The thesis is H4; H1–H3 measure what each component saves at its own step
-(ablations of the method). Testbeds (equal status): robotic manipulation and visual navigation.
+given real-world performance with **significantly less real data** than existing approaches: a pretrained
+open **vision-language-action (VLA) model** fine-tuned sim-first in a digital twin, with one component per
+loop step: (C1) capture guided by a vision-language model (VLM) to the
+task-relevant parts of the twin where it is most uncertain; (C2) uncertainty-aware, parameter-efficient
+fine-tuning in the twin and in a **world model grounded in the twin** that covers the twin's uncertain
+regions; (C3) active selection of a few real data to correct twin, world model and VLA. Thesis = H4;
+H1–H3 = component ablations. Testbeds (equal status): robotic manipulation and visual navigation.
 
 **Tier A protocol (proxy reality).** In each testbed a **reference from a separate, higher-fidelity source
-plays "reality"**, and the *twin* (neural reconstruction + system identification) is built from a
-subset of a separate, cheaper capture, sharing no data. Navigation: ≥ 20 public indoor scenes (10
-held out), laser-scan and DSLR reference, twin from the phone capture. Manipulation: a physics simulator
-with held-out physical parameters and its own rendering (the weaker proxy; tier B, published paired
-sim/real evaluations, checks it). Real data (capture = views and interaction samples for
-the twin; trials and demonstrations = episodes in the reference) is summed in one operator-time cost.
-P = task success rate in the reference. Tier A decides H1–H4; tiers B and C (real robot) report
-agreement. Tests: one-sided, α = 0.05, scene/seed bootstrap, Holm correction, pre-registered.
+plays "reality"**, and the twin (neural reconstruction + system identification) is built from a subset of
+a separate, cheaper capture, sharing no data. Navigation: ≥ 20 public indoor scenes (10 held out),
+laser-scan and DSLR reference, twin from the phone capture. Manipulation: a physics simulator with held-out
+physical parameters and its own rendering (the weaker proxy; tier B, published paired sim/real evaluations
+of open robot policies, checks it). Real data (capture = views and interaction samples; trials and demonstrations =
+episodes in the reference) is summed in one operator-time cost. P = task success rate in
+the reference. Tier A decides H1–H4; tiers B and C (real robot) report agreement. Tests: one-sided,
+α = 0.05, scene/seed bootstrap, Holm correction, pre-registered.
 
-**RQ1 (C1: capture less).** How little capture does a twin need? Can the task guide it?
-**H1.** C1 (next data where task-relevant parts of the twin are most uncertain) reaches the P of uniform
-capture with ≥ 40% less capture. *Decision:* on fitted capture–P curves, C_task(τ₁) ≤ 0.6 · C_uniform(τ₁),
-and the upper 95% bound of C_task / C_recon (task-blind uncertainty selection) is < 1; τ₁ = P of uniform
-capture at its largest budget.
+**RQ1 (C1: capture less).** How little capture does a twin need, and can the task guide it?
+**H1.** C1 reaches the P of uniform capture with ≥ 40% less capture. *Decision:* on fitted capture–P
+curves, C_task(τ₁) ≤ 0.6 · C_uniform(τ₁), and the upper 95% bound of C_task / C_recon (task-blind
+uncertainty selection) is < 1; τ₁ = P of uniform capture at its largest budget.
 
-**RQ2 (C2: learn in an imperfect twin).** How can learning be robust to the twin's errors?
-**H2.** C2 (augmentation and sample weights from the twin's uncertainty and from the representation
-distance to a few held-out real samples) improves transfer over uniform domain randomization at an equal
-capture budget. *Decision:* mean paired P gain ≥ 10 pp on held-out scenes, lower 95% bound > 0, at each of
-≥ 2 capture budgets.
+**RQ2 (C2: learn in an imperfect twin).** How can fine-tuning be robust to the twin's errors?
+**H2.** At an equal capture budget, (a) C2 (augmentation and sample weights from the twin's uncertainty
+and the representation distance to a few held-out real samples) beats uniform domain randomization, and
+(b) twin + world model beats twin only. *Decision:* (a) mean
+paired P gain ≥ 10 pp on held-out scenes, lower 95% bound > 0; (b) lower 95% bound of the paired gain
+> 0; both at each of ≥ 2 capture budgets.
 
-**RQ3 (C3: few real data).** Which few real data close the gap, and how should they be used?
-**H3.** C3 (real trials selected by predicted gap or uncertainty, used to correct twin and model) reaches
+**RQ3 (C3: few real data).** Which few real data close the gap?
+**H3.** C3 (trials selected by the gap predicted from twin, world model and VLA uncertainty) reaches
 the target P with ≥ 50% fewer trials than random selection. *Decision:* N_active(τ₃) ≤ 0.5 · N_random(τ₃)
 on fitted trial–P curves, upper 95% bound of the ratio < 1; τ₃ = P of random selection at its largest budget.
 
-**RQ4 (the whole method).** How much real data does the method need versus real-only learning and
-existing pipelines?
+**RQ4 (the whole method).** How much real data does the method need versus the alternatives?
 **H4 (thesis).** In each testbed, with C1–C3 and their hyperparameters unchanged, the method reaches the
-target P with (a) ≤ 10% of the real data of real-only learning (imitation of demonstrations in the
-reference, same encoder and initialization) and (b) ≥ 2× less real data than the strongest existing
-pipeline (uniform capture, domain randomization, random real-data selection; RialTo-style). *Decision:*
+target P with (a) ≤ 10% of the real data of fine-tuning the same VLA on real data only and (b) ≥ 2× less
+real data than the strongest existing twin fine-tuning pipeline for VLAs (uniform capture, domain
+randomization, RL fine-tuning in the twin, random or failure-driven real trials). *Decision:*
 (a) B_M(τ₄) ≤ 0.1 · B_real(τ₄), upper 95% bound of the ratio < 0.2; (b) B_M(τ₅) ≤ 0.5 · B_pipe(τ₅), upper
 95% bound < 1; τ₄, τ₅ = P of each comparator at its largest budget; H1–H3 effects keep their sign and tier
-B agrees in direction. Also reported: a world-model simulator.
+B agrees in direction.
 
-A hypothesis holds when all its parts pass; a failed one is reported as a budget curve.
+A hypothesis holds when all its parts pass; a failed one is reported as a curve.
 
-<!-- Wave 14 (issue #30), 2026-09-26: reframed after pivot decision v4 (research/pivot-decision.md, top;
+<!-- Wave 15 (issue #31), 2026-09-26: rewritten after pivot decision v5 (research/pivot-decision.md, top;
+overrides v4 on method content; goal, thesis, v3 scope unchanged). RQ/H numbering, all thresholds (40%,
++10 pp, 50%, <= 10%, >= 2x, bounds < 1 / > 0 / < 0.2), tier A/B/C protocol and review-3 fixes unchanged.
+Changes:
+- Method = pretrained open VLA (v5 examples OpenVLA arXiv:2406.09246, "7B-parameter", "can be fine-tuned
+  on consumer GPUs via modern low-rank adaptation methods"; Octo arXiv:2405.12213; pi0 arXiv:2410.24164;
+  HF openvla/openvla-7b MIT licence, lerobot/pi0_base) fine-tuned sim-first in the twin with RL + imitation
+  and LoRA. Navigation checkpoint to be fixed in the Stage IV pre-registration: NaVILA arXiv:2412.04453 is
+  a navigation VLA with checkpoints on HuggingFace (a8cheng/navila-llama3-8b-8f, checked 2026-09-26);
+  suitability for point/image-goal navigation UNVERIFIED.
+- C1 now names the VLM (task-relevant objects/regions from instruction and scene), C2 names LoRA-style
+  fine-tuning and the twin-grounded world model, C3 names twin + WM + VLA uncertainty (v5 wording).
+- H2(b) NEW (v5: "twin + world model" beats "twin only" at an equal real-data budget). No pp threshold
+  given in v5; "lower 95% bound of the paired gain > 0 at each of >= 2 budgets" is our proposal, CONFIRM
+  with the supervisor. "At an equal real-data budget" = same capture budget, since the WM is trained on
+  twin data only (no extra real data).
+- H4(a) real-only = fine-tuning the same VLA on real demonstrations only (same checkpoint, same LoRA
+  setup). This is the data-efficient real-only recipe (keeps R3-F2: not RL from scratch).
+- H4(b) baseline (v5: "verify which"). Verified candidates (arXiv abstracts, 2026-09-26):
+  TwinRL arXiv:2602.09023 (Feb 2026): "reconstructs a high-fidelity digital twin from smartphone-captured
+  scenes", "efficient parallel RL in the digital twin", "identifies failure-prone yet informative
+  configurations, enabling targeted human-in-the-loop rollouts"; RialTo (§6); RL fine-tuning of VLAs in
+  simulation: VLA-RL arXiv:2505.18719, SimpleVLA-RL arXiv:2509.09674, RL4VLA arXiv:2505.19789. Hence the
+  baseline = uniform capture + DR + RL fine-tuning in the twin + random or failure-driven real trials
+  (TwinRL/RialTo-style); the exact recipe is fixed in the Stage IV pre-registration. SIMPLER
+  (arXiv:2405.05941) is an evaluation twin (tier B), not a fine-tuning pipeline.
+- NOVELTY GUARDRAIL (v5): RL fine-tuning of VLAs in sim and world-model VLA training are crowded (also
+  VLA-RFT arXiv:2510.00406, World-Env arXiv:2509.24948, WMPO arXiv:2511.09515: world models as simulators
+  for VLA RL). Nothing in §7 claims either as new. TwinRL's failure-driven targeting of real rollouts is
+  the closest work to C3: C3 differs by selecting under a counted real-data budget and by correcting twin
+  and WM as well as the VLA. Flagged for §6 (issue #32).
+- "Also reported: a world-model simulator" removed from H4: the WM is now part of the method (H2(b)).
+- To stay within 1 page: "next data where ... most uncertain" in H1 moved into the C1 summary; "used to
+  correct twin and model" in H3 is in the C3 summary. -->
+<!-- (history) Wave 14 (issue #30), 2026-09-26: reframed after pivot decision v4 (research/pivot-decision.md, top;
 overrides v3 on framing; v3 scope unchanged). The goal (cel pracy) is now ONE METHOD with components
 C1-C3, one per loop step; the thesis = main hypothesis H4; H1-H3 = component ablations (what each
 component saves at its own step). RQ/H numbering, all thresholds (40%, +10 pp, 50%, <= 10%, bounds < 1 /

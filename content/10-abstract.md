@@ -2,61 +2,79 @@
 
 ## Streszczenie popularnonaukowe
 
-Systemy sztucznej inteligencji, które działają w prawdziwym świecie, na przykład roboty chwytające
-przedmioty lub poruszające się po budynkach, uczą się na bardzo wielu przykładach i próbach. W
-rzeczywistości zbieranie takich danych jest powolne i kosztowne, dlatego systemy te często ćwiczą w
-symulacji komputerowej. Coraz częściej jest nią cyfrowy bliźniak: wierna kopia prawdziwego miejsca lub
-urządzenia, którą można odtworzyć z nagrań i pomiarów, łącznie z wyglądem, kształtem i tym, jak rzeczy się
-poruszają. Powstaje w ten sposób pętla: zbieramy dane w rzeczywistości, budujemy kopię, uczymy w niej
-system, sprawdzamy go w rzeczywistości, poprawiamy i dopiero wtedy wdrażamy. Każdy z tych kroków wymaga
-jednak prawdziwych danych, a ich zbieranie jest kosztowne.
+Roboty, które mają chwytać przedmioty lub poruszać się po budynkach, coraz częściej korzystają z dużych,
+wstępnie wytrenowanych modeli sztucznej inteligencji, które rozumieją obraz i polecenia wydane słowami i
+na ich podstawie wybierają ruchy. Aby taki model dobrze działał w nowym miejscu i przy nowym zadaniu, trzeba
+go jeszcze douczyć, a zbieranie prawdziwych danych i prób jest powolne i kosztowne. Dlatego douczanie
+coraz częściej odbywa się w cyfrowym bliźniaku: wiernej kopii prawdziwego miejsca, którą można odtworzyć z
+nagrań i pomiarów, łącznie z wyglądem, kształtem i tym, jak rzeczy się poruszają. Powstaje w ten sposób
+pętla: zbieramy dane w rzeczywistości, budujemy kopię, douczamy w niej model, sprawdzamy go w
+rzeczywistości, poprawiamy i dopiero wtedy wdrażamy. Każdy z tych kroków wymaga jednak prawdziwych danych.
 
 Celem rozprawy jest opracowanie metody, która przejdzie przez tę pętlę z dużo mniejszą ilością
 prawdziwych danych niż dotychczasowe podejścia, niezależnie od zadania. Metoda ma trzy części, po jednej na
-każdy krok pętli. Zamiast zbierać wszystko po równo, będziemy zbierać przede wszystkim te dane, które
-są ważne dla zadania i o których kopia wie jeszcze za mało. Ponieważ kopia nigdy nie jest idealna, nauczymy
-system tak, aby nie polegał na jej niepewnych fragmentach i radził sobie z jej błędami. Na koniec wybierzemy
-tylko te nieliczne próby w rzeczywistości, które najwięcej mówią o tym, gdzie system jeszcze zawodzi, i
-wykorzystamy je do poprawienia zarówno kopii, jak i systemu. Wskazówek dostarczy sama kopia, która wie,
-gdzie jest niepewna, oraz sposób, w jaki uczony system opisuje to, co widzi. Tę samą metodę sprawdzimy na
-dwóch różnych zadaniach: chwytaniu przedmiotów ramieniem robota i poruszaniu się robota po budynkach.
-Badania będą prowadzone przede wszystkim na publicznie dostępnych danych, a wybrane wyniki zostaną
-potwierdzone na prawdziwym robocie.
+każdy krok pętli. Zamiast nagrywać wszystko po równo, model rozumiejący obraz i język wskaże, co jest ważne
+dla zadania, a nagrywać będziemy przede wszystkim te miejsca, o których kopia wie jeszcze za mało. Ponieważ
+kopia nigdy nie jest idealna, model będziemy douczać tak, aby nie polegał na jej niepewnych fragmentach, a
+tam, gdzie kopia jest niepewna, dodatkowe sytuacje wygeneruje model świata, czyli program, który uczy się
+przewidywać, co wydarzy się dalej. Na koniec wybierzemy tylko te nieliczne próby w rzeczywistości, które
+najwięcej mówią o tym, gdzie system jeszcze zawodzi, i wykorzystamy je do poprawienia kopii, modelu świata i
+samego modelu. Tę samą metodę sprawdzimy na dwóch różnych zadaniach: chwytaniu przedmiotów ramieniem robota
+i poruszaniu się robota po budynkach. Badania będą prowadzone przede wszystkim na publicznie dostępnych
+danych, a wybrane wyniki zostaną potwierdzone na prawdziwym robocie.
 
 Spodziewanym efektem jest jedna metoda, która pozwoli zbierać mniej danych, uczyć skuteczniej i wykonywać
 mniej kosztownych prób w rzeczywistości, oraz pomiar, ile prawdziwych danych oszczędza w porównaniu z
-uczeniem wyłącznie na prawdziwych danych i z dotychczasowymi podejściami. Może to przyspieszyć i potanić wdrażanie uczących się systemów w fabrykach, magazynach,
-szpitalach i biurach. Opracowane oprogramowanie zostanie udostępnione publicznie.
+douczaniem wyłącznie na prawdziwych danych i z dotychczasowymi podejściami. Może to przyspieszyć i potanić
+wdrażanie robotów w fabrykach, magazynach, szpitalach i biurach. Opracowane oprogramowanie zostanie
+udostępnione publicznie.
 
 ## Abstract for general public
 
-Artificial intelligence systems that act in the real world, for example robots that grasp objects or
-move around buildings, learn from a very large number of examples and trials. In reality, collecting such
-data is slow and costly, so these systems often practise in a computer simulation. Increasingly, this is a
-digital twin: a faithful copy of a real place or device that can be rebuilt from recordings and
+Robots that grasp objects or move around buildings increasingly rely on large, pretrained artificial
+intelligence models that understand images and spoken or written instructions and choose movements from
+them. For such a model to work well in a new place and on a new task, it still has to be trained further,
+and collecting real data and trials is slow and costly. That is why this further training increasingly
+takes place in a digital twin: a faithful copy of a real place that can be rebuilt from recordings and
 measurements, including how things look, their shape and how they move. This creates a loop: we collect
-data in reality, build the copy, train the system in it, check it in reality, correct it and only then
-deploy it. Each of these steps, however, needs real data, and collecting it is costly.
+data in reality, build the copy, train the model further in it, check it in reality, correct it and only
+then deploy it. Each of these steps, however, needs real data.
 
 The goal of this dissertation is to develop a method that goes through this loop with much less real
 data than existing approaches, whatever the task. The method has three parts, one for each step of the
-loop. Instead of collecting everything evenly, we will collect mainly the data that
-matters for the task and about which the copy still knows too little. Because the copy is never perfect,
-we will train the system so that it does not rely on the uncertain parts of the copy and copes with its
-errors. Finally, we will choose only the few trials in reality that tell the most about where the system
-still fails, and use them to correct both the copy and the system. Guidance will come from the copy
-itself, which knows where it is uncertain, and from the way the learning system describes what it sees.
-We will test the same method on two different tasks: grasping objects with a robot arm and a robot moving
-around buildings. The research will be carried out mainly on publicly available data, and selected results
-will be confirmed on a real robot.
+loop. Instead of recording everything evenly, a model that understands images and language will point out
+what matters for the task, and we will record mainly the places about which the copy still knows too
+little. Because the copy is never perfect, we will train the model so that it does not rely on the
+uncertain parts of the copy, and where the copy is uncertain, extra situations will be generated by a
+world model, a program that learns to predict what happens next. Finally, we will choose only the few
+trials in reality that tell the most about where the system still fails, and use them to correct the
+copy, the world model and the model itself. We will test the same method on two different tasks: grasping
+objects with a robot arm and a robot moving around buildings. The research will be carried out mainly on
+publicly available data, and selected results will be confirmed on a real robot.
 
 The expected result is one method that makes it possible to collect less data, train more effectively and
 carry out fewer costly trials in reality, and a measurement of how much real data it saves compared with
-learning from real data only and with existing approaches. This may make deploying learning systems in factories, warehouses, hospitals
-and offices faster and cheaper. The software developed will be made publicly available.
+training on real data only and with existing approaches. This may make deploying robots in factories,
+warehouses, hospitals and offices faster and cheaper. The software developed will be made publicly
+available.
 
 <!--
-Wave 14 (issue #30), 2026-09-26: pivot decision v4 (research/pivot-decision.md, top; framing only). Both
+Wave 15 (issue #31), 2026-09-26: pivot decision v5 (research/pivot-decision.md, top). Both languages
+changed in parallel. Para 1 now starts from pretrained VLA models ("understand images and ... instructions
+and choose movements") that still need further training for a new place and task (OpenVLA arXiv:2406.09246,
+Octo arXiv:2405.12213 abstracts: fine-tuning to new settings), and the twin is where this further training
+happens (sim-first fine-tuning). Para 2: C1 = a VLM ("a model that understands images and language")
+points out what matters, capture goes where the copy is uncertain; C2 = robust fine-tuning plus a world
+model ("a program that learns to predict what happens next") generating extra situations where the copy is
+uncertain; C3 = few real trials correct the copy, the world model and the model. "Guidance will come from
+the copy itself ... the way the learning system describes what it sees" was dropped (the v5 signal is the
+uncertainty of twin, WM and VLA, already implied by "knows too little" / "uncertain parts"). "Device"
+dropped from the twin definition (the testbeds are places/scenes). Para 3: "learning systems" -> "robots"
+(the method now fine-tunes robot VLAs). PL and EN checked sentence by sentence: 3 paragraphs each, 5 / 7 /
+3 sentences, same content.
+-->
+<!--
+(history) Wave 14 (issue #30), 2026-09-26: pivot decision v4 (research/pivot-decision.md, top; framing only). Both
 languages changed in parallel: the goal is now to DEVELOP A METHOD that needs much less real data than
 existing approaches (v4 "cel pracy"); a new sentence says it has three parts, one per loop step (C1-C3);
 the expected result is "one method" plus how much real data it saves versus real-only learning and existing

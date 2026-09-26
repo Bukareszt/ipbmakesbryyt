@@ -6,11 +6,24 @@ Paper **P1** submitted for review to the main track of the **Conference on Neura
 Systems (NeurIPS 2027)**. NeurIPS is peer-reviewed international conference proceedings worth
 **200 points** on the ministerial list (conference Lp. 87), assigned to the discipline *informatyka
 techniczna i telekomunikacja*. P1 reports the first two components of the method
-(Stage I and the first Stage II results, RQ1–RQ2): C1, task-aware, uncertainty-guided capture of real data
-for digital twins (H1), and C2, uncertainty-aware learning in imperfect twins (first H2 results),
-evaluated in manipulation and navigation by the real data they save (task T4.2). If it is rejected, the revised paper goes to **CVPR 2028** (expected deadline
+(Stage I and the first Stage II results, RQ1–RQ2) for a pretrained open vision-language-action model
+fine-tuned in digital twins: C1, capture of real data guided by a vision-language model to the
+task-relevant, uncertain parts of the twin (H1), and C2, uncertainty-aware, parameter-efficient
+fine-tuning in the twin and in a world model grounded in it (first H2 results). Both are evaluated in
+manipulation and navigation by the real data they save, not by the fine-tuning technique itself (task
+T4.2). If it is rejected, the revised paper goes to **CVPR 2028** (expected deadline
 November 2027, also 200 points), and then to the next 200-point conference (§12).
 
+<!--
+Wave 15-U (issue #32), 2026-09-26: pivot decision v5. P1 content = C1 (VLM-guided, task-aware capture) + first
+C2 results (uncertainty-aware LoRA fine-tuning of an open VLA in the twin and in a twin-grounded world
+model; H2(a) and H2(b) of the final §7 v5) for a pretrained open VLA fine-tuned in twins. "evaluated ... by
+the real data they save, not by the fine-tuning technique itself" follows the v5 novelty guardrail: RL
+fine-tuning of VLAs in simulation and world-model VLA training are crowded (research/vla-wm-crowdedness.md,
+S2 Q1 126 and Q2 183 papers in 2026 to 26 Sep), so P1 claims the real-data budget, not the fine-tuning.
+Date, venue, points, H1 + first H2 timing (§3 T4.1) and fallback unchanged. Scooping risk (TwinRL
+arXiv:2602.09023, VLAW arXiv:2602.12063) in §12.
+-->
 <!--
 Wave 14 (issue #30), 2026-09-26: pivot decision v4 (framing only). P1 is described as the first two
 components C1-C2 of the one method (v4); date, venue, points, content (H1 + first H2) and fallback unchanged.

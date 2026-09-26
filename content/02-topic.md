@@ -1,13 +1,28 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-**PL:** Metoda uczenia w pętli rzeczywistość–symulacja–rzeczywistość wymagająca mniej danych rzeczywistych:
-ukierunkowane na zadanie zbieranie danych do budowy cyfrowych bliźniaków, uczenie w nich z uwzględnieniem
-niepewności i aktywny wybór nielicznych danych rzeczywistych
+**PL:** Metoda dostrajania modeli wizja–język–działanie w pętli rzeczywistość–symulacja–rzeczywistość
+wymagająca mniej danych rzeczywistych: ukierunkowane na zadanie zbieranie danych do budowy cyfrowych
+bliźniaków, uczenie w bliźniakach i modelach świata oraz aktywny wybór nielicznych danych rzeczywistych
 
-**EN:** A method for learning in the real-to-sim-to-real loop that needs less real data: task-aware capture
-for building digital twins, uncertainty-aware learning in them and active selection of few real-world data
+**EN:** A method for fine-tuning vision-language-action models in the real-to-sim-to-real loop that needs
+less real data: task-aware capture for building digital twins, learning in twins and world models, and
+active selection of few real-world data
 
-<!-- Wave 14 (issue #30), 2026-09-26: rewritten after pivot decision v4 (research/pivot-decision.md, top;
+<!-- Wave 15 (issue #31), 2026-09-26: rewritten after pivot decision v5 (research/pivot-decision.md, top;
+method content; goal, thesis and v3 scope unchanged). The task allowed naming VLA and world models "only if
+it stays readable". The title keeps the v4 structure (one method, needs less real data, the loop, C1-C3)
+and adds the object being fine-tuned (vision-language-action models) and, in C2, world models. "Pretrained"
+and "open" and the VLM (C1) are left to §5/§7 to keep the title readable. PL "wizja–język–działanie"
+follows the EN term; the student/supervisor may prefer the English acronym "VLA" in the PL title.
+Previous (v4) title: "A method for learning in the real-to-sim-to-real loop that needs less real data:
+task-aware capture for building digital twins, uncertainty-aware learning in them and active selection of
+few real-world data" (kept as the fallback if the supervisor wants a model-agnostic title).
+Shorter alternative for the supervisor:
+- EN "Real-data-efficient fine-tuning of vision-language-action models in digital twins and world models" /
+  PL "Oszczędne pod względem danych rzeczywistych dostrajanie modeli wizja–język–działanie w cyfrowych
+  bliźniakach i modelach świata" -->
+
+<!-- (history) Wave 14 (issue #30), 2026-09-26: rewritten after pivot decision v4 (research/pivot-decision.md, top;
 overrides v3 on framing, v3 scope unchanged). v4: "Title ... must say plainly that the dissertation develops
 a method that needs less real data." The title now names the product (one method), its property (needs
 less real data), the setting (the real-to-sim-to-real loop) and its three components C1-C3 (task-aware

@@ -1,52 +1,71 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
-The dissertation is carried out in **information and communication technology** (*informatyka techniczna i
-telekomunikacja*), in the area of machine learning. Its object is the **real-to-sim-to-real learning
-loop** in general, task- and domain-agnostic: building a digital twin (appearance, geometry and, where
-relevant, physical parameters) from limited real data, learning a policy or model in it and transferring
-the result back to reality; it develops a method that makes this loop work with **less real data**. Building twins,
-simulators or benchmarks, control design and mechanical engineering are not the object of the research;
-the student uses existing tools and public data.
+The dissertation is in **information and communication technology** (*informatyka techniczna i
+telekomunikacja*), area machine learning. Its object is the task- and domain-agnostic **real-to-sim-to-real
+learning loop**: building a digital twin (appearance, geometry and, where
+relevant, physical parameters) from limited real data, fine-tuning a policy (here a pretrained VLA) in it and transferring the result
+back to reality; it develops a method that makes this loop work with **less real data**. Building twins,
+world models, simulators or benchmarks, training foundation models from scratch, control design and mechanical engineering are not the object of the research;
+the student uses existing tools, open models and public data.
 
 **Key original contribution: the method.** To our knowledge, the first method for real-to-sim-to-real
-learning that treats the real data of the whole loop as **one budget allocated actively at every step**,
-so that it reaches a given real-world performance with significantly less real data: at most a tenth of
-the data of learning from real data only and at least two times less than the strongest existing
-real-to-sim-to-real pipeline (RQ4, H4), with the same components and settings in two domains, robotic
-manipulation and visual navigation. Its three components are parts of this one method, not separate
-contributions; each is tested as an ablation at its own step:
+learning that treats the real data of the whole loop as **one budget allocated actively at every step**
+when a pretrained open vision-language-action (VLA) model is fine-tuned sim-first in a digital twin and in
+a world model grounded in it. It targets a given real-world performance with at most a tenth of the real
+data of real-only fine-tuning of the same VLA and at least two times less than the strongest existing twin
+fine-tuning pipeline (RQ4, H4), with the same settings in robotic manipulation and visual navigation. Fine-tuning VLAs in simulation and in world models is not new; spending
+the loop's real data where it matters is. The three components are parts of
+this one method, each tested as an ablation at its own step:
 
-1. **C1, capture less (RQ1, H1).** Task-aware capture that chooses which real data to collect for a twin
-   (views for its appearance and geometry, interactions for its physical parameters) from the twin's
-   uncertainty in the parts that matter for the task, not reconstruction quality alone; compared with
-   uniform and task-blind selection.
-2. **C2, learn robustly in an imperfect twin (RQ2, H2).** Uncertainty-aware training that turns the twin's
-   per-region and per-parameter uncertainty and the representation distance to a few real samples into
-   augmentation and sample weights; compared with uniform domain randomization at an equal capture budget.
-3. **C3, transfer with few real data (RQ3, H3).** Active selection of real-world trials or interactions by
-   the predicted twin-to-real gap and its uncertainty, used to correct both the twin and the learned
-   model; compared with random selection.
+1. **C1, capture less (RQ1, H1).** A vision-language model picks the task-relevant objects and regions
+   from the instruction and scene, and capture (views for appearance and geometry, interactions for
+   physical parameters) goes where the twin is most uncertain in them; compared with uniform and
+   task-blind selection.
+2. **C2, learn robustly in an imperfect twin (RQ2, H2).** Parameter-efficient reinforcement and
+   imitation fine-tuning with augmentation and sample weights from the twin's uncertainty and the
+   representation distance to a few real samples, and a twin-grounded world model covering the twin's
+   uncertain regions; compared with uniform domain randomization and with the twin alone.
+3. **C3, transfer with few real data (RQ3, H3).** Active selection of real-world trials by the twin-to-real
+   gap predicted from the uncertainty of twin, world model and VLA, used to correct all three; compared
+   with random selection.
 
 **How the method is evaluated and released** (supporting the method, not contributions in their own
-right). Budget–performance curves of the method against real-only learning and the existing pipeline,
-which give the "exchange rate" between twin and real data and tell practitioners roughly how much real
-data to collect for a new task or site; a proxy-reality protocol on public data that counts real data
-exactly without a robot (a reference from a separate, higher-fidelity source as "reality", a low-budget
-twin from a separate capture as the simulator), applied in each domain; and open-source code of the
-method, built on existing twin pipelines and simulators.
+right). Budget–performance curves of the method against real-only fine-tuning and the existing pipeline,
+which give the "exchange rate" between twin and real data; a proxy-reality protocol on public data that counts real data
+exactly without a robot (a separate, higher-fidelity reference as "reality"), applied in each domain; and open-source code of the
+method, built on existing open models, twin pipelines and simulators.
 
 **Significance for the discipline.** Real target-domain data is the main cost of deploying learned
-systems. Methods that decide where it is worth spending, and a measured estimate of how much of it a twin
-can replace, are relevant to active learning, learning under distribution shift and uncertainty
-estimation in general, beyond robotics.
+systems; methods that decide where it is worth spending, and a measured estimate of how much of it a twin
+can replace, are relevant to active learning, learning under distribution shift, uncertainty
+estimation and adaptation of foundation models in general, beyond robotics.
 
 **Dissemination.** Results are planned for peer-reviewed conferences worth 200 points and assigned to ITiT
 on the ministerial list of 5.01.2024: NeurIPS, ICML and ICLR (machine learning) and CVPR (computer vision),
 with ICCV and ECCV for resubmissions. P1 (C1 and first C2 results, RQ1–RQ2) targets
-NeurIPS 2027; P2 (C3, RQ3) ICML 2028 or CVPR 2028; P3 (the whole method against real-only learning and the
+NeurIPS 2027; P2 (C3, RQ3) ICML 2028 or CVPR 2028; P3 (the whole method against real-only fine-tuning and the
 existing pipeline in both domains, RQ4) NeurIPS 2028, with ICLR 2029 as the fallback.
 
-<!-- Wave 14 (issue #30), 2026-09-26: reframed after pivot decision v4 (research/pivot-decision.md, top;
+<!-- Wave 15 (issue #31), 2026-09-26: pivot decision v5 (research/pivot-decision.md, top; method content;
+goal, thesis, v3 scope and v4 framing unchanged: the key contribution is the method, C1-C3 are its parts,
+curves/protocol/code are how it is evaluated and released). Changes:
+- Key contribution now names the setting of v5: a pretrained open VLA fine-tuned sim-first in the twin and
+  a twin-grounded world model. H4 (a) = real-only fine-tuning of the same VLA, (b) = strongest existing twin
+  fine-tuning pipeline for VLAs (TwinRL arXiv:2602.09023 / RialTo-style; §7 comment).
+- NOVELTY GUARDRAIL (v5): explicit sentence that fine-tuning VLAs in simulation and in world models is not
+  new (VLA-RL arXiv:2505.18719, SimpleVLA-RL arXiv:2509.09674, RL4VLA arXiv:2505.19789, TwinRL; VLA-RFT
+  arXiv:2510.00406, World-Env arXiv:2509.24948, WMPO arXiv:2511.09515). The claimed novelty is the
+  real-data budget of the whole loop (v5). "To our knowledge" kept (R3-F11).
+- C1: VLM picks task-relevant regions (v5). C2: LoRA-type parameter-efficient RL + imitation fine-tuning,
+  twin-grounded WM, second comparator "twin alone" = §7 H2(b). C3: gap predicted from twin, WM and VLA
+  uncertainty; corrects twin, WM and VLA (v5). Closest to C3: TwinRL's "failure-prone yet informative
+  configurations" for "targeted human-in-the-loop rollouts"; C3 differs by selecting under a counted
+  budget and correcting twin and WM, not only the policy.
+- Trims for the 1-page limit: practitioner sentence dropped from the evaluation paragraph; the proxy
+  description keeps "a separate, higher-fidelity reference" (the separate-capture twin detail of R3-F1 is
+  in §7 and §9).
+- Dissemination unchanged (paper-to-venue mapping per §11/§12, review-3 R3-F3). -->
+<!-- (history) Wave 14 (issue #30), 2026-09-26: reframed after pivot decision v4 (research/pivot-decision.md, top;
 framing only, v3 scope unchanged). v4: "The key original contribution in §8 is the method"; "Budget curves,
 the proxy-reality protocol and the code are how the method is evaluated and released. They are not
 contributions in their own right"; C1-C3 "are parts of the method. They are not separate contributions."

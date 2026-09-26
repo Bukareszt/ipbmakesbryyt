@@ -1,96 +1,141 @@
 # §9 Planowane metody badawcze / Planned research methods (max 2 pages)
 
-The dissertation develops **one method** for the loop: real data → twin → learning in the twin → a few
-real trials → correction of the twin and the policy → deployment. Its three components, one per step, are
-developed and tested as ablations in Stages I–III (§3, §7): C1 task-aware capture (RQ1), C2
-uncertainty-aware learning in an imperfect twin (RQ2) and C3 active selection of few real data (RQ3);
-Stage IV tests the whole method (RQ4, the thesis H4). The components are domain-agnostic: they act on the
-twin's uncertainty, on task relevance measured in the twin and on learned representations. The twin has two
-parts: geometry and appearance, reconstructed with existing open-source 3D Gaussian Splatting (3DGS) [2]
-pipelines, and physical or dynamic parameters, identified from real interactions as a posterior
-(BayesSim-type [9]). No simulator or benchmark is developed. Robotic manipulation and visual navigation
-are equal testbeds with the same protocol.
+The dissertation develops **one method** for the loop: real data → twin → sim-first fine-tuning of a
+pretrained VLA in the twin and in a world model grounded in it → a few real trials → correction of twin,
+world model and VLA → deployment. Stages I–III develop and ablate its components C1–C3 (RQ1–RQ3), and
+Stage IV tests the whole method (RQ4, the thesis H4). The twin has two parts: geometry and appearance from
+existing open-source 3D Gaussian Splatting (3DGS) [2] pipelines, and physical parameters identified from
+real interactions as a posterior (BayesSim-type [7]). No simulator, benchmark, VLA or world model is
+trained from scratch.
 
-**Tier A protocol: proxy reality (decides the hypotheses).** In each testbed, "reality" is a reference
+**Models (open weights, adapted).** *VLA:* OpenVLA-OFT [8, 12] for manipulation, with π0 [9] (openpi) as
+a second backbone, and NaVILA [10] for navigation, whose mid-level actions ("move forward 75 cm") map onto
+Habitat actions. All VLA fine-tuning is parameter-efficient: LoRA [11] adapters, supervised fine-tuning
+(SFT) and then PPO, which generalizes best for VLAs [16], with open RL tooling [15]. *VLM:* Qwen2.5-VL-7B
+[23], zero-shot, grounds the instruction to task-relevant objects and regions (C1) and judges success
+[24] where the simulator gives no ground truth (checked against it where it does). *World model:*
+Cosmos-Predict2 [18] (manipulation) and NWM [19] (navigation) checkpoints, post-trained on twin rollouts.
+*Compute:* published needs are ≥ ~27 GB of GPU memory for OpenVLA LoRA, > 22.5 GB for π0 LoRA, and one
+8-GPU node for RL of a VLA in simulation [15]. We estimate ~23k H100-hours for sem. 3–7 (~5 H100 on
+average): WCSS Lem and a PLGrid grant, applied for in T3.1; small VLAs are used for development.
+
+**Tier A protocol: proxy reality (decides the hypotheses).** In each testbed "reality" is a reference
 from a separate, higher-fidelity source, and the twin is built from a subset of a separate, cheaper
-capture, sharing no data. *Navigation:* ScanNet++ [22] gives each scene a laser scan,
-DSLR images and a separate phone RGB-D stream. On ≥ 20 scenes (10 held out from all tuning), the reference
-is the laser-scan mesh textured from the DSLR images and rendered in Habitat [1] with a robot-camera model;
-the twin is 3DGS from a subset of the phone stream, run as a mesh (as in EmbodiedSplat [5]) or with a 3DGS
-renderer (GaussGym [7]); its physical part is the robot's actuation noise. Tasks: image-goal and point-goal navigation with a minimum geodesic distance set in a pilot so
-that P stays below its ceiling. *Manipulation:* ManiSkill3 [8] tasks (≥ 20 task–object configurations, 10
-held out), where reality is the simulator with held-out ground-truth physical parameters (mass, friction,
-articulation) and its own rendering, and the twin is 3DGS from a subset of its views plus parameters
-identified from a few recorded interactions. Physics engine and object models are shared, so this is the
-weaker proxy (unmodelled dynamics are not tested); tier B checks it. *Both:* real data is counted exactly:
-capture = views and interaction samples given to the twin, real trials and demonstrations = episodes in
-the reference, summed in one operator-time cost at a pre-registered rate; the largest budget stays below
-the full capture. In navigation the proxy's error to held-out real images is reported (PSNR, LPIPS, depth)
-and each hypothesis is re-checked for sign with a second reference (3DGS from all DSLR images). *Tier B:* the twin must rank manipulation policies as published paired sim/real evaluations do (SIMPLER [34]).
-*Compute:* WCSS Lem (NVIDIA H100), PLGrid (to be applied for). Policies are small heads on frozen visual encoders, trained mainly by
-imitation of a privileged expert in the twin (shortest-path planner; motion-planning expert), with
-reinforcement learning on a subset. P = task success rate.
+capture. *Navigation:* on ≥ 20 ScanNet++ [30] scenes (10 held out from all tuning), the reference is the
+laser-scan mesh textured from the DSLR images and rendered in Habitat [1] with a robot-camera model; the
+twin is 3DGS from a subset of the phone stream, run as a mesh (as in EmbodiedSplat [5]) or with a 3DGS
+renderer; its physical part is actuation noise. Tasks: instruction and image-goal navigation with a
+minimum geodesic distance set in a pilot so that P stays below its ceiling. *Manipulation:* ManiSkill3 [6]
+tasks (≥ 20 task–object configurations, 10 held out); reality is the simulator with held-out physical
+parameters and its own rendering; the twin is 3DGS from a subset of its
+views plus parameters identified from a few recorded interactions. Physics is shared, so this is the
+weaker proxy. *Both:* capture = views and interaction samples; trials and demonstrations = episodes in the
+reference; all summed in one operator-time cost; the largest budget stays below the full capture. In
+navigation the proxy's error to held-out real images is reported, and each hypothesis is re-checked for
+sign with a second reference (3DGS from all DSLR images). *Tier B:* SIMPLER [35] paired sim/real
+evaluations of published policies; the twin must reproduce their direction. P = task success rate.
 
-**Stage I – C1, task-aware capture (RQ1, H1; sem. 3–4).**
-- *Method:* the twin's uncertainty, per region (Fisher information [17] or a Bayes' Rays-type [19] field,
-  adapted to 3DGS) and per physical parameter (posterior spread), is weighted by **task relevance**
-  measured in the current twin without training: how often expert trajectories pass through a region, and
-  how much the expert's success changes across a parameter's posterior. The next views or interactions are
-  chosen greedily where task-weighted uncertainty is highest until the budget is spent.
-  Candidates come from the recorded pool; capture time is also estimated as a tour of the chosen views.
-- *Baselines:* uniform capture, task-blind uncertainty selection (FisherRF-type next-best-view [17];
-  ASID-type exploration for parameter accuracy [21]) and risk-weighted view selection [20], at the same
-  budget.
-- *Metric:* budget–P curves on tier A with ≥ 4 capture budgets per testbed; capture needed to reach the P
-  that uniform capture reaches at the largest budget.
-- *Success criterion (H1):* ≥ 40% less capture than uniform at equal P, and less than task-blind selection
-  (upper 95% bound of the ratio < 1), as in §7.
+**Stage I – C1, VLM-guided task-aware capture (RQ1, H1; sem. 3–4).**
+- *Method:* the twin's uncertainty, per region (Fisher information [25] or a Bayes' Rays-type [26] field
+  adapted to 3DGS) and per physical parameter (posterior spread), is weighted by task relevance: the VLM's
+  grounding of the instruction, how often expert trajectories pass through a region, and how much expert
+  success changes across a parameter's posterior. The next views or interactions are chosen greedily where
+  task-weighted uncertainty is highest, from the recorded pool (capture time estimated as a tour).
+- *Baselines:* uniform capture; task-blind uncertainty selection (FisherRF-type [25], ASID-type [28]);
+  risk-weighted [27] and VLM-guided reconstruction-quality selection (AREA3D-type [29]); same budget.
+- *Metric and criterion (H1):* budget–P curves (≥ 4 budgets per testbed; the VLA LoRA-SFT-tuned in each
+  twin); ≥ 40% less capture than uniform at equal P, and the upper 95% bound of C_task / C_recon < 1 (§7).
 
-**Stage II – C2, uncertainty-aware learning in an imperfect twin (RQ2, H2; sem. 4).**
-- *Method:* (a) randomization whose strength follows the twin's uncertainty: appearance and geometry
-  perturbations per region, and physical parameters sampled from their identified posterior instead of
-  hand-set ranges; (b) down-weighting twin samples that lie far from a few real samples in frozen DINOv2
-  [27] feature space. The real samples are a held-out slice of the capture,
-  not used to fit the twin, and count towards the budget.
-- *Baselines:* uniform domain randomization of appearance [23] and dynamics [24] (tuned ranges), no
-  randomization, and feature alignment [26] as a comparator; same capture budget.
-- *Metric and criterion (H2):* tier-A P, paired by held-out scene; ≥ 10 pp higher P than uniform
-  domain randomization (lower 95% bound > 0) at each of ≥ 2 equal capture budgets.
+**Stage II – C2, uncertainty-aware fine-tuning in the twin and a twin-grounded world model (RQ2, H2;
+sem. 4).**
+- *Method:* the VLA is LoRA-fine-tuned by SFT on expert (planner) demonstrations in the twin and then
+  by RL. (a) Randomization strength follows the twin's uncertainty
+  (per-region appearance and geometry, physical parameters from their posterior), and twin samples far
+  from a few real samples in DINOv2 [33] space are down-weighted; the real samples are a held-out slice of
+  the capture and count towards the budget. (b) The world model, post-trained on twin rollouts, generates
+  extra rollouts from states in the twin's most uncertain regions for on-policy RL [20], weighted by that
+  uncertainty.
+- *Baselines:* (a) uniform randomization of appearance [31] and dynamics [32], and none; (b) twin only
+  (same C2 without the world model) and world model only; same capture budget.
+- *Criterion (H2):* (a) mean paired P gain over uniform randomization ≥ 10 pp on held-out scenes, lower
+  95% bound > 0; (b) lower 95% bound of the paired gain of twin + world model over twin only > 0; both at
+  each of ≥ 2 capture budgets.
 
 **Stage III – C3, few real trials and correction (RQ3, H3; end of sem. 4 – sem. 5).**
-- *Selection:* candidate trials (start–goal pairs, object configurations) are scored by the predicted
-  twin-to-real gap: disagreement of a policy ensemble plus the twin's uncertainty along the planned
-  trajectory. The top-k are run in reality (tier A: the reference).
-- *Use:* the trials (i) correct the twin, by re-capturing or re-weighting regions where real and twin
-  observations disagree (photometric correction as in [35]; re-captured views are counted) and by updating the physical-parameter posterior [9, 25]; and (ii) fine-tune the policy by
-  co-training with the real trials [15]. Real P is estimated from few trials with prediction-powered
-  inference [32, 33].
-- *Baselines:* random selection and uniform coverage of the same number of trials; selection rules
-  [29–31] where they apply.
-- *Success criterion (H3):* the target P is reached with ≥ 50% fewer real trials than random selection
-  (upper 95% bound of the ratio < 1).
+- *Selection:* candidate trials are scored by the predicted gap:
+  the twin's uncertainty along the planned trajectory, twin–world-model disagreement on the outcome and the
+  VLA's uncertainty (spread of LoRA ensemble actions). The top-k are run in reality (tier A: the reference).
+- *Use:* the trials correct the twin (re-capture or re-weighting where real and twin observations disagree,
+  counted in the budget; posterior update [7]), extend the world model's post-training data, and fine-tune
+  the VLA by co-training with twin data [14]. Real P from few trials uses prediction-powered inference [34].
+- *Baselines:* random selection, uniform coverage and failure-prone selection from the twin alone
+  (TwinRL-type [17]); same number of trials.
+- *Criterion (H3):* the target P with ≥ 50% fewer trials than random (upper 95% bound of the ratio < 1).
 
 **Stage IV – the whole method in both testbeds (RQ4, H4; sem. 6).**
-- *Budget curves:* real data (capture + trials, one operator-time cost) against P for the method (C1–C3);
-  for **real-only learning**, imitation of expert demonstrations in the reference with the same frozen
-  encoder and initialization (real-only reinforcement learning also shown); and for the **strongest
-  existing pipeline**, RialTo-style [3]: uniform capture, uniform domain randomization and random real
-  trials, with the same twin, learner and correction. The "exchange rate" is the ratio of the budgets
-  reaching the target P; real-only scaling [11, 12] suggests the curve shapes. Also reported: a released
-  pretrained world model as the simulator (not trained).
-- *Success criterion (H4, the thesis; §7):* with C1–C3 and their hyperparameters unchanged (the learner is
-  each task's standard one), in each testbed ≤ 10% of the real data of real-only learning (upper 95% bound
-  < 0.2) and ≥ 2× less than the existing pipeline (bound < 1); H1–H3 effects keep their sign; tier B
-  agrees in direction.
+- *Budget curves:* real data (capture + trials, one operator-time cost) against P for the method; for
+  **real-only fine-tuning of the same VLA** (LoRA SFT on expert demonstrations in the reference, same
+  initialization; real-only RL also shown); and for the **strongest existing twin fine-tuning pipeline for
+  VLAs**, TwinRL/RialTo-style [17, 3]: uniform capture, uniform randomization, SFT + RL of the same VLA in
+  the twin, random or failure-driven real trials (the better is reported), with the same twin, learner and
+  correction and TwinRL's released code where it applies. The exchange rate is the ratio of the budgets
+  reaching the target P.
+- *Success criterion (H4, the thesis; §7):* with C1–C3 and their hyperparameters unchanged, in each
+  testbed ≤ 10% of the real data of real-only fine-tuning (upper 95% bound < 0.2) and ≥ 2× less than the
+  pipeline (bound < 1); H1–H3 effects keep their sign; tier B agrees in direction.
 
 **Tier C validation.** Two robot campaigns (sem. 5 and 7) with own phone or RGB-D captures at PWr: a mobile
-robot in 2 rooms and, where access is agreed, a tabletop manipulator. Uniform capture versus the method,
-plus the few selected trials; about 8 robot-hours per campaign (3 policies × 2 settings × 30 episodes at
-~2 min, plus 2 × 20 trials). Tier C reports agreement only and never tunes thresholds.
+robot in 2 rooms and, where access is agreed, a tabletop manipulator; uniform capture versus the method,
+~8 robot-hours per campaign, agreement only. **Statistics:** tests follow §7; the protocol is
+pre-registered before each stage. Code is released where dataset and model licences permit.
 
-**Statistics and reproducibility.** Tests follow §7; the protocol is pre-registered before each stage and
-changes are logged. Code is released where the dataset licences permit.
-
+<!--
+Wave 15-U (issue #32), 2026-09-26: pivot decision v5 (research/pivot-decision.md, top): a pretrained open VLA
+fine-tuned sim-first in the twin, a VLM for task-aware capture and success judging, a world model grounded in
+the twin. v3 scope, v4 framing, tiers A/B/C, all review-3 fixes and the §7 decision rules (worker T, final
+§7 v5; coordinator msg_65a79c659e58) are mirrored: H2(b) twin + world model vs twin only (lower 95% bound of
+the paired gain > 0, >= 2 budgets); H4(a) real-only = fine-tuning the SAME VLA on real data only (LoRA SFT
+on expert demonstrations in the reference; real-only RL shown); H4(b) = strongest existing twin fine-tuning
+pipeline for VLAs, TwinRL/RialTo-style (uniform capture, domain randomization, RL in the twin, random or
+failure-driven real trials). The "world-model simulator also reported" comparator of Wave 14 is now part
+of the method (C2) and of H2(b).
+Models (research/vla-wm-crowdedness.md §2; all checked 2026-09-26):
+- OpenVLA-OFT: code github.com/moojink/openvla-oft MIT; OpenVLA weights HF openvla/openvla-7b (MIT tag), but
+  the openvla README says the models are "derived from Llama-2" and "subject to the Llama Community License".
+- pi0 / pi0.5: github.com/Physical-Intelligence/openpi, Apache-2.0; README: LoRA fine-tuning "> 22.5 GB",
+  full "> 70 GB" (A100 80GB / H100).
+- OpenVLA LoRA: openvla README: "a single A100 GPU with 80 GB VRAM ... at least ~27 GB of memory";
+  batch 16 "requires ~72 GB GPU memory".
+- NaVILA: code github.com/AnjieCheng/NaVILA Apache-2.0; HF a8cheng/navila-llama3-8b-8f has NO licence tag
+  (§12 licence risk). Mapping of its mid-level language actions to Habitat actions = design choice
+  (CONFIRM in the T3.1 pilot). Tasks "instruction and image-goal navigation" replace point-goal (the VLA
+  is language-conditioned); image-goal is kept from R3-F6.
+- Qwen2.5-VL-7B-Instruct: HF, Apache-2.0.
+- Cosmos-Predict2 checkpoints: HF nvidia/Cosmos-Predict2-2B-Video2World, NVIDIA Open Model License (gated
+  "auto"). NWM: HF facebook/nwm, CC-BY-4.0, gated (manual).
+- PPO as the RL algorithm: [16] "We identify PPO as a more effective RL algorithm for VLAs than
+  LLM-derived methods like DPO and GRPO". RL tooling [15] SimpleVLA-RL (MIT); RLinf (Apache-2.0, ships a
+  3DGS ManiSkill "GSEnv" for Real2Sim2Real per its README).
+- TwinRL code: github.com/zhourui9813/TwinRL, MIT, "offline training code" (Octo/SERL-based, README).
+Compute: "one 8-GPU node" = SimpleVLA-RL README example (8x A800 80GB). ~23k H100-hours = OUR ESTIMATE
+(research/vla-wm-crowdedness.md §4: 96 LoRA SFT runs x 8 GPU-h, 48 RL runs x 192 GPU-h, 8 WM adaptations
+x 384 GPU-h, ~60 Stage III-IV runs x 128 GPU-h, +10%); UNVERIFIED until the T3.1 pilot. WCSS Lem = 76 nodes
+x 4 H100 96 GB, 7-day queue (research/resources.md §2).
+Design choices (CONFIRM supervisor): the VLM's grounding as an extra task-relevance term in C1 (next to
+planner-path visitation, R3-F9); world-model rollouts started from states in the twin's most uncertain
+regions and weighted by that uncertainty (C2b); gap score in C3 = twin uncertainty + twin-WM disagreement +
+LoRA-ensemble action spread; the H4(b) pipeline reports the better of random and failure-driven trial
+selection; AREA3D-type VLM-guided reconstruction selection as an extra H1 comparator (not in the H1
+decision rule).
+Dropped with the §6 reference cut: GaussGym (3DGS renderer now unnamed), feature-alignment DA comparator
+[Cheng], selection rules MetaMVUC/AMF/Anwar, SureSim, GaussTwin (photometric correction now uncited),
+SimOpt, real-only scaling [Lin]. Refs renumbered to the Wave 15 §6 list: [1] Habitat, [2] 3DGS, [3]
+RialTo, [5] EmbodiedSplat, [6] ManiSkill3, [7] BayesSim, [8] OpenVLA, [9] pi0, [10] NaVILA, [11] LoRA,
+[12] OFT, [14] Maddukuri, [15] SimpleVLA-RL, [16] Liu et al. (RL for VLA), [17] TwinRL, [18] Cosmos,
+[19] NWM, [20] WMPO, [23] Qwen2.5-VL, [24] Du et al., [25] FisherRF, [26] Bayes' Rays, [27] Liu et al.
+risk-aware, [28] ASID, [29] AREA3D, [30] ScanNet++, [31] Tobin, [32] Peng, [33] DINOv2, [34] PPI,
+[35] SIMPLER. Reference numbers in the older comments below are pre-Wave-15.
+-->
 <!--
 Wave 14 (issue #30), 2026-09-26: pivot decision v4 (research/pivot-decision.md, top; framing only, v3 scope
 and all review-3 fixes unchanged). The intro now says the dissertation develops ONE method with components

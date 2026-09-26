@@ -1,3 +1,39 @@
+# Decision v4 (student, 2026-09-26): the goal is ONE METHOD that needs LESS real data
+
+**v4 overrides v3/v2 on framing. Scope from v3 is unchanged:** general, domain-agnostic
+real-to-sim-to-real; manipulation and navigation as equal testbeds; twins include physical parameters.
+
+**Goal of the dissertation (cel pracy).** To develop **a method** for learning in the real-to-sim-to-real
+loop that reaches a given real-world performance with **significantly less real data** than existing
+approaches.
+
+**Method.** The method is one pipeline with three components, one per loop step:
+- (C1) task-aware, uncertainty-guided capture for building the twin;
+- (C2) uncertainty-aware learning in the imperfect twin;
+- (C3) active selection of a few real-world data or trials to correct the twin and the model.
+
+The components are parts of the method. They are not separate contributions.
+
+**Thesis (main hypothesis).** The proposed method reaches the target real-world success rate with
+(a) at most 10% of the real data needed by learning from real data only, and (b) at least 2× less real
+data than the strongest existing real-to-sim-to-real pipeline. That baseline is uniform capture + domain
+randomization + random real-data selection, RialTo-style. The claim must hold in both testbeds.
+<!-- (b) is new in v4: CONFIRM with the supervisor -->
+
+**RQ/H mapping (numbering kept):**
+- RQ1–RQ3 / H1–H3: how much each component C1–C3 saves at its own step (ablations of the method).
+- RQ4 / H4: the whole method, i.e. the thesis above, in both domains.
+
+**Framing rules:**
+- Budget curves, the proxy-reality protocol and the code are **how the method is evaluated and
+  released**. They are not contributions in their own right.
+- The key original contribution in §8 is **the method**.
+- Title, goal (§5, §7), contributions (§8) and abstracts (§10) must say plainly that the dissertation
+  develops a method that needs less real data.
+
+---
+(v3 below: its scope stays valid)
+
 # Pivot decision v3 (student, 2026-09-26): GENERAL data-efficient real-to-sim-to-real
 
 **v3 overrides v2 on scope.** The research is about **real-to-sim-to-real in general**, not about navigation,

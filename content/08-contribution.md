@@ -1,51 +1,25 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
-The dissertation is in **information and communication technology** (*informatyka techniczna i
-telekomunikacja*), area machine learning. Its object is the **real-to-sim-to-real loop of robot learning
-and the real data it consumes**: transferring real-world data into a digital twin, training a model in
-it and transferring the model back to reality. Building simulators, world models, foundation models or
-benchmarks from scratch, control design and mechanical engineering are not the object of the research;
-the student uses existing tools, pretrained models and public data.
+The proposed Ph.D. dissertation aims to introduce several contributions to the development of the
+scientific discipline. First and foremost, the research is intended to provide new methods that improve
+the generalization of deep learning models trained in simulations built from real data, which is one of
+the main obstacles in applying machine learning to physical AI. The methods are intended to be general,
+i.e., not tied to a particular robot, scene or task, and are planned to be evaluated on robot navigation
+and robotic manipulation.
 
-**Key original contribution: a scientific answer to how real data should be spent.** (i) A formulation
-of the real-to-sim-to-real loop as sequential experimental design over a real-data budget, with one
-criterion (expected reduction of the twin-to-reality performance gap per unit cost) and a
-domain-adaptation-style bound [38] that states when twin data can replace real data; (ii) a method that
-instantiates this criterion at every step of the loop and reaches a given real-world performance with at
-least two times less real data than the strongest existing approach (RQ4, H4); (iii) empirical knowledge
-of when and why the savings arise. What is new is not the twin but the principled spending of real data. The three
-mechanisms are instances of the criterion, each tested at its own step:
+Furthermore, the research seeks to provide a better understanding of the sim-to-real generalization gap:
+which properties of a digital twin matter for the generalization of the trained model, and where in the
+model the gap arises. Such knowledge could introduce new perspectives for the design of simulations and of
+training procedures, and could help to build more principled and interpretable approaches than the
+currently dominating randomization heuristics. Since the sim-to-real problem is an instance of learning
+under distribution shift, the findings are also expected to be relevant to domain adaptation,
+representation learning and the adaptation of pretrained foundation models in general.
 
-1. **Less capture (RQ1, H1).** Capture of real data guided by what matters for the task and by where the
-   twin is still uncertain, for appearance, geometry and the physical properties the task needs; compared
-   with uniform capture and with task-blind and task-weighted selection aimed at reconstruction quality.
-2. **Better use of simulation (RQ2, H2).** Training that follows the twin's uncertainty, so that its
-   errors do not transfer, with a learned world model filling the twin's gaps; compared with uniform and
-   with no domain randomization.
-3. **Fewer real trials (RQ3, H3).** Selection of the few real trials that the predicted twin-to-reality
-   gap marks as most informative, used to correct both the twin and the model; compared with random and
-   with failure-driven selection.
-
-**Generalization.** H1–H4 are decided in indoor robot navigation; the same method, unchanged, is then run
-in robotic manipulation as a generalization test, with no separate thresholds.
-
-**How it is evaluated and released** (supporting, not contributions in their own right). Curves of success against operator minutes on a shared budget grid, against pre-registered
-baselines and learning from real data only; a proxy-reality protocol on public scans of real buildings
-that counts real data exactly without a robot (a separate, higher-fidelity reference with hidden physical
-parameters plays "reality"), validated against a real robot; and open code, configurations, scene lists,
-seeds and pre-registrations, built on existing tools.
-
-**Significance for the discipline.** Real target-domain data is the main cost of deploying learned
-systems; a method that decides where it is worth spending, and a measured estimate of how much of it a
-twin can replace, are relevant to active learning, learning under distribution shift, uncertainty
-estimation and adaptation of pretrained models in general, beyond robotics.
-
-**Dissemination.** Results are planned for peer-reviewed conferences worth 200 points and assigned to ITiT
-on the ministerial list of 5.01.2024: NeurIPS, ICML and ICLR (machine learning) and CVPR (computer vision),
-with ICCV and ECCV for resubmissions. P1 (mechanism 1, RQ1, in navigation) targets NeurIPS 2027; P2
-(mechanisms 2–3, RQ2–RQ3, in navigation, with first manipulation results) ICML 2028 or CVPR 2028; P3 (the
-whole method against existing approaches, RQ4, with the generalization to manipulation) NeurIPS 2028, with
-ICLR 2029 as the fallback.
+Finally, the developed methods for adapting models to reality with a small amount of real data could
+reduce the cost of deploying learning-based robots in new environments. The source code and the
+experimental setups are planned to be released, which could facilitate further research in the field and
+attract other researchers. Apart from purely scientific results, the methods could be used in real-world
+applications such as service, logistic and inspection robotics.
 
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):
 key contribution = a method that REDUCES real data (three reduction mechanisms, one per loop step); the

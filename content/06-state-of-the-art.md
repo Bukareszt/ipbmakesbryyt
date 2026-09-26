@@ -1,92 +1,78 @@
 # §6 Zarys aktualnego stanu badań / State of the art (max 2 pages)
 
-**Simulation and sim-to-real transfer.** Robot models for navigation and manipulation are commonly trained
-in simulators such as Habitat [1] and ManiSkill3 [2], where large-scale reinforcement learning essentially
-solves point-goal navigation after billions of steps [3]. Transfer to the real world is the open part:
-simulation success need not predict real success (the Sim-vs-Real Correlation Coefficient rose from 0.18 to 0.84 once one collision artefact was removed [4]; paired evaluations in manipulation [5]). Domain randomization varies appearance [6] or dynamics [7] uniformly within hand-set
-ranges, and a few real rollouts can adapt the simulation parameter distribution [8]. In navigation,
-more data from a known location saturates quickly [9]; sim-and-real co-training raises real success [10].
+Deep reinforcement and imitation learning made it possible to train robots for complex tasks such as
+visual navigation and manipulation. Since such methods require very large amounts of experience,
+simulation became the standard training environment. Platforms such as Habitat [1] and ManiSkill3 [2]
+allow training at the scale of billions of steps, and in simulation point-goal navigation has been
+practically solved [3]. However, the performance of models in simulation does not always predict their
+performance in the real world [4], and the transfer of models from simulation to reality, known as the
+sim-to-real problem, remains one of the central challenges of robot learning [5, 6].
 
-**From real data to digital twins.** Neural scene reconstruction, above all 3D Gaussian Splatting (3DGS)
-[11], turns a short real capture into a photorealistic model of a scene. Twins built this way train models
-that transfer. In navigation, EmbodiedSplat [12] reconstructs rooms from a phone capture and fine-tunes
-image-goal navigation in Habitat, Vid2Sim [13] builds simulators for urban navigation from monocular
-video, GaussGym [14] trains from pixels, and ReaDy-Go [15] adds moving obstacles.
-In manipulation, RialTo [16] builds a twin from a scan and a few demonstrations, X-Sim [17] from a minute
-of human video, and TwinRL [18] fine-tunes a pretrained policy in a phone-captured twin and targets its
-few real rollouts at configurations where the twin predicts failure. The physical part of a twin can be identified from a small amount of real data, as a
-posterior over simulator parameters [19] or by exploration designed for identification [20]. Datasets such
-as ScanNet++ [21] pair laser scans and DSLR images with a separate phone capture of the same scene, and
-MuSHRoom [22] pairs phone and depth-camera captures with a reference mesh under an open licence. In all
-these works the amount of real data is fixed by hand: the navigation twins use between 15 seconds and 30
-minutes of video per scene and no real training trials, and the manipulation works report single points
-(e.g. a scan and 15 demonstrations instead of 50 demonstrations [16]) rather than curves.
+The most common approach to the sim-to-real problem is domain randomization, which varies the appearance
+[7] or the dynamics [8] of the simulation so that reality appears as one more variation. Other works adapt
+the parameters of the simulator to a few real-world rollouts [9]. Interestingly, the fidelity of the
+simulator alone does not guarantee better transfer, as lower-fidelity simulation can transfer better in
+navigation [10]. From the machine learning perspective, the sim-to-real problem is an instance of learning
+under distribution shift. Domain adaptation theory bounds the error on the target domain by the error on
+the source domain and a discrepancy between the two domains [11], and domain-adversarial training learns
+representations that are invariant across domains [12]. Nevertheless, such principled approaches are
+rarely applied to models trained in simulation for physical tasks, where randomization heuristics dominate.
 
-**Capturing the right real data.** Active view selection chooses the images that improve a reconstruction
-most: FisherRF [23] maximizes expected information gain, and Bayes' Rays [24] estimates an uncertainty
-field for a trained radiance field. Risk-aware view acquisition [25] weights FisherRF by safety-critical
-regions for navigation, and AREA3D [26] adds vision-language guidance. None measures the success of a model trained in the resulting twin (at most two task-aware capture papers a year, 2023–2026).
+A major recent development is the construction of simulations directly from real data. Neural Radiance
+Fields [13] and 3D Gaussian Splatting [14] reconstruct photorealistic 3D scenes from ordinary images, and
+datasets such as ScanNet++ [15] provide real indoor scenes captured both with high-end and consumer
+devices. Such digital twins have been used to train navigation models from a phone capture of a room [16]
+or from monocular videos of urban scenes [17], and robotic manipulation policies from a scan of the target
+scene [18], showing that real-to-sim-to-real learning improves real-world performance in comparison with
+generic simulators. The physical parameters of a digital twin can be estimated from a small amount of
+real data [19]. However, these works treat the digital twin mostly as a fixed, as-accurate-as-possible copy
+of reality. It is not known which properties of a twin (appearance, geometry, lighting or physics) actually
+determine the generalization of the trained models, and the twins are randomized uniformly rather than
+according to where they are uncertain or where it matters for the task. Moreover, the evaluation is
+usually limited to a handful of scenes and a single task.
 
-**Foundation models, world models and real trials.** Pretrained navigation foundation models generalize
-across robots and environments (GNM [27], ViNT [28]), and vision-language-action models map images and
-instructions to actions [29]; they still need data from the target place to work there. Learned world
-models predict future observations: navigation world models plan by imagining trajectories [30], and open
-world foundation models are post-trained per setup [31]; VLAW [32] improves a world model with real
-rollouts, at a fixed, hand-chosen number of them. Choosing real trials has been studied for *evaluating*
-policies (a fifth to a quarter less robot effort [33]), not for *correcting* a twin and its model.
-Frozen visual encoders [34] make twin and real observations comparable, and prediction-powered inference
-[35] estimates real performance from many cheap predictions and a few real labels.
+In parallel, pretrained foundation models changed how robot policies are built. General navigation models
+trained on data from many robots [20, 21] and vision-language-action models [22] transfer to new robots
+and environments, and self-supervised visual encoders [23] provide representations that are robust to
+many appearance changes. Learned world models predict future observations and can be used for planning
+in navigation [24]. These models are a promising basis for generalization, but it has not been studied
+how their representations behave under the specific shift between a digital twin and reality, and how
+they should be trained in a twin so that this shift does not harm their performance. Finally, adapting
+a model trained in simulation to reality usually relies on real data collected at random or by hand, and
+on co-training with simulated data [25], without selecting the real data that is most informative about
+the remaining gap.
 
-**Theory.** Domain-adaptation theory bounds target error by source error plus a discrepancy between domains
-[38], and Bayesian experimental design chooses measurements by expected information gain [36, 37]; neither
-has been applied to the allocation of real data across a real-to-sim-to-real loop.
-
-**Research gap.** Real-to-sim-to-real learning works, but the real data it consumes is set by hand and
-spent uniformly at every step. No navigation pipeline has a stage that corrects the twin with real trials,
-and none reports how success depends on the real data spent; in manipulation the real data is accounted
-at single points, against learning from real data only, never against another real-to-sim-to-real
-pipeline. Missing are a principled criterion for spending real data across the whole loop, its theory, and
-a method built on it that reduces real data at every step (RQ1–RQ3) and in total (RQ4).
+In summary, the literature shows that real-to-sim-to-real learning is effective, but the generalization
+of the trained models to reality, to unseen scenes and to other tasks is still limited and poorly
+understood. The proposed dissertation addresses this gap by studying the generalization of deep learning
+models at each stage of the real-to-sim-to-real loop.
 
 ### References
-[1] M. Savva et al., "Habitat," ICCV, 2019.
-[2] S. Tao et al., "ManiSkill3," RSS, 2025.
-[3] E. Wijmans et al., "DD-PPO," ICLR, 2020.
-[4] A. Kadian et al., "Sim2Real Predictivity," IEEE RA-L, 2020.
-[5] X. Li et al., "Evaluating Real-World Robot Manipulation Policies…," CoRL, 2024.
-[6] J. Tobin et al., "Domain Randomization…," IROS, 2017.
-[7] X. B. Peng et al., "Sim-to-Real Transfer… with Dynamics Randomization," ICRA, 2018.
-[8] Y. Chebotar et al., "Closing the Sim-to-Real Loop," ICRA, 2019.
-[9] L. Suomela et al., "Data Scaling for Navigation…," IEEE RA-L, 2026.
-[10] A. Maddukuri et al., "Sim-and-Real Co-Training," RSS, 2025.
-[11] B. Kerbl et al., "3D Gaussian Splatting," ACM TOG, 2023.
-[12] G. Chhablani et al., "EmbodiedSplat," ICCV, 2025.
-[13] Z. Xie et al., "Vid2Sim," CVPR, 2025.
-[14] A. Escontrela et al., "GaussGym," arXiv:2510.15352, 2025.
-[15] S. Yoo et al., "ReaDy-Go," IEEE RA-L, 2026.
-[16] M. Torne et al., "Reconciling Reality through Simulation," RSS, 2024.
-[17] P. Dan et al., "X-Sim," arXiv:2505.07096, 2025.
-[18] Q. Xu et al., "TwinRL," arXiv:2602.09023, 2026.
-[19] F. Ramos et al., "BayesSim," RSS, 2019.
-[20] M. Memmel et al., "ASID," arXiv:2404.12308, 2024.
-[21] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
-[22] X. Ren et al., "MuSHRoom," arXiv:2311.02778, 2023.
-[23] W. Jiang et al., "FisherRF," ECCV, 2024.
-[24] L. Goli et al., "Bayes' Rays," CVPR, 2024.
-[25] G. Liu et al., "Risk-Aware Active View Acquisition…," arXiv:2403.11396, 2024.
-[26] T. Xu et al., "AREA3D," arXiv:2512.05131, 2025.
-[27] D. Shah et al., "GNM," ICRA, 2023.
-[28] D. Shah et al., "ViNT," CoRL, 2023.
-[29] M. J. Kim et al., "OpenVLA," CoRL, 2024.
-[30] A. Bar et al., "Navigation World Models," CVPR, 2025.
-[31] N. Agarwal et al., "Cosmos World Foundation Model Platform…," arXiv:2501.03575, 2025.
-[32] Y. Guo et al., "VLAW," arXiv:2602.12063, 2026.
-[33] A. Badithela et al., "Reliable and Scalable Robot Policy Evaluation…," arXiv:2510.04354, 2025.
-[34] M. Oquab et al., "DINOv2," TMLR, 2024.
-[35] A. N. Angelopoulos et al., "Prediction-Powered Inference," Science, 2023.
-[36] K. Chaloner, I. Verdinelli, "Bayesian Experimental Design: A Review," Statistical Science, 1995.
-[37] T. Rainforth et al., "Modern Bayesian Experimental Design," Statistical Science, 2024.
-[38] S. Ben-David et al., "A theory of learning from different domains," Machine Learning, 2010.
+[1] Savva, M., Kadian, A., Maksymets, O., et al. (2019). Habitat: A platform for embodied AI research. ICCV.
+[2] Tao, S., et al. (2025). ManiSkill3: GPU parallelized robotics simulation and rendering for generalizable embodied AI. RSS.
+[3] Wijmans, E., et al. (2020). DD-PPO: Learning near-perfect PointGoal navigators from 2.5 billion frames. ICLR.
+[4] Kadian, A., et al. (2020). Sim2Real predictivity: Does evaluation in simulation predict real-world performance? IEEE Robotics and Automation Letters, 5(4).
+[5] Zhao, W., Queralta, J. P., & Westerlund, T. (2020). Sim-to-real transfer in deep reinforcement learning for robotics: a survey. IEEE SSCI.
+[6] Höfer, S., et al. (2021). Sim2Real in robotics and automation: Applications and challenges. IEEE Transactions on Automation Science and Engineering, 18(2).
+[7] Tobin, J., et al. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. IROS.
+[8] Peng, X. B., Andrychowicz, M., Zaremba, W., & Abbeel, P. (2018). Sim-to-real transfer of robotic control with dynamics randomization. ICRA.
+[9] Chebotar, Y., et al. (2019). Closing the sim-to-real loop: Adapting simulation randomization with real world experience. ICRA.
+[10] Truong, J., et al. (2022). Rethinking sim2real: Lower fidelity simulation leads to higher sim2real transfer in navigation. CoRL.
+[11] Ben-David, S., et al. (2010). A theory of learning from different domains. Machine Learning, 79.
+[12] Ganin, Y., et al. (2016). Domain-adversarial training of neural networks. Journal of Machine Learning Research, 17.
+[13] Mildenhall, B., et al. (2020). NeRF: Representing scenes as neural radiance fields for view synthesis. ECCV.
+[14] Kerbl, B., Kopanas, G., Leimkühler, T., & Drettakis, G. (2023). 3D Gaussian splatting for real-time radiance field rendering. ACM Transactions on Graphics, 42(4).
+[15] Yeshwanth, C., Liu, Y.-C., Nießner, M., & Dai, A. (2023). ScanNet++: A high-fidelity dataset of 3D indoor scenes. ICCV.
+[16] Chhablani, G., et al. (2025). EmbodiedSplat. ICCV. arXiv:2509.17430.
+[17] Xie, Z., et al. (2025). Vid2Sim: Realistic and interactive simulation from video for urban navigation. CVPR.
+[18] Torne, M., et al. (2024). Reconciling reality through simulation: A real-to-sim-to-real approach for robust manipulation. RSS.
+[19] Ramos, F., Possas, R., & Fox, D. (2019). BayesSim: Adaptive domain randomization via probabilistic inference for robotics simulators. RSS.
+[20] Shah, D., et al. (2023). GNM: A general navigation model to drive any robot. ICRA.
+[21] Shah, D., et al. (2023). ViNT: A foundation model for visual navigation. CoRL.
+[22] Kim, M. J., et al. (2024). OpenVLA: An open-source vision-language-action model. CoRL.
+[23] Oquab, M., et al. (2024). DINOv2: Learning robust visual features without supervision. TMLR.
+[24] Bar, A., et al. (2025). Navigation world models. CVPR.
+[25] Maddukuri, A., et al. (2025). Sim-and-real co-training: A simple recipe for vision-based robotic manipulation. RSS.
 
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top)
 and the deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md). General

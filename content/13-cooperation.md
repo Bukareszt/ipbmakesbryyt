@@ -1,19 +1,10 @@
 # §13 Forma współpracy z promotorem / Planned cooperation with the supervisor
 
-- **Weekly meeting** (~1 h, in person at K46 or online via MS Teams) to discuss progress, results and
-  next steps.
-- **Monthly written progress summary** (completed tasks, results, problems, plan). It lists every IPB task
-  from §3 with its **% completion**, in the same form as the task table of the mid-term self-report.
-- **Semester review** against the IPB schedule (§3), before each annual report and the mid-term evaluation.
-  Deviations from the plan and their reasons are recorded and agreed with the supervisor.
-- **Pre-registrations and formal steps.** The supervisor approves the pre-registration of each stage
-  (baselines, thresholds, difficulty regime) before its experiments start, signs the dataset licence
-  application (ScanNet++, Oct 2026) and co-signs the grant applications (§12).
-- **Supervisor co-signs** the annual reports and the mid-term self-report (autoreferat).
-- **Paper-writing sprints** before each submission deadline, with joint editing in Overleaf. The
-  supervisor co-authors and reviews the papers before submission.
-- **Ongoing communication** via e-mail / Teams chat. The code and experiment logs are in a shared Git
-  repository that the supervisor can access.
+It is planned to have weekly meetings with the supervisor. The meetings are planned to consist of results
+presentations, discussions, reviews and joint work on papers. The scope of meetings is also supposed to
+include the evaluation of progress and the planning of further activities. Moreover, it is planned to
+discuss results, issues and recent advancements in the field with other Ph.D. students weekly, with the
+supervisor's participation. Day-to-day communication will take place by e-mail and instant messaging.
 
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 and the deep-research report: the ScanNet++ licence

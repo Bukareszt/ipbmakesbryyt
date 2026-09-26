@@ -1,3 +1,3 @@
-# §4 Termin złożenia rozprawy doktorskiej / Dissertation submission date
+# §4 Termin złożenia rozprawy doktorskiej / Date of the doctoral dissertation submission
 
-**30.09.2029**
+September 2029

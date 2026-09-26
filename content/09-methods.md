@@ -1,97 +1,43 @@
 # §9 Planowane metody badawcze / Planned research methods (max 2 pages)
 
-The dissertation develops **one method** with three reduction mechanisms, one per step of the
-real-to-sim-to-real loop: less capture, better use of simulation, fewer real trials. Each mechanism is
-developed and tested at its own step (RQ1–RQ3); the whole method is then tested against the strongest
-existing approach (RQ4). Existing open tools that run on the data-centre GPUs of WCSS and PLGrid are used
-throughout (Habitat-Sim/Lab [1], an open 3DGS library, COLMAP); nothing is built from scratch.
+The research will follow the methods commonly adopted in machine learning and robot learning projects.
+Since there is no mathematically proven practice for achieving generalization from simulation to reality,
+the dominant part of the research will be based on empirical methods. The proposed methods will be
+described theoretically, and their properties or bounds will be analysed whenever possible, in particular
+with the use of domain adaptation theory.
 
-**Theoretical part (RQ4; sem. 3–5, then refined).** The loop is written as sequential Bayesian experimental
-design [36, 37]: a posterior over the twin (geometry, appearance, physical parameters) and over the model's
-twin-to-reality gap, updated by each real datum. A task-weighted discrepancy bound in the spirit of [38]
-links the twin's uncertainty on the states the task visits to the loss of real performance; the
-acquisition criterion (expected gap reduction per operator minute) follows from it and is used at all three
-steps. The predictions of the analysis, when each mechanism saves data and how much, are tested against
-the measured budget curves (H4).
+Digital twins will be built from real captures of indoor scenes using neural scene reconstruction methods
+(3D Gaussian Splatting and related methods) and structure-from-motion tools, and imported into robot
+simulators (e.g. Habitat for navigation and ManiSkill3 for manipulation). Experiments will be conducted
+mainly on public datasets of real scenes, such as ScanNet++ and MuSHRoom, which contain captures of the
+same scenes made with different devices. This allows building the twin from one capture and using a
+separate, higher-fidelity capture as a reference for "reality", so that the sim-to-real gap can be
+studied in a controlled way on many scenes without an own robot. Navigation and manipulation models will
+be trained with reinforcement and imitation learning, starting from pretrained foundation models whenever
+possible. The results will be validated on a real mobile robot in rooms at the university, in cooperation
+with the robotics laboratories of Wrocław University of Science and Technology.
 
-**Real data: one unit, one grid.** All real effort is counted in **operator minutes** B = capture +
-demonstrations + on-robot trials with resets; raw counts (frames, trials) are reported. Every approach gets the same budget grid, e.g. B ∈ {5, 10, 20, 40, 80} min, the same
-initialization, compute in the twin and test episodes. Each comparison yields the budget at which an
-approach reaches the target P, with a scene-level bootstrap interval for the budget ratio. The target P
-is a fraction of the baseline's plateau (e.g. 90% of its P at the largest budget), so "40%" and "2×" stay
-well defined when the baseline's curve flattens.
+The quantitative evaluation will rely on standard metrics for embodied tasks, such as success rate and
+success weighted by path length, and on the generalization gap, i.e., the difference between the
+performance in simulation and in reality. Particular attention will be paid to generalization, so the
+evaluation will separate the scenes used for training from unseen scenes, and will include a second
+physical task. Statistical methods will be leveraged to provide reliable outcomes, including repeated
+experiments with different random seeds and statistical tests for comparisons with baseline methods.
+Qualitative evaluation will focus on analysing the learned representations, e.g. by probing, visualizing
+the latent space and analysing failure cases.
 
-**Proxy reality (decides H1–H4).** On ≥ 20 scenes of ScanNet++ [21] (10 held out; licence signed
-by the supervisor; derived twins not published) and the rooms of MuSHRoom [22] (open licence; twins
-releasable), "reality" is the laser-scan mesh textured from the DSLR
-images and rendered in Habitat with a robot-camera model, with its own physical parameters (e.g.
-actuation noise, friction) hidden from the method and learned only from counted real data; this physical
-gap is synthetic, and the robot checks it. The twin is built from a subset of the separate phone capture
-of the same scene, so twin and "reality" share neither images nor reconstruction method; the largest
-budget stays below the full capture. Tasks are goal-reaching navigation (image-goal and point-goal) in
-static indoor scenes, with the difficulty set in a pilot. The sim-vs-real correlation [4] between twin and
-"reality" is measured per scene and must exceed a pre-registered threshold for H3. The proxy's own error
-is reported, and every hypothesis is re-checked for sign with a second reference from all DSLR images.
-P = success rate; path efficiency is also reported.
+The implementation of experiments will be done mainly in the Python programming language with the PyTorch
+deep learning library. Source code will be managed with the Git version control system, and experiments
+will be tracked to provide reproducible results. Due to the high computational demand, the experiments
+will run on GPU clusters provided by the Department and on the Polish computing infrastructure (WCSS,
+PLGrid). The work will be partly conducted in cooperation with other Ph.D. students and senior
+researchers. Code and data are supposed to be opened whenever possible, following open science standards
+and the licences of the datasets used.
 
-**Mechanism 1 – less capture (RQ1, H1; sem. 3–4).**
-- *Method:* the twin's appearance and geometry come from 3DGS [11], run as a mesh in the simulator (as in
-  [12]); its physical part is identified from a few trajectories as a posterior [19]. The next views are
-  chosen where the twin's uncertainty (Fisher information [23] or an uncertainty field [24] adapted to
-  3DGS) is highest in the regions that matter for the task, e.g. along planner paths between likely goals;
-  one criterion covers views and physical parameters.
-- *Pre-registered baselines:* uniform capture; task-blind information-driven selection [23]; risk- and
-  semantics-weighted selection with a reconstruction objective [25, 26]; task-blind identification of the
-  physical part [20].
-- *Criterion (H1):* ≥ 40% less capture than uniform at the target P (same learner in each twin; reference
-  budget below the plateau), upper 95% bound of the ratio below 1; against task-blind selection only the
-  upper bound below 1 is claimed.
-
-**Mechanism 2 – better use of simulation (RQ2, H2; sem. 4).**
-- *Method:* the model is initialized from a pretrained foundation model (e.g. a general navigation model
-  or a vision-language-action model [27–29]) and trained in the twin by imitation of planner
-  demonstrations, then by reinforcement learning on a subset of scenes. Randomization strength follows
-  the twin's uncertainty per region and per physical parameter, and twin samples far from a few real
-  samples (held out from the capture and counted in its budget) in a frozen-encoder space [34] are
-  down-weighted. A learned world model (e.g. a video world model [30, 31]) adapted on twin data generates
-  additional trajectories where the twin is most uncertain; it is an ablation without its own threshold.
-- *Pre-registered baselines:* uniform randomization of appearance [6] and dynamics [7]; no randomization;
-  ablations without the world model, uncertainty weighting and foundation-model initialization.
-- *Criterion (H2):* paired gain ≥ 10 pp on held-out scenes, lower 95% bound > 0, at ≥ 2 budgets, in the
-  pre-registered regime (baseline ≤ ~75% success), 150–300 episodes per arm.
-
-**Mechanism 3 – fewer real trials (RQ3, H3; end of sem. 4 – sem. 5).**
-- *Method:* candidate real trials are scored by the predicted twin-to-reality gap, combining the twin's
-  uncertainty along the planned path, disagreement between twin and world model, and the model's own
-  uncertainty (ensemble spread). The top-ranked trials are run in reality; they correct the twin
-  (re-capture where real and twin observations disagree, counted in the budget; posterior update of the
-  physical parameters [8, 19]) and the model (co-training with twin data [10]). Real P from few trials is
-  estimated with prediction-powered inference [35].
-- *Pre-registered baselines:* random selection; uniform coverage; a failure-driven rule that runs the
-  configurations where the twin predicts failure (as in [18]).
-- *Criterion (H3):* the target P with ≥ 50% fewer trials than random selection (upper 95% bound of the
-  ratio below 1), several runs per arm; against the failure-driven rule only the upper bound below 1 is
-  claimed. Published rules save 20–40% [33]; 50% is expected only where the gap is concentrated.
-
-**Whole method (RQ4, H4; sem. 6).** Budget curves of the whole method and of the strongest existing
-approach. No navigation pipeline with a real-trial step exists, so this baseline is
-*assembled and pre-registered*: capture and fine-tuning as in [12] plus real-trial correction as in
-[16, 18], with the same reconstruction pipeline, learner, compute and budget; a zero-shot twin and
-learning from real data only (imitation, same initialization) are reference curves; the method's settings are fixed beforehand. *Criterion (H4):* ≥ 2× less real
-data than the assembled baseline at the target P, upper 95% bound of the ratio below 1, and the mechanism 1–3 effects keep their sign; ≥ 30–50 episodes per point.
-
-**Generalization to manipulation (sem. 5–6).** The same method, settings unchanged, runs on tabletop
-tasks in ManiSkill3 [2], where a scene with hidden ground-truth physical parameters and its own rendering
-is "reality" and the twin is reconstructed from a subset of its views and a few interactions; this weaker
-proxy is checked against published paired sim-and-real evaluations [5]. No separate thresholds: only
-budget curves and the sign of the H1–H4 effects.
-
-**Real-robot validation.** Two campaigns (sem. 5, 7) in 2 PWr rooms with a small mobile robot (TurtleBot 4
-Lite from an SzD Minigrant, or K29), ~8 robot-hours each; they check direction and the proxy's validity.
-
-**Statistics, compute, openness.** One-sided tests, α = 0.05, scene-level bootstrap, Holm correction;
-every stage pre-registered. WCSS and PLGrid GPUs. Released: code, configurations, scene lists, seeds and
-MuSHRoom-based twins; nothing derived from ScanNet++.
+The findings will be published at leading machine learning, computer vision and robotics conferences from
+the ministerial list, such as NeurIPS, ICML, ICLR, CVPR and RSS. In order to further promote the work and
+establish new collaborations, it is planned to present results at smaller conferences and workshops, like
+MLinPL, and at summer schools.
 
 <!--
 Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top) and

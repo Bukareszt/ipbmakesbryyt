@@ -537,7 +537,7 @@ def build(make_pdf: bool = True) -> int:
         sem, period = int(m.group(1)), m.group(3)
         desc = row[1].strip()
         # one paragraph per task: split before "**T<sem>.<n>**"
-        parts = [s.strip() for s in re.split(r"(?=\*\*T\d\.\d\*\*)", desc) if s.strip()]
+        parts = [s.strip() for s in re.split(r"(?=\*\*T\d\.\d\*\*)|\s(?=\d{1,2}\. [A-Z])", desc) if s and s.strip()]
         blocks = [("p", parts[0] if not period else f"*({period})* " + parts[0])] + [("p", s) for s in parts[1:]]
         els = render_blocks(blocks, "en-US")
         for e in els:
@@ -555,6 +555,8 @@ def build(make_pdf: bool = True) -> int:
     limited = {"5": "05", "6": "06", "7": "07", "8": "08", "9": "09", "12": "12", "13": "13"}
     for n, prefix in limited.items():
         blocks = parse_blocks(section(prefix))
+        if not blocks:  # empty section (e.g. §12 left blank, as the form allows)
+            continue
         fill_region(regions[n], render_blocks(blocks, "en-US"))
         report.append((f"§{n}", est_height(blocks), PAGE_LIMITS.get(int(n))))
 
@@ -589,7 +591,7 @@ def build(make_pdf: bool = True) -> int:
     chk = docx.Document(str(out_docx))
     alltext = "\n".join(p.text for p in chk.paragraphs)
     celltext = "\n".join(c.text for t in chk.tables for r in t.rows for c in r.cells)
-    for needle in (plain(md4).strip(), "RQ1", "Streszczenie", "[1] "):  # "[1] " = §6 reference list present
+    for needle in (plain(md4).strip(), "research questions", "Streszczenie", "[1] "):  # "[1] " = §6 reference list present
         assert needle in alltext or needle in celltext, f"validation: '{needle}' missing in output"
     assert "Wybierz dyscyplinę" not in celltext and "Wybierz wydział" not in celltext
     print(f"Wrote {out_docx.relative_to(ROOT)}  (re-read OK: {len(chk.paragraphs)} paragraphs, "

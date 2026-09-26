@@ -1,17 +1,6 @@
 # §11 Termin oddania do druku artykułu naukowego / Date of submission for publication
 
-**May 2027 / maj 2027**
-
-Paper **P1** submitted for review to the main track of the **Conference on Neural Information Processing
-Systems (NeurIPS 2027)**. NeurIPS is peer-reviewed international conference proceedings worth
-**200 points** on the ministerial list (conference Lp. 87), assigned to the discipline *informatyka
-techniczna i telekomunikacja*. P1 reports the first reduction mechanism of the method, **less capture**
-(RQ1, H1), in indoor robot navigation: capture of real data guided by the task and by the twin's
-uncertainty, evaluated on public scans of real buildings by the real data it saves, in operator minutes,
-against pre-registered baselines (task T4.2). Because this mechanism is the most exposed to being
-published first by others, its result is also released as an early preprint. If P1 is rejected, the
-revised paper goes to **CVPR 2028** (expected deadline November 2027, also 200 points), and then to the
-next 200-point conference (§12).
+May 2027
 
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top): "P1: NeurIPS 2027.

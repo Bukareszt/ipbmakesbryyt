@@ -1,10 +1,6 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-**PL:** Wartość informacyjna danych rzeczywistych w uczeniu robotów w pętli rzeczywistość–symulacja–
-rzeczywistość: metoda ograniczania ich ilości z zastosowaniem w nawigacji i manipulacji
-
-**EN:** The value of real data in real-to-sim-to-real robot learning: a method for reducing its amount,
-with applications to navigation and manipulation
+Improving generalization of deep learning models in real-to-sim-to-real transfer for physical AI.
 
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):
 the dissertation is about HOW TO REDUCE the amount of real data (not about measuring it); the title is

@@ -1,43 +1,5 @@
 # §12 Inne / Other comments (max 1 page)
 
-**Planned outputs by year** (200-point conferences assigned to the discipline, list of 5.01.2024).
-
-| Year | Papers (planned submission, 200 points each) | Code | Grants, licences | Mobility, events |
-|---|---|---|---|---|
-| 1 (2025/26) | — | — | — | — |
-| 2 (2026/27) | P1 (mechanism 1, RQ1): NeurIPS 2027, May 2027 (§11) | Proxy pipeline | ScanNet++; PLGrid; Minigrant; PRELUDIUM; Bekker | Summer school poster |
-| 3 (2027/28) | P2 (mechanisms 2–3, RQ2–RQ3, first manipulation results): ICML/CVPR 2028; P3 (whole method, RQ4): NeurIPS 2028 | Mechanism 3 code | — | Mid-term; visit (sem. 6) |
-| 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Method release | — | Dissertation |
-
-**Foreign research visit (candidate hosts, not yet contacted):** Z. Kira's group, Georgia Tech
-(EmbodiedSplat [12]); M. Schwager's lab, Stanford (Gaussian-splatting scene models); a European host
-(Erasmus+) and a foreign co-author for P2 are sought in sem. 4.
-
-**Robot and scope.** A small mobile robot from an SzD Minigrant or one of the K29 *Denali* laboratory (task
-T3.2, Nov 2026); static indoor scenes only, moving people are future work.
-
-**Risks and mitigation** (semester affected).
-- *Proxy validity* (3–7): a rendered scan is itself a simulator, and one collision artefact can destroy
-  sim-to-real predictivity [4]; separate captures, a second reference and the sim-vs-real correlation
-  measured against the robot (§9); conclusions are ranking-preserving.
-- *Physical gap* (3–6): friction, slip and actuation delays are absent from meshes; "reality" gets hidden
-  physical parameters, mechanism 3 corrects them, the robot checks them.
-- *Success ceiling and noise* (3–6): twins already reach high zero-shot success; a pre-registered
-  difficulty regime, hundreds of proxy episodes per arm and targets from the baseline's plateau; robot
-  trials confirm the direction only.
-- *No gain from one mechanism, or real-only learning strong at small budgets* (3–6): every curve still
-  answers its RQ, H4 is a full budget curve, and gains from a known location saturate quickly [9].
-- *Scooping* (3–6): several groups are one step from a budget curve [12, 18, 32]; H1 is published early
-  (preprint, sem. 4), the literature is re-checked quarterly; we claim the reduction, not the twin.
-- *ScanNet++ licence* (3–7): non-commercial, revocable, no redistribution; the supervisor signs; MuSHRoom
-  and own PWr rooms are the releasable fallback; no derived ScanNet++ assets.
-- *Compute, robot access* (3–7): standard PLGrid grant and WCSS, smaller models; without a robot,
-  validation moves by a semester (the proxy decides).
-- *Rejection* (4–7): resubmission inside the 200-point set 2–4 months later (NeurIPS → CVPR → ICML → ECCV/ICCV).
-
-**Prior work, ethics.** A pre-PhD NLP paper (ACL 2025 SRW) is background only. Own captures are anonymized
-(GDPR); public datasets are used under their licences.
-
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top) and the
 deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md, "Walidność proxy i wyścig z

@@ -1,47 +1,34 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
-**Scientific problem.** Learning with a digital twin is learning under distribution shift in which the
-learner can *buy* target-domain (real) data at a cost, at three points of the real-to-sim-to-real loop:
-to build the twin, to train in it and to correct the model in reality. How to allocate a scarce real-data
-budget across these points so that the loss of real-world performance is smallest is an open problem of
-sequential experimental design [36, 37] that has not been posed for the whole loop.
+The research carried out in the proposed doctoral dissertation is aimed at studying the following research
+questions.
 
-**Principle and theoretical claim.** The loop is formalised as sequential Bayesian experimental design in
-which each real datum (a view, an interaction, a trial) is valued by its **expected reduction of the
-twin-to-reality performance gap per unit cost**. Following domain-adaptation theory [38], the real
-performance of a model trained in the twin is bounded by its twin performance plus a discrepancy term on
-the states the task visits; the dissertation derives a task-weighted, uncertainty-based estimate of this
-term and the conditions under which spending real data on it pays off. The three mechanisms of the method,
-(1) less capture, (2) better use of simulation, (3) fewer real trials, are instances of this one criterion.
+1. **Which properties of a digital twin built from real data determine the generalization of models
+   trained in it?**
+   A digital twin reproduces the appearance, geometry, lighting and physical properties of a real scene
+   only approximately, and the errors differ between regions of the scene. It is hypothesized that not
+   all of these errors are equally harmful, and that a model generalizes better to reality when the twin
+   is accurate and varied where it matters for the task and where the reconstruction is uncertain, rather
+   than randomized uniformly. The research should identify these properties and develop a method for
+   building and varying digital twins accordingly.
 
-**Thesis.** Allocating real data by its expected gap reduction, rather than uniformly or by hand, makes the
-loop at least twice as economical in real data as the strongest existing real-to-sim-to-real approach.
+2. **How to learn representations that are invariant to the difference between simulation and reality?**
+   Models trained in a digital twin tend to exploit features that do not exist in reality, such as
+   reconstruction artifacts. Pretrained foundation models and self-supervised encoders provide robust
+   representations, but it is not known how they behave under the shift between a twin and reality. It
+   is hypothesized that training objectives which enforce invariance between paired observations from
+   the twin and from reality, possibly supported by learned world models, reduce the generalization gap.
+   The research should also examine where in the model this gap arises.
 
-**How the hypotheses are decided.** Real effort is counted in **operator minutes** on one budget grid; P is
-the success rate in "reality" and the target P a fraction of the baseline's plateau. Decisions are made on a
-non-circular proxy reality from public scans of real buildings, with pre-registered baselines; a real
-robot validates the direction and the proxy. Navigation decides H1–H4; manipulation tests the same method,
-unchanged. Details are in §9.
+3. **How to adapt a model trained in simulation to reality using a small amount of real data?**
+   Some difference between the twin and reality always remains. It is hypothesized that selecting the
+   real data where the twin and reality disagree the most allows the model, and the twin itself, to be
+   corrected with much less real data than random selection.
 
-**RQ1 (step 1).** Which real data is worth acquiring to build the twin? **H1.** Capture chosen by the
-criterion reaches the P of uniform capture with **at least 40% less capture**.
-
-**RQ2 (step 2).** How should the model be trained so that the twin's errors do not transfer? **H2.** At the
-same budget, training weighted by the twin's uncertainty gives a P **at least 10 pp higher** than uniform
-domain randomization, in a pre-registered regime where the baseline succeeds in ≤ ~75% of episodes; a
-learned world model filling the twin's gaps is an ablation.
-
-**RQ3 (step 3).** Which few real trials correct the twin and the model best? **H3.** Trials chosen by the
-predicted gap reach the target P with **at least 50% fewer trials** than random ones, and fewer than a
-failure-driven rule, if the twin predicts reality well enough (minimum sim-vs-real correlation, §9).
-
-**RQ4 (theory and the whole loop).** When and why can twin data replace real data? **H4 (thesis).** The
-whole method reaches the target P with **at least 2× less real data** than the strongest existing
-approach (assembled, pre-registered, same budget), and the savings follow the conditions predicted by the
-theory: they grow with the twin-to-reality correlation and with how concentrated the gap is. In
-manipulation the effects keep their sign.
-
-A hypothesis that fails is reported as a measured curve, which still answers its question.
+4. **Do the improvements generalize to unseen environments and to other physical tasks?**
+   A valuable method should not be tied to a single scene or task. Therefore, the developed methods shall
+   be examined on environments not seen during training and on two different physical tasks, robot
+   navigation and robotic manipulation, to verify that the improvements in generalization are general.
 
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top)
 and the deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md). Goal = v7 goal

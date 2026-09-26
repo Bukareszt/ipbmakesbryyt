@@ -1,3 +1,19 @@
+# Decision v8 (student, 2026-09-26): generalization in real-to-sim-to-real; style of an accepted K46 IPB
+
+**v8 supersedes v1–v7 and addendum v7.1.** Earlier versions were over-engineered, and the student rejected
+them.
+
+- **Topic:** "Improving generalization of deep learning models in real-to-sim-to-real transfer for physical
+  AI."
+- **Research questions:** 4 open RQs, each with a descriptive paragraph and **no numeric thresholds**:
+  1. Twin properties that matter for generalization.
+  2. Sim-real invariant representations (foundation models, world models).
+  3. Adaptation with little real data.
+  4. Generalization to unseen scenes and to manipulation.
+- **Style reference:** an accepted IPB by another student of the same supervisor (K46, 2022). It uses a
+  short topic, simple numbered task lists per semester, narrative §5/§6/§8, a generic ML methodology in §9,
+  §11 as a month only, §12 empty, and weekly meetings in §13.
+
 # Addendum v7.1 (2026-09-26): scientific core
 The dissertation is scientific, not an implementation ("wdrożeniowy") doctorate. Its scientific problem is
 the allocation of scarce real data across the real-to-sim-to-real loop, treated as sequential Bayesian

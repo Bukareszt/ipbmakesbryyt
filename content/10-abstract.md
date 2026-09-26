@@ -2,55 +2,34 @@
 
 ## Streszczenie popularnonaukowe
 
-Roboty, które uczą się zadania na podstawie doświadczenia, na przykład poruszania się po budynku albo
-przenoszenia przedmiotów, potrzebują wielu takich doświadczeń z miejsca, w którym będą pracować, a
-zbieranie ich w rzeczywistości jest powolne i kosztowne. Dlatego coraz częściej robot uczy się w cyfrowym
-bliźniaku: wiernej kopii prawdziwego miejsca, którą można odtworzyć z krótkiego nagrania i kilku
-pomiarów. Powstaje w ten sposób droga w trzech krokach: zbieramy dane w rzeczywistości i budujemy z nich
-kopię, uczymy w niej model robota, a następnie przenosimy go z powrotem do rzeczywistości i tam
-sprawdzamy oraz poprawiamy. Każdy z tych kroków wymaga jednak prawdziwych danych, a dziś nikt nie wie,
-jak mało by wystarczyło.
-
-Celem rozprawy jest opracowanie metody, która zmniejsza ilość prawdziwych danych potrzebnych na tej
-drodze. U jej podstaw leży jedno pytanie naukowe: ile wiedzy o rzeczywistości wnosi każda porcja prawdziwych danych w stosunku do jej kosztu, i kiedy kopia może je zastąpić. Metoda działa na każdym z trzech kroków. W pierwszym, zamiast nagrywać wszystko po równo, nagrywamy
-przede wszystkim te miejsca, które są ważne dla zadania, a o których kopia wie jeszcze za mało. W drugim,
-ponieważ kopia nigdy nie jest idealna, uczymy model tak, aby nie polegał na jej niepewnych fragmentach, a
-luki w kopii wypełnia program, który uczy się przewidywać, co wydarzy się dalej. W trzecim wybieramy tylko
-te nieliczne próby w rzeczywistości, które najwięcej mówią o tym, gdzie kopia i model jeszcze się mylą, i
-wykorzystujemy je do poprawienia obu. Metoda jest opracowywana i sprawdzana na nawigacji robotów mobilnych
-w budynkach, a następnie, bez zmian, na robotach, które przenoszą przedmioty. Badania są prowadzone
-przede wszystkim na publicznie dostępnych skanach prawdziwych budynków, a wyniki są potwierdzane na
-prawdziwym robocie.
-
-Spodziewanym efektem jest metoda, która pozwala nauczyć robota zadania przy dużo mniejszej ilości
-prawdziwych danych niż dotychczasowe podejścia; to, ile danych oszczędza, mierzymy w minutach pracy
-człowieka, w ten sam sposób dla każdego podejścia. Może to przyspieszyć i potanić wdrażanie robotów w
-magazynach, szpitalach i biurach. Opracowane oprogramowanie zostanie udostępnione publicznie.
+Sztuczna inteligencja coraz częściej wychodzi poza ekrany komputerów i trafia do robotów, które poruszają
+się po budynkach albo przenoszą przedmioty. Aby się tego nauczyć, roboty potrzebują ogromnej liczby
+przykładów, których zebranie w prawdziwym świecie jest powolne i kosztowne. Dlatego coraz częściej uczą się
+w symulacji, a w szczególności w cyfrowych bliźniakach, czyli wiernych wirtualnych kopiach prawdziwych
+miejsc, które można odtworzyć z krótkiego nagrania. Taka kopia nigdy nie jest jednak idealna i model, który
+w symulacji działa bardzo dobrze, w prawdziwym świecie często popełnia błędy, zwłaszcza w miejscach, których
+wcześniej nie widział. Celem rozprawy jest opracowanie metod, dzięki którym modele uczone w cyfrowych
+bliźniakach będą lepiej działać w rzeczywistości. Badania obejmą sprawdzenie, które cechy wirtualnej kopii
+są naprawdę ważne, nauczenie modeli pomijania różnic między kopią a rzeczywistością oraz dostosowanie
+modeli do rzeczywistości przy użyciu niewielu prawdziwych przykładów. Metody zostaną sprawdzone na
+nawigacji robotów mobilnych i na robotach przenoszących przedmioty. Oczekuje się, że pozwolą one w
+przyszłości szybciej i taniej uczyć roboty pracy w nowych miejscach, takich jak magazyny, szpitale czy
+biura.
 
 ## Abstract for general public
 
-Robots that learn a task from experience, for example moving around a building or handling objects, need
-a lot of that experience from the place where they will work, and collecting it in reality is slow and
-costly. That is why robots increasingly learn in a digital twin: a faithful copy of a real place that can
-be rebuilt from a short recording and a few measurements. This creates a path in three steps: we collect
-data in reality and build the copy from it, train the robot's model in the copy, and then transfer it back
-to reality, where we check and correct it. Each of these steps, however, needs real data, and today nobody
-knows how little would be enough.
-
-The goal of this dissertation is to develop a method that reduces the amount of real data this path needs.
-At its core lies one scientific question: how much each piece of real data tells us about reality relative to its cost, and when the copy can replace it. The method acts at each of the three steps. In the first, instead of recording everything evenly, we
-record mainly the places that matter for the task and about which the copy still knows too little. In the
-second, because the copy is never perfect, we train the model so that it does not rely on the copy's
-uncertain parts, and a program that learns to predict what happens next fills the gaps in the copy. In
-the third, we choose only the few trials in reality that tell the most about where the copy and the model
-are still wrong, and use them to correct both. The method is developed and tested on the navigation of
-mobile robots in buildings, and then, unchanged, on robots that handle objects. The research is carried
-out mainly on publicly available scans of real buildings, and the results are confirmed on a real robot.
-
-The expected result is a method that makes it possible to teach a robot a task with much less real data
-than existing approaches; how much data it saves is measured in minutes of a person's work, in the same
-way for every approach. This may make deploying robots in warehouses, hospitals and offices faster and
-cheaper. The software developed will be made publicly available.
+Artificial intelligence is increasingly moving beyond computer screens into robots that move around
+buildings or handle objects. To learn this, robots need a huge number of examples, which are slow and
+costly to collect in the real world. That is why they increasingly learn in simulation, and in particular
+in digital twins, that is, faithful virtual copies of real places that can be rebuilt from a short
+recording. Such a copy is never perfect, however, and a model that works very well in simulation often
+makes mistakes in the real world, especially in places it has not seen before. The goal of the
+dissertation is to develop methods that make models trained in digital twins work better in reality. The
+research will cover finding out which features of the virtual copy really matter, teaching models to
+ignore the differences between the copy and reality, and adapting models to reality using only a few real
+examples. The methods will be tested on the navigation of mobile robots and on robots that handle objects.
+They are expected to make it faster and cheaper in the future to teach robots to work in new places, such
+as warehouses, hospitals or offices.
 
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top). Both languages

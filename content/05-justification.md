@@ -1,47 +1,34 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Robots that learn a task from experience, such as moving around a building or handling objects, need a
-lot of that experience from the place where they will work, and collecting it in reality is slow,
-expensive and sometimes unsafe. Training in simulation avoids this cost but opens a **sim-to-real gap**: a
-model that works in a generic simulator often fails in the real place. **Digital twins** built from real
-data narrow this gap. Neural scene reconstruction turns a short video of a real scene into a
-photorealistic model of its geometry and appearance, and a few measurements give the physical properties
-that matter for the task. This gives the **real-to-sim-to-real loop**: acquire real data, build a twin,
-train the robot's model in it at scale, and transfer it back to reality, where a little more real data
-checks and corrects the twin and the model. Each part of the loop is an active research area, and twins
-built from a phone video already train navigation and manipulation models that work in reality.
+Deep learning has led to impressive results in computer vision and natural language processing, and it is
+now increasingly applied to physical AI: robots and other embodied systems that perceive and act in the
+real world, such as mobile robots navigating buildings or robotic arms manipulating objects. Unlike models
+trained on images or text, such models need very large amounts of interaction data, which is slow,
+expensive and sometimes unsafe to collect in the real world. Therefore, they are commonly trained in
+simulation. Recently, digital twins built from real data became a promising alternative to hand-made
+simulators: neural scene reconstruction methods, such as Neural Radiance Fields and 3D Gaussian Splatting,
+turn a short video of a real place into a photorealistic 3D model in which a robot can be trained at
+scale. This gives the real-to-sim-to-real loop: real data is transferred into a simulation, a model is
+trained there, and the model is transferred back to the real world.
 
-What remains open is **how much real data the loop needs, and how to need less of it**. In every existing
-pipeline the amount is fixed by hand: the scene is captured uniformly, training uses generic
-randomization, and real trials, if any at all, are chosen at random or by hand. To our knowledge, no
-navigation pipeline has a stage that corrects the twin with real trials, and none reports how success
-depends on the real data spent; in manipulation such accounting exists only at single points.
+However, the usefulness of this loop depends entirely on how well the trained models generalize. A model
+that performs very well in simulation often fails in reality, because a digital twin never reproduces the
+real world exactly: appearance, lighting, geometry and physical properties differ. Moreover, models often
+fail again in places or tasks that were not seen during training. This sim-to-real generalization gap
+remains one of the main obstacles for physical AI. The methods proposed so far, such as domain
+randomization, rely largely on hand-tuned heuristics, are typically evaluated on a single task and a few
+scenes, and do not explain which properties of the simulation and of the learned representations
+actually determine generalization to reality. Therefore, the dissertation aims at developing methods that
+improve the generalization of deep learning models trained in real-to-sim-to-real loops, with a particular
+focus on the digital twin itself, the representations learned in it, and the adaptation of models to
+reality with little real data.
 
-**Scientific problem and goal.** The underlying problem is scientific: learning under distribution shift
-when target-domain data can be bought at a cost at several points of a learning loop. The dissertation
-poses the real-to-sim-to-real loop as sequential experimental design over a real-data budget, values each
-real datum by its expected reduction of the twin-to-reality performance gap per unit cost, and derives
-when twin data can replace real data. The goal is **a method, grounded in this principle, that reduces
-the amount of real data** needed to teach a robot a task, with one mechanism per step: (1) **less
-capture**; (2) **better use of simulation**, training so that the twin's errors do not transfer;
-(3) **fewer real trials**, choosing those that correct twin and model most. The thesis is that the method
-needs at least two times less real data than the strongest existing real-to-sim-to-real approach.
-Operator minutes are only the evaluation measure. Indoor navigation is the main testbed; manipulation
-tests whether the same method carries over.
-
-**Why this topic, and why in this discipline.** The object is a data-efficient learning method (active
-learning, learning under distribution shift, uncertainty estimation, adaptation of pretrained models), not
-a particular robot, simulator or benchmark, which places it in *information and communication technology*.
-The student builds on existing open reconstruction pipelines, simulators, pretrained models and public
-datasets. Public scans of real buildings make it possible to count real data exactly without an own robot;
-trials on a small mobile robot validate, but do not decide, the conclusions. The topic fits the Department
-of Artificial Intelligence (K46), whose research groups include representation learning, and the training
-runs on the GPU infrastructure available to PWr researchers (WCSS, PLGrid).
-
-**Potential application areas:** faster and cheaper deployment of robots in new places, such as
-warehouses, hospitals, offices and inspection sites, with less time spent collecting data and supervising
-real trials; guidance on how much real data to collect for a twin; and, beyond robotics, any model trained
-on reconstructed or simulated data and used on real sensor data.
+The research is relevant to machine learning in general, as it concerns learning under distribution shift
+and the generalization of representations, and it could help to understand why models trained on
+synthetic data succeed or fail on real data. The results have potential applications in service and
+logistic robotics, where robots could be trained in a digital copy of a new warehouse, hospital or office
+and work there reliably, as well as in autonomous systems and any other domain where models are trained on
+simulated or reconstructed data and used on real sensor data.
 
 <!--
 Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):

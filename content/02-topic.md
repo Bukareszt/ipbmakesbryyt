@@ -1,22 +1,25 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-**PL:** Reprezentacje wewnętrzne jako miara i predyktor przenoszenia do świata rzeczywistego polityk agentów
-ucieleśnionych uczonych w cyfrowych bliźniakach z neuronowej rekonstrukcji scen, przy ograniczonym budżecie
-danych rzeczywistych
+**PL:** Uczenie polityk agentów ucieleśnionych w pętli rzeczywistość–symulacja–rzeczywistość przy
+ograniczonym budżecie danych rzeczywistych z wykorzystaniem cyfrowych bliźniaków z neuronowej rekonstrukcji
+scen
 
-**EN:** Internal representations as a measure and predictor of the real-world transfer of embodied policies
-learned in neural-reconstruction digital twins under a limited real-data budget
+**EN:** Learning embodied policies in the real-to-sim-to-real loop under a limited real-data budget with
+digital twins from neural scene reconstruction
 
-<!-- Wave 9 (issue #22), 2026-09-26: rewritten after the pivot to the representation-level thesis
-(research/pivot-decision.md, the binding decision). The title names the object (embodied policies learned in
-digital twins from neural scene reconstruction = 3D Gaussian Splatting), the method (internal representations
-of encoders and policies), the two roles of the representations (measure = RQ1, predictor = RQ2) and the
-setting that motivates it (limited real-data budget = RQ3). Navigation (primary) and manipulation (cross-task,
-RQ4) are left to §5/§7 to keep the title short. The topic does not have to be the final title (S11).
+<!-- Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md, binding;
+supersedes the wave-9 representation-level title "Internal representations as a measure and predictor of
+the real-world transfer ..."). The title names the object (the real-to-sim-to-real loop of embodied
+policies), the goal (a limited real-data budget = capture less, train robustly, collect few real rollouts:
+RQ1-RQ4) and the tool (digital twins from neural scene reconstruction = 3D Gaussian Splatting, existing
+pipelines). Representations and uncertainty are tools inside the methods (pivot v2), so they are left to
+§5/§7. Navigation (primary) and manipulation (cross-task) are also left to §5/§7 to keep the title short.
+The topic does not have to be the final title (SPEC §2).
 Alternatives for the supervisor:
-- EN "Measuring, localizing and predicting the twin-to-real gap of embodied policies from their internal
-  representations" / PL "Pomiar, lokalizacja i predykcja luki bliźniak–rzeczywistość polityk agentów
-  ucieleśnionych na podstawie ich reprezentacji wewnętrznych"
-- EN "Representation-level forecasting of real-world transfer for policies learned in digital twins of real
-  scenes" / PL "Prognozowanie przenoszenia do rzeczywistości polityk uczonych w cyfrowych bliźniakach scen
-  rzeczywistych na poziomie reprezentacji" -->
+- EN "Data-efficient real-to-sim-to-real transfer of embodied policies: capturing less, training robustly
+  on imperfect digital twins and collecting few real rollouts" / PL "Efektywny pod względem danych transfer
+  rzeczywistość–symulacja–rzeczywistość polityk agentów ucieleśnionych: mniej nagrań, odporny trening na
+  niedoskonałych cyfrowych bliźniakach i nieliczne próby rzeczywiste"
+- EN "Active allocation of real data in real-to-sim-to-real learning of embodied policies with neural
+  digital twins" / PL "Aktywna alokacja danych rzeczywistych w uczeniu polityk agentów ucieleśnionych w
+  pętli rzeczywistość–symulacja–rzeczywistość z neuronowymi cyfrowymi bliźniakami" -->

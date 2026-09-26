@@ -1,77 +1,78 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
-**Thesis.** How well embodied policies trained in neural-reconstruction digital twins transfer to the real
-world can be **measured, localized and predicted from their internal representations**, and this lets a
-limited real-data budget be spent where it matters. Navigation is the primary testbed; manipulation is the
-cross-task test. RQ1–RQ2 (H1–H2) are the core of the dissertation; RQ3–RQ4 (H3–H4) build on them.
+**Thesis.** The real data needed in a real-to-sim-to-real loop can be reduced substantially by
+**allocating it actively**: capture only what the policy needs to build the twin, train so that the policy
+is robust to what the twin got wrong, and collect only the few real rollouts that close the remaining gap.
+Reconstruction uncertainty and the policy's own representations guide all three steps. Testbeds:
+navigation (primary), manipulation (cross-task).
 
-**Setting.** A *twin* is a 3D Gaussian Splatting reconstruction of a real scene built from a short capture;
-the *capture budget* is the number of capture minutes (views). Evaluation tiers: **(A)** proxy reality on
-public scene datasets with real captures and reference scans (≥ 10 scenes, some held out), which decides the
-hypotheses; **(B)** public real-world datasets and published real evaluations with real outcomes;
-**(C)** real-robot trials, validation only. A *policy zoo* (≥ 200 navigation policies varying scene, capture
-budget, architecture and training data) supplies the population for RQ2–RQ4. Tests are one-sided,
-α = 0.05, bootstrapped over scenes, Holm-corrected within each hypothesis and pre-registered in the
-repository. All thresholds are design choices fixed in that pre-registration.
+**Tier A protocol (proxy reality).** On ≥ 10 public indoor scenes with dense real captures and reference
+scans (e.g. ScanNet++, some held out), a **high-fidelity reference built from the full capture plays
+"reality"**; a 3D Gaussian Splatting *twin* built from a subset of the real views is the training
+simulator. Real data is counted exactly: capture = real views given to the twin, real rollouts = episodes
+in the reference, summed in one operator-time cost at a fixed rate. SR = success rate in the reference.
+Tier A decides; tier B (public real-world data, published paired sim/real results) and tier C (real robot)
+only report agreement. Tests are one-sided, α = 0.05, bootstrapped over scenes and seeds, Holm-corrected
+within each hypothesis and pre-registered with all thresholds.
 
-**RQ1 (measure and localize).** Where inside frozen encoders and twin-trained policies does the
-twin-vs-real gap arise, and how does it depend on the capture budget?
-**H1.** On paired real and twin-rendered frames of the same pose, the representation gap (1 − linear CKA,
-and the drop of linear-probe accuracy) (a) is *concentrated*: the third of layers with the largest gap holds
-≥ 50% of the summed gap in ≥ 80% of scenes; (b) decreases monotonically with the capture budget (trend test
-over ≥ 4 budgets); (c) differs between ≥ 10 frozen encoders (Friedman test); and (d) the encoders'
-robustness ranking predicts their downstream twin→real success rate (SR) with Spearman ρ ≥ 0.6.
+**RQ1 (real → sim: capture less).** How little capture does a twin good enough for policy learning need,
+and can the task guide the capture?
+**H1.** Task-aware, uncertainty-guided capture (next views chosen where task-relevant regions have high
+reconstruction uncertainty) reaches the SR of uniform capture with ≥ 40% fewer views. *Decision:* on fitted
+capture–SR curves, C_task(τ₁) ≤ 0.6 · C_uniform(τ₁), and the upper 95% bound of C_task / C_recon
+(reconstruction-only view selection) is < 1; τ₁ = SR of uniform capture at its largest budget.
 
-**RQ2 (predict).** Can a twin-trained policy's real-world transfer and failures be forecast from its
-internals (hidden states, weights) without real rollouts?
-**H2.** (a) A predictor trained on the zoo (GNN over layers or weight-space metanetwork) predicts the
-twin→real SR gap on held-out scenes with ≥ 20% lower mean absolute error than the best of three baselines
-(twin SR alone, image fidelity PSNR/LPIPS, simulator-level predictivity); the lower 95% bound of the relative
-reduction must be > 0. (b) Hidden-state failure monitors calibrated conformally in the twin at 90% coverage
-keep coverage ≥ 85% on real data (ε = 5 pp).
+**RQ2 (in sim: train robustly on an imperfect twin).** How should a policy be trained to be robust to the
+twin's reconstruction errors?
+**H2.** Uncertainty-aware training (augmentation and sample weights from per-region reconstruction uncertainty
+and from the representation distance to a few real images) improves real transfer over
+uniform domain randomization at an equal capture budget. *Decision:* mean paired SR gain ≥ 10 pp on
+held-out scenes, lower 95% bound > 0, at each of ≥ 2 capture budgets.
 
-**RQ3 (use).** Can these measures and forecasts allocate a limited real-data budget: which twin data to
-weight, what to capture and which real rollouts to collect?
-**H3.** Forecast-guided weighting, capture and rollout selection reaches the target real SR τ with ≥ 30%
-less real data than uniform or random allocation (capture minutes + real rollouts, converted to one
-operator-time cost at a pre-registered rate): B_guided(τ) ≤
-0.7 · B_uniform(τ) on fitted budget–performance curves, with the upper 95% bound of the ratio < 1. τ is fixed
-in the pre-registration as the SR that uniform allocation reaches at the largest budget.
+**RQ3 (sim → real: collect few real rollouts).** Which few real rollouts close the remaining gap, and how
+should they correct the twin and the policy?
+**H3.** Real rollouts selected actively (by predicted gap or uncertainty) and used for twin and policy
+correction reach the target SR with ≥ 50% fewer rollouts than random selection. *Decision:*
+N_active(τ₃) ≤ 0.5 · N_random(τ₃) on fitted rollout–SR curves, upper 95% bound of the ratio < 1; τ₃ = SR
+of random selection at its largest budget.
 
-**RQ4 (generalize).** Do the gap measures and predictors transfer across tasks and simulator families?
-**H4.** (a) A predictor trained on the navigation zoo, applied without retraining to manipulation policies
-with published paired sim/real results (≥ 12 policy–task pairs), ranks them by real outcome with Spearman
-ρ ≥ 0.5. (b) Its rank correlation with real outcomes exceeds
-that of a generic simulator (Sim-vs-Real Correlation Coefficient, SRCC) and of a learned world-model
-evaluator (95% CI of each paired difference excludes 0).
+**RQ4 (whole loop: budget and generalization).** What real-data budget does the full loop need
+compared with real-only learning, and does it hold beyond navigation?
+**H4.** (a) The full loop (H1–H3 combined) reaches the target SR with ≤ 10% of the real data needed by
+real-only learning (trained directly in the reference, every interaction counted as real data).
+*Decision:* B_loop(τ₄) ≤ 0.1 · B_real(τ₄), upper 95% bound of the ratio < 0.2; τ₄ = SR of real-only
+learning at its largest budget. The budget curve ("exchange rate" of twin to real data) is also reported
+for a uniform loop and for a learned world model as the simulator. (b) With the pipeline and
+hyperparameters unchanged, on manipulation B_loop / B_real has an upper 95% bound < 1 and the H1–H3
+effects keep their sign.
 
-**Decision rule.** A hypothesis is supported when all its parts pass on tier A; tiers B and C report
-agreement and are not used to tune thresholds.
+**Decision rule.** A hypothesis holds when all its parts pass on tier A; a failed one is reported as a
+measured budget curve and does not block the next step, which has its own baseline.
 
-<!-- Wave 9 (issue #22), 2026-09-26: rewritten after the pivot (research/pivot-decision.md is binding:
-thesis, RQ1-RQ4 / H1-H4 numbering, thresholds rho >= 0.6, MAE -20%, epsilon = 5 pp, -30% real data,
-rho >= 0.5, tiers A/B/C, "all thresholds are design choices"). Operationalizations added here (CONFIRM
-supervisor; §9 must use the same wording):
-- "Concentrated" (H1a): top third of layers >= 50% of the summed gap in >= 80% of scenes. "Monotonic" (H1b):
-  one-sided trend test (e.g. Page / Jonckheere) over >= 4 capture budgets. "Differ" (H1c): Friedman test over
-  scenes with >= 10 frozen encoders (e.g. DINOv2, SigLIP, CLIP, VC-1-type, R3M-type, V-JEPA-type;
-  niches-models N4 suggests 8-10). Critical Spearman rho at one-sided alpha = 0.05 is about 0.64 for n = 8,
-  0.60 for n = 9 and 0.56 for n = 10, so rho >= 0.6 is only meaningful with >= 10 encoders.
-- Zoo size >= 200 is a design choice (novelty-options §3: "a few hundred to a few thousand small policies").
-- H2 baselines follow pivot-decision.md; "simulator-level predictivity" = SRCC-style rollout estimate in the
-  twin. Conformal level 90% is a design choice; epsilon = 5 pp is from pivot-decision.md. Real data for
-  H2b = tier B (real datasets) and tier A proxy reality (niches-eval N5).
-- H3 absorbs the former H1(b)/H4 budget curves (pivot-decision.md). "Real rollouts" on tier A = rollouts in
-  the reference scan. The former -10 pp/-15 pp non-inferiority margins and the "twin beats generic" claim
-  (crowded, novelty-synthesis.md) are dropped as hypotheses; twin-vs-generic can remain a sanity check in §9.
-- H4 manipulation zoo: ManiSkill3 twins, SIMPLER paired sim/real evaluations as labels (novelty-options §3;
-  exact checkpoints to be re-read from SIMPLER). World models only as a comparator (pivot scope).
-- Core RQ1-RQ2 (P1 NeurIPS 2027, P2 ICLR/CVPR 2028) vs. RQ3-RQ4 (P3) follows the paper plan in
-  pivot-decision.md; the core/extension label is our proposal for mid-term risk (CONFIRM supervisor).
-Review-2 (issue #24), 2026-09-26: (R2-F1) removed the visible "to be confirmed with the supervisor"
-(returned review-1 F5); (R2-F2) H4(a) is decided on manipulation policies that have published paired
-sim/real results (SIMPLER), because an own ManiSkill3 twin-trained zoo has no real outcomes; >= 12
-policy-task pairs because the one-sided alpha = 0.05 critical Spearman rho is about 0.50 at n = 12 (0.56 at
-n = 10), so rho >= 0.5 is only meaningful from n = 12 (reviewer calculation, standard tables); the exact set
-is re-read from SIMPLER in T6.1. (R2-F8) H3 real data summed in one cost unit (operator time), rate fixed in
-the pre-registration. Thresholds and numbering unchanged. -->
+<!-- Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md is
+binding: thesis sentence, RQ1-RQ4 / H1-H4 numbering and thresholds 40% less capture, +10 pp, 50% fewer
+rollouts, <= 10% of real-only data; tiers A/B/C; world models only as a comparator; no benchmark). Removed
+wave 9-10 content: representation-level thesis, layer-wise CKA/probing gap (old H1), policy zoo and
+transfer forecasting / conformal monitors (old H2), SIMPLER-based H4 ranking. Operationalizations added
+here (CONFIRM supervisor; §9, rewritten by another worker, must use the same wording):
+- All targets tau are defined from the baseline's own curve at its largest budget, so the ratios are
+  well-defined whatever absolute SR levels come out (same pattern as the wave 9-10 H3).
+- H1: second comparator "reconstruction-only view selection" (FisherRF-type Fisher information,
+  arXiv:2311.17874; GenNBV CVPR 2024) because active view selection itself is active (niches-data N1b
+  11/17/33/35); beating uniform alone would not show that the *task* signal matters. Pivot v2 only fixes
+  the uniform comparison (>= 40%); the recon-only margin (upper bound < 1) is our proposal.
+- H2: "at each of >= 2 capture budgets" and "paired over held-out scenes" are design choices. A standard
+  feature-alignment domain-adaptation baseline is reported in §9 but not in the decision (crowded,
+  crowdedness.md H2a).
+- H3: "real rollouts" on tier A = episodes in the reference. Correction = re-weighting / re-capture of the
+  twin regions where rollouts fail plus policy fine-tuning (details in §9).
+- H4(a): pivot fixes "at most 10%"; the extra "upper 95% bound < 0.2" guards against a lucky point estimate
+  (our proposal). Real-only learning in proxy reality = RL/imitation directly in the reference. World model
+  as simulator = comparator only, no training (pivot scope; research/world-models.md).
+- H4(b): pivot says "carries over to manipulation with the pipeline unchanged"; operationalized as ratio
+  upper bound < 1 plus same sign of H1-H3 effects. Manipulation proxy reality needs reconstructed tabletop
+  scenes (e.g. ManiSkill3-based); tier B uses published paired sim/real results (SIMPLER) for agreement.
+- Proxy-reality caveat: reference and twin share the reconstruction family, so the gap is smaller than in
+  reality; tier B/C check the direction of the effects (research/niches-eval.md N5, novelty-options §3).
+- The dropped wave-9 phrase "to be confirmed with the supervisor" stays out of the visible text
+  (review-1 F5, review-2 R2-F1). -->

@@ -1,55 +1,65 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
 The dissertation is carried out in **information and communication technology** (*informatyka techniczna i
-telekomunikacja*), in the area of machine learning. Its object is the **real-to-sim-to-real learning loop**
-of embodied policies with digital twins built by neural reconstruction of real scenes, and how to make this
-loop work with **less real data**. Building twins, simulators or benchmarks, control design and mechanical engineering are not
-the object of the research; the student uses existing tools and public data.
+telekomunikacja*), in the area of machine learning. Its object is the **real-to-sim-to-real learning
+loop** in general, task- and domain-agnostic: building a digital twin (appearance, geometry and, where
+relevant, physical parameters) from limited real data, learning a policy or model in it and transferring
+the result back to reality, and how to make this loop work with **less real data**. Building twins,
+simulators or benchmarks, control design and mechanical engineering are not the object of the research;
+the student uses existing tools and public data.
 
 **Key original contribution.** To our knowledge, the first treatment of the real data in the whole
-real-to-sim-to-real loop as **one budget to be allocated actively**, with a method for each step of the loop
-and measured real-data budget curves for navigation, where none have been published.
+real-to-sim-to-real loop as **one budget to be allocated actively**, with a method for each step of the
+loop and real-data budget curves measured with the same methods in two domains, robotic manipulation and
+visual navigation.
 
 Contributions to machine learning methodology:
 
-1. **Capture less (RQ1, H1).** A task-aware capture method that chooses which real views to record for a
-   twin from the reconstruction's uncertainty in the regions that matter for the policy, instead of for
-   image quality alone, and a test of how much capture it saves against uniform and reconstruction-only
-   view selection.
-2. **Train robustly on an imperfect twin (RQ2, H2).** An uncertainty-aware training method that turns
-   per-region reconstruction uncertainty and the representation distance to a small set of real images
-   into augmentation and sample weights, compared with uniform domain randomization at an equal capture
-   budget.
-3. **Collect few real rollouts (RQ3, H3).** An active selection method for real rollouts, driven by the
-   predicted twin-to-real gap and its uncertainty, together with a procedure that uses the selected
-   rollouts to correct both the twin and the policy, compared with random selection.
+1. **Capture less (RQ1, H1).** A task-aware capture method that chooses which real data to collect for a
+   twin (views for its appearance and geometry, interactions for its physical parameters) from the twin's
+   uncertainty in the parts that matter for the task, instead of for reconstruction quality alone, and a
+   test of how much capture it saves against uniform and task-blind selection.
+2. **Learn robustly in an imperfect twin (RQ2, H2).** An uncertainty-aware training method that turns the
+   twin's per-region and per-parameter uncertainty and the representation distance to a small set of real
+   samples into augmentation and sample weights, compared with uniform domain randomization at an equal
+   capture budget.
+3. **Transfer with few real data (RQ3, H3).** An active selection method for real-world trials or
+   interactions, driven by the predicted twin-to-real gap and its uncertainty, and a procedure
+   that uses them to correct both the twin and the learned model, compared with random selection.
 4. **Budget curves for the loop (RQ4, H4).** Budget–performance curves of the full loop that give the
    "exchange rate" between twin and real data (how much real data the loop needs, relative to learning from
-   real data only, to reach a given real success rate), compared with a uniform loop and a world model as the
-   simulator, and a test of whether the methods carry over unchanged to manipulation.
+   real data only, to reach a given real task performance), and a test of whether the methods hold
+   unchanged in both domains.
 
 Contributions in engineering terms (ITiT):
 
-5. **Evaluation protocol and software (supports all RQs).** A proxy-reality protocol on public scene
-   datasets that counts real data exactly without a robot (a laser-scan reference as "reality", a
-   low-budget twin from a separate capture as the simulator), and open-source code for the three methods
-   and the budget curves, built on existing twin pipelines and simulators. It tells practitioners roughly how much to record and
-   how many real trials to plan for a new site.
+5. **Evaluation protocol and software (supports all RQs).** A proxy-reality protocol on public data that
+   counts real data exactly without a robot (a reference from a separate, higher-fidelity source as
+   "reality", a low-budget twin from a separate capture as the simulator), applied in each domain, and
+   open-source code for the three methods and the budget curves, built on existing twin pipelines and
+   simulators. It tells practitioners roughly how much real data to collect for a new task or site.
 
 **Significance for the discipline.** Real target-domain data is the main cost of deploying learned
-systems, and models are increasingly trained on reconstructed or synthetic data and deployed on real sensor
-data. Methods that decide where real data is worth spending, and a measured estimate of how much of it a twin
-can replace, are relevant to active learning, learning under distribution shift and uncertainty estimation
-in general, beyond robotics.
+systems. Methods that decide where it is worth spending, and a measured estimate of how much of it a twin
+can replace, are relevant to active learning, learning under distribution shift and uncertainty
+estimation in general, beyond robotics.
 
 **Dissemination.** Results are planned for peer-reviewed conferences worth 200 points and assigned to ITiT
 on the ministerial list of 5.01.2024: NeurIPS, ICML and ICLR (machine learning) and CVPR (computer vision),
-with ICCV and ECCV for resubmissions, as in §3, §11 and §12. P1 (RQ1–RQ2, task-aware capture and first
-uncertainty-aware training results) targets NeurIPS 2027; P2 (RQ3, active real-rollout selection and twin
-correction) ICML 2028 or CVPR 2028; P3 (RQ4, budget law and manipulation) NeurIPS 2028, with ICLR 2029 as the
-fallback.
+with ICCV and ECCV for resubmissions. P1 (RQ1–RQ2, task-aware capture and first
+uncertainty-aware training results) targets NeurIPS 2027; P2 (RQ3, active selection of real data and twin
+correction) ICML 2028 or CVPR 2028; P3 (RQ4, budget curves in both domains) NeurIPS 2028, with ICLR 2029 as
+the fallback.
 
-<!-- Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md,
+<!-- Wave 13 (issue #28), 2026-09-26: generalized after pivot decision v3 (research/pivot-decision.md,
+top): object = the real-to-sim-to-real loop in general (task- and domain-agnostic); twin includes physical
+parameters (system identification); "real rollouts" -> "real-world trials or interactions"; "policy" ->
+"policy or model"; key contribution no longer "budget curves for navigation, where none have been
+published" but curves measured with the same methods in two equal-status domains (manipulation point
+comparisons exist: X-Sim, RialTo; review-3 §5). Items 1-4 still map one-to-one to RQ1-RQ4 / H1-H4; item
+4 "hold unchanged in both domains" = §7 H4(b). Papers P1-P3 and venues unchanged (v3); P3 wording "budget
+curves in both domains" replaces "budget law and manipulation" (R3-F11: a fitted curve is not a law). -->
+<!-- (history) Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md,
 binding). Items 1-4 map one-to-one to RQ1-RQ4 / H1-H4 (one method per loop step + budget law). Removed
 wave 9-10 content: representation-level thesis, gap localization, transfer forecasting from weights,
 policy zoo as a contribution, the public paired-frame benchmark (the student rejected benchmark building).

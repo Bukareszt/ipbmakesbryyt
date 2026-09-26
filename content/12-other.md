@@ -5,30 +5,30 @@
 | Year | Papers (planned submission, 200 points each) | Code | Grants | Mobility, events |
 |---|---|---|---|---|
 | 1 (2025/26) | — | — | — | — |
-| 2 (2026/27) | P1 (RQ1–RQ2, task-aware capture, first uncertainty-aware training results): NeurIPS 2027, May 2027 (§11) | Loop on tier A | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
-| 3 (2027/28) | P2 (RQ3, few real rollouts, twin correction): ICML or CVPR 2028; P3 (RQ4, budget of the full loop, manipulation): NeurIPS 2028 | Rollout selection | — | Mid-term; 3-month visit (sem. 6) |
+| 2 (2026/27) | P1 (RQ1–RQ2, task-aware capture, first H2 results): NeurIPS 2027, May 2027 (§11) | Loop on tier A | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
+| 3 (2027/28) | P2 (RQ3, few real data, twin correction): ICML or CVPR 2028; P3 (RQ4, budget of the full loop in both testbeds): NeurIPS 2028 | Trial selection | — | Mid-term; 3-month visit (sem. 6) |
 | 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Full release | — | Dissertation |
 
 P1–P3 are the linked core of the dissertation; P4 is optional.
 
 **Foreign research visit (candidate hosts, not yet contacted).** (1) Z. Kira's group, Georgia Tech:
-EmbodiedSplat [3]. (2) Multi-robot Systems Lab, Stanford University (M. Schwager): Gaussian-splatting scene
-models and navigation. A European host (Erasmus+ route) working on active reconstruction or sim-to-real
+EmbodiedSplat [5]. (2) Multi-robot Systems Lab, Stanford University (M. Schwager): Gaussian-splatting scene
+models. A European host (Erasmus+ route) working on active reconstruction or sim-to-real
 transfer, and a foreign co-author for P2, are sought with the supervisor in sem. 4.
 
 **Collaboration at PWr.** Robot validation is planned with the K29 *Denali* laboratory (Pioneer 3-DX,
-Jaguar 4x4, ROS 2); a written agreement is task T3.2 (Nov 2026).
+Jaguar 4x4, ROS 2) and, if available, a PWr manipulator; a written agreement is task T3.2 (Nov 2026).
 
 **Risks and mitigation** (semester affected).
-- *Task-aware capture gives no gain* (3–4): the measured capture–SR curves still answer RQ1, and Stages
+- *Task-aware capture gives no gain* (3–4): the measured capture–P curves still answer RQ1, and Stages
   II–III have their own baselines (§7).
-- *3DGS uncertainty is poorly calibrated* (3–4): two estimators and an ensemble fallback, checked against
-  the reference twin.
-- *Proxy reality is easier than reality* (4–7): twin and reference come from separate captures, a second
-  reference checks the sign, the proxy's own error is reported, and tier C checks the direction.
-- *Real-only learning is strong at small budgets* (6): gains saturate quickly in a known location [10];
+- *Twin uncertainty is poorly calibrated* (3–4): two estimators and an ensemble fallback, checked
+  against the reference.
+- *Proxy reality is easier than reality* (4–7): separate sources for twin and reference; tiers B and C
+  check the direction (§9).
+- *Real-only learning is strong at small budgets* (6): gains saturate quickly in a known location [12];
   H4 is reported as a full budget curve.
-- *Scooping* (3–6): twin-based robot learning moves fast [3–7, 11]; early preprints, monthly monitoring.
+- *Scooping* (3–6): twin-based robot learning moves fast [3–7, 13]; early preprints, monthly monitoring.
 - *Dataset licence or robot access* (3, 5): other public scans with reference geometry, own phone captures
   of PWr rooms; without a robot, tier C moves by a semester and hypotheses are still decided on tier A.
 - *Rejection at a top venue* (4–7): each paper has a resubmission path inside the 200-point set 2–4 months
@@ -39,6 +39,16 @@ part of the dissertation.
 
 **Ethics and data.** Own captures are anonymized (GDPR); public datasets are used under their licences.
 
+<!--
+Wave 13 (issue #29), 2026-09-26: pivot decision v3 (general, domain-agnostic real-to-sim-to-real; equal
+testbeds). Outputs table: P1-P3 venues unchanged; P2 "few real data", P3 "both testbeds"; "Rollout
+selection" -> "Trial selection". Host 2 no longer described as navigation work (only "Gaussian-splatting
+scene models", as verified at https://msl.stanford.edu/). PWr manipulator for tier C only "if available"
+(K29 Laboratorium Robotyki, availability UNVERIFIED). Risks: uncertainty calibration covers the physical
+posterior; proxy-reality risk names the shared physics engine in manipulation and tier B. Citations
+renumbered to the Wave 13 §6 list: EmbodiedSplat [3]->[5], Suomela [10]->[12], twin-based works
+[3-7, 11] -> [3-7, 13] (RialTo, SplatSim, EmbodiedSplat, Vid2Sim, GaussGym, CASHER).
+-->
 <!--
 Review-3 (issue #27), 2026-09-26: R3-F3 P2 = ICML or CVPR 2028 (§3 T5.3); P1 = first H2 results; R3-F1
 proxy-reality risk names the separate-capture reference and the second-reference sign check (§9).

@@ -1,54 +1,76 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
 **Thesis.** The real data needed in a real-to-sim-to-real loop can be reduced substantially by
-**allocating it actively**: capture only what the policy needs to build the twin, train so that the policy
-is robust to what the twin got wrong, and collect only the few real rollouts that close the remaining gap.
-Reconstruction uncertainty and the policy's own representations guide all three steps. Testbeds:
-navigation (primary), manipulation (cross-task).
+**allocating it actively**: collect only the data the task needs to build the twin, learn so that the
+policy or model is robust to what the twin got wrong, and collect only the few real-world data that close
+the remaining gap. The twin's uncertainty and the model's own representations guide all three steps.
+Testbeds (equal status, same settings): robotic manipulation and visual navigation.
 
-**Tier A protocol (proxy reality).** On ≥ 20 public indoor scenes (e.g. ScanNet++; 10 held out from all
-tuning), a **reference built from the laser scan and DSLR images plays "reality"**; a 3D Gaussian
-Splatting *twin* built from a subset of the separate phone capture is the training simulator, so twin and
-reference share neither images nor reconstruction method. Real data is counted exactly: capture = views
-given to the twin, real rollouts and demonstrations = episodes in the reference, summed in one
-operator-time cost at a fixed rate. SR = success rate in the reference. Tier A decides; tiers B (public
-real-world data) and C (real robot) only report agreement. Tests are one-sided, α = 0.05, bootstrapped over
-scenes and seeds, Holm-corrected within each hypothesis and pre-registered.
+**Tier A protocol (proxy reality).** In each testbed a **reference from a separate, higher-fidelity source
+plays "reality"**, and the *twin* (neural reconstruction plus system identification) is built from a
+subset of a separate, cheaper capture, so the two share no data. Navigation: ≥ 20 public indoor scenes (10
+held out), laser-scan and DSLR reference, twin from the phone capture. Manipulation: a physics simulator
+with held-out physical parameters and its own rendering, the weaker proxy, checked by tier B (published
+paired sim/real evaluations of real policies). Real data: capture = views and interaction samples given to
+the twin, real trials and demonstrations = episodes in the reference, summed in one operator-time cost.
+Metric P: task success rate in the reference. Tier A decides H1–H3 in both testbeds; tiers B and C (real
+robot) report agreement. Tests: one-sided, α = 0.05, scene/seed bootstrap, Holm-corrected per hypothesis,
+pre-registered.
 
-**RQ1 (real → sim: capture less).** How little capture does a twin good enough for policy learning need,
-and can the task guide the capture?
-**H1.** Task-aware, uncertainty-guided capture (next views chosen where task-relevant regions have high
-reconstruction uncertainty) reaches the SR of uniform capture with ≥ 40% fewer views. *Decision:* on fitted
-capture–SR curves, C_task(τ₁) ≤ 0.6 · C_uniform(τ₁), and the upper 95% bound of C_task / C_recon
-(reconstruction-only view selection) is < 1; τ₁ = SR of uniform capture at its largest budget.
+**RQ1 (real → sim: capture less).** How little real data does a useful twin need, and can the task guide
+it?
+**H1.** Task-aware, uncertainty-guided capture (next data where task-relevant parts of the twin are most
+uncertain) reaches the P of uniform capture with ≥ 40% less capture. *Decision:* on fitted capture–P
+curves, C_task(τ₁) ≤ 0.6 · C_uniform(τ₁), and the upper 95% bound of C_task / C_recon (task-blind
+uncertainty selection) is < 1; τ₁ = P of uniform capture at its largest budget.
 
-**RQ2 (in sim: train robustly on an imperfect twin).** How should a policy be trained to be robust to the
-twin's reconstruction errors?
-**H2.** Uncertainty-aware training (augmentation and sample weights from per-region reconstruction uncertainty
-and from the representation distance to a few held-out capture images) improves real transfer over
-uniform domain randomization at an equal capture budget. *Decision:* mean paired SR gain ≥ 10 pp on
-held-out scenes, lower 95% bound > 0, at each of ≥ 2 capture budgets.
+**RQ2 (in sim: learn robustly in an imperfect twin).** How should learning in the twin be made robust to
+its errors?
+**H2.** Uncertainty-aware training (augmentation and sample weights from the twin's uncertainty and from
+the representation distance to a few held-out real samples) improves transfer over uniform domain
+randomization at an equal capture budget. *Decision:* mean paired P gain ≥ 10 pp on held-out scenes, lower
+95% bound > 0, at each of ≥ 2 capture budgets.
 
-**RQ3 (sim → real: collect few real rollouts).** Which few real rollouts close the remaining gap, and how
-should they correct the twin and the policy?
-**H3.** Real rollouts selected actively (by predicted gap or uncertainty) and used for twin and policy
-correction reach the target SR with ≥ 50% fewer rollouts than random selection. *Decision:*
-N_active(τ₃) ≤ 0.5 · N_random(τ₃) on fitted rollout–SR curves, upper 95% bound of the ratio < 1; τ₃ = SR
-of random selection at its largest budget.
+**RQ3 (sim → real: few real data).** Which few real-world data close the remaining gap, and how should
+they correct twin and model?
+**H3.** Actively selected real trials (by predicted gap or uncertainty), used to correct twin and model,
+reach the target P with ≥ 50% fewer than random selection. *Decision:* N_active(τ₃) ≤ 0.5 · N_random(τ₃)
+on fitted trial–P curves, upper 95% bound of the ratio < 1; τ₃ = P of random selection at its largest
+budget.
 
-**RQ4 (whole loop: budget and generalization).** What real-data budget does the full loop need
-compared with real-only learning, and does it hold beyond navigation?
-**H4.** (a) The full loop (H1–H3 combined) reaches the target SR with ≤ 10% of the real data needed by
-real-only learning (imitation of demonstrations collected in the reference, same encoder and
-initialization). *Decision:* B_loop(τ₄) ≤ 0.1 · B_real(τ₄), upper 95% bound of the ratio < 0.2; τ₄ = SR of real-only
-learning at its largest budget. The curve is also reported for a uniform loop and for a world model
-as the simulator. (b) With the three allocation methods and their hyperparameters unchanged, on
-manipulation B_loop / B_real has an upper 95% bound < 1 and the H1–H3 effects keep their sign.
+**RQ4 (whole loop: budget and generality).** What real-data budget does the full loop need versus
+real-only learning, across domains?
+**H4.** (a) In each testbed the full loop (H1–H3) reaches the target P with ≤ 10% of the real data needed
+by real-only learning (imitation of demonstrations in the reference, same encoder and initialization).
+*Decision:* B_loop(τ₄) ≤ 0.1 · B_real(τ₄), upper 95% bound of the ratio < 0.2; τ₄ = P of real-only
+learning at its largest budget; also reported: a uniform loop and a world-model simulator. (b) This holds
+in both testbeds with the allocation methods and their hyperparameters unchanged, the H1–H3 effects keep
+their sign, and tier B agrees in direction.
 
-**Decision rule.** A hypothesis holds when all its parts pass on tier A; a failed one is reported as a
-measured budget curve and does not block the next step, which has its own baseline.
+**Decision rule.** A hypothesis holds when all its parts pass; a failed one is reported as a measured
+budget curve and does not block the next step.
 
-<!-- Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md is
+<!-- Wave 13 (issue #28), 2026-09-26: generalized after pivot decision v3 (research/pivot-decision.md,
+top; overrides v2 on scope). Loop structure, RQ1-RQ4 / H1-H4 numbering and thresholds unchanged (40% less
+capture, +10 pp, 50% fewer real trials, <= 10% of real-only data, bounds < 1 / > 0 / < 0.2). Changes:
+- Domain-agnostic wording: "policy or model", "real-world data / interactions / trials" instead of "real
+  rollouts", P = task success rate (SR) instead of navigation SR; manipulation and navigation equal status.
+- Twin = appearance + geometry (neural reconstruction) and physical/dynamic parameters (system
+  identification); capture counts views AND interaction samples used for identification (v3 "capture less
+  covers both kinds of real data"). H1 comparator "reconstruction-only view selection" generalized to
+  "task-blind uncertainty selection" (FisherRF-type for views, §9 gives the parameter-side analogue).
+- Tier A keeps the review-3 non-circular pattern in each domain. Navigation: ScanNet++ laser scan + DSLR
+  reference, twin from the iPhone stream (arXiv:2308.11417 abstract). Manipulation: coordinator decision
+  2026-09-26 (orca ask, task_4385733a766f): a physics simulator (ManiSkill3, §6 [8]) with held-out
+  ground-truth physical parameters and its own rendering as "reality", stated as the weaker proxy and
+  backed by tier B (SIMPLER, §6 [35], published paired sim/real evaluations of real policies). Tier A
+  decides H1-H3 in both testbeds; H4 needs tier A in both testbeds plus direction agreement with tier B.
+- H4(b) was "manipulation ratio upper bound < 1"; now "H4(a) holds in both testbeds, methods and
+  hyperparameters unchanged" (coordinator decision above; v3: "budget law holds across both domains").
+- "Held-out scenes" in H2 = held-out scenes or task instances in each testbed (§9 defines them).
+The dropped wave-9 phrase "to be confirmed with the supervisor" stays out of the visible text
+(review-1 F5, review-2 R2-F1). -->
+<!-- (history) Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md is
 binding: thesis sentence, RQ1-RQ4 / H1-H4 numbering and thresholds 40% less capture, +10 pp, 50% fewer
 rollouts, <= 10% of real-only data; tiers A/B/C; world models only as a comparator; no benchmark). Removed
 wave 9-10 content: representation-level thesis, layer-wise CKA/probing gap (old H1), policy zoo and

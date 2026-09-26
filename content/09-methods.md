@@ -1,99 +1,115 @@
 # §9 Planowane metody badawcze / Planned research methods (max 2 pages)
 
-The research follows the real-to-sim-to-real loop: real capture → twin → policy training in the twin →
-a few real rollouts → correction of the twin and the policy → deployment. Four stages (I–IV) match §3 and
-the research questions of §7: capture less (RQ1), train robustly on an imperfect twin (RQ2), collect few
-real rollouts (RQ3), and measure the budget of the whole loop (RQ4). For each stage we give the method,
-data, metric and success criterion. Twins are built with existing open-source 3D Gaussian Splatting (3DGS)
-[2] pipelines and simulators; the student develops neither a simulator nor a benchmark. Visual navigation is the
-primary task; manipulation is the cross-task test in Stage IV.
+The research follows the loop: real data → twin → learning in the twin → a few real trials → correction of
+the twin and the policy → deployment. Four stages (I–IV) match §3 and the research
+questions of §7: capture less (RQ1), learn robustly in an imperfect twin (RQ2), collect few real data
+(RQ3), and measure the budget of the whole loop (RQ4). The methods are domain-agnostic: they act on the
+twin's uncertainty, on task relevance measured in the twin and on learned representations. The twin has two
+parts: geometry and appearance, reconstructed with existing open-source 3D Gaussian Splatting (3DGS) [2]
+pipelines, and physical or dynamic parameters, identified from real interactions as a posterior
+(BayesSim-type [9]). No simulator or benchmark is developed. Robotic manipulation and visual navigation
+are equal testbeds with the same protocol.
 
-**Tier A protocol: proxy reality (decides the hypotheses).** The hypotheses are decided on public real
-scans, where real data can be counted. ScanNet++ [20] gives each scene a
-laser scan, DSLR images and a separate phone RGB-D stream. On ≥ 20 scenes (10 held out from all tuning),
-the **reference** is the laser-scan mesh textured from the DSLR images and rendered in Habitat [1] with a
-robot-camera model (height, field of view, noise); it plays "reality". The **training twin** is a 3DGS
-reconstruction from a subset of the phone stream, run in the simulator as a mesh (as in EmbodiedSplat [3])
-or with a 3DGS renderer (GaussGym [5]), chosen in T3.1. Twin and reference share neither images nor
-reconstruction method. The largest capture budget
-stays below the full stream. Every unit of real data is countable: *capture* = views selected from the
-phone pool, *real rollouts* and *real demonstrations* = episodes in the reference; both are summed in one
-operator-time cost at a pre-registered rate. The proxy's own error is reported (reference renders vs.
-held-out real images: PSNR, LPIPS, depth error); every hypothesis is re-checked for sign with a second
-reference (3DGS from all DSLR images), and tier C checks the conclusions on a robot. *Tier B:* public real-world datasets and published paired
-sim/real results (SIMPLER [35]). *Tier C (validation only):* ≥ 2 PWr rooms captured with a phone or RGB-D
-camera and a mobile robot (planned cooperation with the K29 "Denali" Autonomous Robots Laboratory,
-agreement in T3.2). *Compute:* WCSS Lem (NVIDIA H100) and PLGrid allocations (to be applied for).
-Tasks are image-goal and point-goal navigation with a pre-registered minimum geodesic distance, set in
-the T3.1 pilot so that SR stays below its ceiling; SPL is reported as well. Policies are small heads on
-frozen visual encoders, trained mainly by imitation of a shortest-path planner in the twin (PPO on a
-subset), which keeps the compute academic.
+**Tier A protocol: proxy reality (decides the hypotheses).** In each testbed, "reality" is a reference
+from a separate, higher-fidelity source, and the twin is built from a subset of a separate, cheaper
+capture, so twin and reference share no data. *Navigation:* ScanNet++ [22] gives each scene a laser scan,
+DSLR images and a separate phone RGB-D stream. On ≥ 20 scenes (10 held out from all tuning), the reference
+is the laser-scan mesh textured from the DSLR images and rendered in Habitat [1] with a robot-camera model;
+the twin is 3DGS from a subset of the phone stream, run as a mesh (as in EmbodiedSplat [5]) or with a 3DGS
+renderer (GaussGym [7]); its physical part is the robot's actuation noise. Tasks: image-goal and point-goal navigation with a minimum geodesic distance set in a pilot so
+that P stays below its ceiling. *Manipulation:* ManiSkill3 [8] tasks (≥ 20 task–object configurations, 10
+held out), where reality is the simulator with held-out ground-truth physical parameters (mass, friction,
+articulation) and its own rendering, and the twin is 3DGS from a subset of its views plus parameters
+identified from a few recorded interactions. Physics engine and object models are shared, so this is the
+weaker proxy (unmodelled dynamics are not tested); tier B checks it. *Both:* real data is counted exactly:
+capture = views and interaction samples given to the twin, real trials and demonstrations = episodes in
+the reference, summed in one operator-time cost at a pre-registered rate; the largest budget stays below
+the full capture. In navigation the proxy's error to held-out real images is reported (PSNR, LPIPS, depth)
+and each hypothesis is re-checked for sign with a second reference (3DGS from all DSLR images). *Tier B:* the twin must rank manipulation policies as published paired sim/real evaluations do (SIMPLER [34]).
+*Compute:* WCSS Lem (NVIDIA H100), PLGrid (to be applied for). Policies are small heads on frozen visual encoders, trained mainly by
+imitation of a privileged expert in the twin (shortest-path planner; motion-planning expert), with
+reinforcement learning on a subset. P = task success rate.
 
 **Stage I – task-aware capture (RQ1, H1; sem. 3–4).**
-- *Method:* per-region reconstruction uncertainty of the current twin (Fisher information [16] or a
-  Bayes' Rays-type [18] field, adapted to 3DGS) is weighted by **task relevance**: how often planner paths
-  on sampled start–goal pairs pass through the region (geometry only, no training), or, as a variant, how
-  much a pilot policy attends to it. The next views are chosen greedily where task-weighted uncertainty is
-  highest, in rounds, until the budget is spent. Candidates are limited to the recorded pool; capture time
-  is also estimated as a walking tour through the chosen viewpoints.
-- *Baselines:* uniform subsampling of the capture, reconstruction-only next-best-view (FisherRF-type
-  [16]) and risk-weighted view selection [19], at the same budget.
-- *Metric:* budget–success-rate (SR) curves on tier A, with ≥ 4 capture budgets; capture needed to reach
-  the SR that uniform capture reaches at the largest budget. Image fidelity (PSNR, LPIPS) is reported but
-  is not the target.
-- *Success criterion (H1):* ≥ 40% fewer views than uniform capture at equal SR, and fewer than
-  reconstruction-only selection (upper 95% bound of the ratio < 1), as in §7.
+- *Method:* the twin's uncertainty, per region (Fisher information [17] or a Bayes' Rays-type [19] field,
+  adapted to 3DGS) and per physical parameter (posterior spread), is weighted by **task relevance**
+  measured in the current twin without training: how often expert trajectories pass through a region, and
+  how much the expert's success changes across a parameter's posterior. The next views or interactions are
+  chosen greedily where task-weighted uncertainty is highest until the budget is spent.
+  Candidates come from the recorded pool; capture time is also estimated as a tour of the chosen views.
+- *Baselines:* uniform capture, task-blind uncertainty selection (FisherRF-type next-best-view [17];
+  ASID-type exploration for parameter accuracy [21]) and risk-weighted view selection [20], at the same
+  budget.
+- *Metric:* budget–P curves on tier A with ≥ 4 capture budgets per testbed; capture needed to reach the P
+  that uniform capture reaches at the largest budget.
+- *Success criterion (H1):* ≥ 40% less capture than uniform at equal P, and less than task-blind selection
+  (upper 95% bound of the ratio < 1), as in §7.
 
-**Stage II – uncertainty-aware training on an imperfect twin (RQ2, H2; sem. 4).**
-- *Method:* (a) augmentation whose strength follows per-region reconstruction uncertainty (appearance and
-  geometry perturbations where the twin is unsure, little where it is sure); (b) down-weighting twin
-  frames that lie far from a few real images in frozen DINOv2 [26] feature space (nearest-neighbour
-  distance). The real images are a held-out slice of the capture, not used to fit the twin, and count
-  towards the capture budget.
-- *Baselines:* uniform domain randomization [21] with tuned ranges, no randomization, and feature
-  alignment [24] as an extra comparator; all at the same capture budget.
-- *Metric and criterion (H2):* tier-A SR on held-out scenes, paired by scene; ≥ 10 pp higher SR than
-  uniform domain randomization at an equal capture budget (lower 95% bound > 0), at each of ≥ 2 budgets.
+**Stage II – uncertainty-aware learning in an imperfect twin (RQ2, H2; sem. 4).**
+- *Method:* (a) randomization whose strength follows the twin's uncertainty: appearance and geometry
+  perturbations per region, and physical parameters sampled from their identified posterior instead of
+  hand-set ranges; (b) down-weighting twin samples that lie far from a few real samples in frozen DINOv2
+  [27] feature space. The real samples are a held-out slice of the capture,
+  not used to fit the twin, and count towards the budget.
+- *Baselines:* uniform domain randomization of appearance [23] and dynamics [24] with tuned ranges, no
+  randomization, and feature alignment [26] as an extra comparator; all at the same capture budget.
+- *Metric and criterion (H2):* tier-A P on held-out scenes, paired by scene; ≥ 10 pp higher P than uniform
+  domain randomization at an equal capture budget (lower 95% bound > 0), at each of ≥ 2 budgets.
 
-**Stage III – few real rollouts and correction (RQ3, H3; end of sem. 4 – sem. 5).**
-- *Selection:* candidate real rollouts (start–goal pairs) are scored by the predicted twin-to-real gap:
-  disagreement of a small policy ensemble, plus the reconstruction uncertainty along the planned path. The
-  top-k are executed in reality (tier A: the reference twin).
-- *Use:* the rollouts (i) correct the twin, by re-capturing or re-weighting the regions where real and
-  twin observations disagree (photometric correction in the style of [36]; re-captured views count towards
-  the budget), and (ii) fine-tune the policy by co-training with the real rollouts [13]. Real SR is
-  estimated from few trials with prediction-powered inference [33, 34].
-- *Baselines:* random selection and uniform coverage of the same number of rollouts; related selection
-  rules [28–30] as comparators where they apply.
-- *Success criterion (H3):* the target SR is reached with ≥ 50% fewer real rollouts than random selection
+**Stage III – few real trials and correction (RQ3, H3; end of sem. 4 – sem. 5).**
+- *Selection:* candidate real trials (start–goal pairs, object configurations) are scored by the predicted
+  twin-to-real gap: disagreement of a small policy ensemble plus the twin's uncertainty along the planned
+  trajectory. The top-k are executed in reality (tier A: the reference).
+- *Use:* the trials (i) correct the twin, by re-capturing or re-weighting regions where real and twin
+  observations disagree (photometric correction as in [35]; re-captured views are counted) and by updating the physical-parameter posterior [9, 25]; and (ii) fine-tune the policy by
+  co-training with the real trials [15]. Real P is estimated from few trials with prediction-powered
+  inference [32, 33].
+- *Baselines:* random selection and uniform coverage of the same number of trials; selection rules
+  [29–31] where they apply.
+- *Success criterion (H3):* the target P is reached with ≥ 50% fewer real trials than random selection
   (upper 95% bound of the ratio < 1).
 
-**Stage IV – budget of the whole loop and cross-task test (RQ4, H4; sem. 6).**
-- *Budget curve:* total real data (capture + rollouts, one operator-time cost) against real SR for the full
-  loop (Stages I–III) and for **real-only learning**: imitation of planner demonstrations collected in the
-  reference, with the same frozen encoder and initialization, the data-efficient real-only recipe
-  (real-only PPO for completeness). The "exchange rate" is the ratio of the budgets that
-  reach the target SR; real-only scaling results [9, 10] give the expected curve shapes. The curve is also
-  reported for a uniform loop (no Stage I–III guidance) and for a released pretrained world model used as
-  the simulator (comparator only; not trained).
-- *Manipulation:* the three allocation methods, with hyperparameters unchanged, on public manipulation
-  scenes (ManiSkill3 [8]): the simulator's own rendering plays "reality" and a 3DGS twin from a subset of
-  its views is the training simulator. Physics is shared, so this tests the visual part of the loop, which
-  is stated as a limitation; the policy learner is the task's standard one. Published paired sim/real
-  results (SIMPLER [35]) check that the proxy ranks policies as reality does (tier B).
-- *Success criterion (H4):* the loop reaches the target SR with ≤ 10% of the real data needed by
-  real-only learning (upper 95% bound of the ratio < 0.2); on manipulation the ratio's upper bound
-  is < 1 and the H1–H3 effects keep their sign.
+**Stage IV – budget of the whole loop in both testbeds (RQ4, H4; sem. 6).**
+- *Budget curve:* total real data (capture + trials, one operator-time cost) against P for the full loop
+  (Stages I–III) and for **real-only learning**: imitation of expert demonstrations collected in the
+  reference with the same frozen encoder and initialization (real-only reinforcement learning also shown). The "exchange rate" is the ratio of the budgets that
+  reach the target P; real-only scaling results [11, 12] suggest the curve shapes. The curve is also
+  reported for a uniform loop and for a released pretrained world model as the simulator (not trained).
+- *Success criterion (H4):* with the three allocation methods and their hyperparameters unchanged (the
+  learner is each task's standard one), in each testbed the loop reaches the target P with ≤ 10% of the real data
+  needed by real-only learning (upper 95% bound of the ratio < 0.2), the H1–H3 effects keep their sign, and
+  tier B agrees in direction.
 
-**Tier C validation.** Two robot campaigns (sem. 5 and 7) in 2 PWr rooms: phone or RGB-D capture, twins,
-policies with uniform capture versus the loop, and the few selected real rollouts. About 8 robot-hours per
-campaign (3 policies × 2 rooms × 30 episodes at ~2 min each, plus 2 × 20 selected rollouts). Tier C is
-reported as agreement with tier A and is never used to tune thresholds.
+**Tier C validation.** Two robot campaigns (sem. 5 and 7) with own phone or RGB-D captures at PWr: a mobile
+robot in 2 rooms and, where access is agreed, a tabletop manipulator. Uniform capture versus the loop,
+plus the few selected trials; about 8 robot-hours per campaign (3 policies × 2 settings × 30 episodes at
+~2 min, plus 2 × 20 trials). Tier C reports agreement only and never tunes thresholds.
 
-**Statistics and reproducibility.** Tests follow §7. The protocol is pre-registered in the project repository
-before each stage, and changes are logged with reasons. Code and scripts are released where the dataset
-licences permit.
+**Statistics and reproducibility.** Tests follow §7; the protocol is pre-registered before each stage and
+changes are logged. Code is released where the dataset licences permit.
 
+<!--
+Wave 13 (issue #29), 2026-09-26: generalized for pivot decision v3 (research/pivot-decision.md) and the
+coordinator's agreed §7 protocol (msg_05231fbe3093): per-testbed tier A with a separate, higher-fidelity
+reference; navigation = ScanNet++ laser scan + DSLR reference vs. phone-stream twin; manipulation =
+ManiSkill3 scene with held-out ground-truth physical parameters vs. 3DGS twin from a subset of its views +
+parameters identified from a few interactions; tier B = published SIMPLER paired sim/real evaluations;
+one operator-time cost; metric P; H4 needs both testbeds + tier-B direction. Navigation is no longer
+"primary"; "rollouts" -> "trials"; the twin has a physical part (system identification, BayesSim-type
+posterior [9]); task relevance for physical parameters = sensitivity of the expert's success in the twin
+to the parameter's posterior (design choice, CONFIRM supervisor); ASID [21] as the task-blind
+identification baseline. Navigation's physical part = actuation-noise parameters of the robot model
+(design choice). Manipulation configuration count (>= 20, 10 held out) mirrors navigation (design choice).
+SIMPLER ranking check: SIMPLER's paired real evaluations of published policies (RT-1/Octo family on Google
+Robot and WidowX set-ups per the SIMPLER paper) are to be re-read before Stage IV. The ManiSkill3
+physical-parameter ranges are pre-registered in T3.1. Tier C manipulator: K29 Laboratorium Robotyki
+(UR3, FANUC LR Mate, ABB IRB 120; research/resources.md §1), availability UNVERIFIED, hence "where access
+is agreed". Refs renumbered to the Wave 13 §6 list: [1] Habitat, [2] 3DGS, [5] EmbodiedSplat, [7]
+GaussGym, [8] ManiSkill3, [9] BayesSim, [11] Lin, [12] Suomela, [15] Maddukuri, [17] FisherRF, [19] Bayes'
+Rays, [20] Liu et al., [21] ASID, [22] ScanNet++, [23] Tobin, [24] Peng, [25] SimOpt, [26] Cheng, [27]
+DINOv2, [29] MetaMVUC, [30] AMF, [31] Anwar, [32] PPI, [33] SureSim, [34] SIMPLER, [35] GaussTwin.
+Reference numbers in the older comments below are the OLD (review-3) numbers.
+-->
 <!--
 Wave 11 (issue #26), 2026-09-26: rewritten for pivot decision v2 (research/pivot-decision.md, binding).
 Stages follow the loop: I task-aware capture (H1, >= 40% less capture), II uncertainty-aware training

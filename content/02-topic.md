@@ -1,13 +1,29 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-**PL:** Uczenie polityk agentów ucieleśnionych w pętli rzeczywistość–symulacja–rzeczywistość przy
-ograniczonym budżecie danych rzeczywistych z wykorzystaniem cyfrowych bliźniaków z neuronowej rekonstrukcji
-scen
+**PL:** Aktywna alokacja ograniczonych danych rzeczywistych w pętli rzeczywistość–symulacja–rzeczywistość:
+budowa cyfrowych bliźniaków, uczenie w nich i przenoszenie wyników do rzeczywistości
 
-**EN:** Learning embodied policies in the real-to-sim-to-real loop under a limited real-data budget with
-digital twins from neural scene reconstruction
+**EN:** Active allocation of limited real data in the real-to-sim-to-real loop: building digital twins,
+learning in them and transferring the results back to reality
 
-<!-- Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md, binding;
+<!-- Wave 13 (issue #28), 2026-09-26: rewritten after pivot decision v3 (research/pivot-decision.md, top
+section, overrides v2 on scope): a GENERAL, task- and domain-agnostic real-to-sim-to-real methodology, not
+centred on navigation, autonomy or robot rollouts. The title names the object (the real-to-sim-to-real
+loop), the thesis (active allocation of limited real data) and the three steps of the loop (RQ1 build the
+twin with less capture, RQ2 learn robustly in it, RQ3 transfer back with few real-world data; RQ4 the whole
+budget). "Embodied policies", "neural scene reconstruction" and navigation were dropped from the title: the
+twin now covers appearance, geometry and physical/dynamic parameters, and the learned object is a "policy
+or model". Testbeds (manipulation and navigation, equal status) are named in §5/§7 only.
+Alternatives for the supervisor:
+- EN "Data-efficient real-to-sim-to-real learning: capturing less, learning robustly in imperfect digital
+  twins and transferring with few real-world data" / PL "Efektywne pod względem danych uczenie w pętli
+  rzeczywistość–symulacja–rzeczywistość: mniej danych do budowy bliźniaka, odporne uczenie w
+  niedoskonałym cyfrowym bliźniaku i transfer przy niewielu danych rzeczywistych"
+- EN "How much real data does a digital twin save? Active data allocation in real-to-sim-to-real
+  learning" / PL "Ile danych rzeczywistych oszczędza cyfrowy bliźniak? Aktywna alokacja danych w uczeniu
+  w pętli rzeczywistość–symulacja–rzeczywistość" -->
+
+<!-- (history) Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md, binding;
 supersedes the wave-9 representation-level title "Internal representations as a measure and predictor of
 the real-world transfer ..."). The title names the object (the real-to-sim-to-real loop of embodied
 policies), the goal (a limited real-data budget = capture less, train robustly, collect few real rollouts:

@@ -1,48 +1,60 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Modern machine learning is limited less by models than by **data in the target domain**. Embodied agents
-(mobile robots, manipulators) learn strong behaviour only from very large amounts of experience. In the
-real world such data is slow, expensive and sometimes risky to collect, so a policy is usually trained in
-simulation and then deployed on real sensor data, where it often fails (the **sim-to-real gap**).
+Modern machine learning is limited less by models than by **data in the target domain**. Systems that act
+in or measure the physical world, such as robot manipulators, mobile robots and other autonomous or
+perception systems, need large amounts of experience, and in the real world that data is slow, expensive
+and sometimes risky to collect. A policy or model is therefore often trained in simulation and then used
+on real data, where it often performs worse (the **sim-to-real gap**).
 
-**Digital twins built by neural scene reconstruction** (3D Gaussian Splatting, Neural Radiance Fields)
-turn a short real capture into a photorealistic model of the target scene, in which a policy can be trained
-at scale. This gives a **real-to-sim-to-real loop**: capture the real scene, build a twin, train the policy
-in the twin, run a few real trials, correct the twin and the policy, deploy. Building twins has quickly
-become routine, with dozens of papers a year and more than ten open-source twin simulators. What remains
-open is the **real data** the loop consumes. Each step spends it: the capture, the real data used to make
-training robust to what the twin got wrong, and the real trials used to check and correct the policy.
-Today these amounts are chosen by habit: the scene is recorded uniformly, the policy is trained with
-generic randomization, and real trials are picked at random or by hand. How much real data a twin
-actually saves, especially for navigation, has, to our knowledge, not been measured.
+**Digital twins** built from real data narrow this gap. Neural scene reconstruction (3D Gaussian
+Splatting, Neural Radiance Fields) turns a short real capture into a photorealistic model of the geometry
+and appearance of a scene, and system identification estimates its physical and dynamic parameters (masses,
+friction, actuation) from a few real interactions. This gives a **real-to-sim-to-real loop**: collect real
+data, build a twin, learn in the twin, check and correct with a little more real data, deploy. Building
+twins has quickly become routine, with dozens of papers a year and more than ten open-source twin
+simulators. What remains open is the **real data** the loop consumes. Each step spends it: the capture that
+builds the twin, the real data used to make learning robust to what the twin got wrong, and the real-world
+trials or interactions used to check and correct the result. Today these amounts are chosen by habit: data
+is collected uniformly, learning uses generic randomization, and real trials are picked at random or by
+hand. How much real data a twin actually saves has, to our knowledge, not been measured systematically
+across tasks.
 
 **What the dissertation proposes.** The real data needed by the loop can be reduced by **allocating it
-actively**: capture only what the policy needs to build the twin, train so that the policy is robust to
-the twin's errors, and collect only the few real rollouts that close the remaining gap. Two signals, both
-computed from data the loop already collects, guide these choices: the **uncertainty of the reconstruction** (where
-the twin is unreliable) and the **policy's own internal representations** (where twin and real inputs look
-different to the policy). The result is measured as a budget–performance curve: how much real data the loop
-needs to reach a given real success rate, compared with uniform allocation and with learning from real
-data only.
+actively**: collect only the data the task needs to build the twin, learn so that the result is robust to
+the twin's errors, and collect only the few real-world data or interactions that close the remaining gap.
+Two signals, both computed from data the loop already collects, guide these choices: the **uncertainty of
+the twin** (where its reconstruction or its identified parameters are unreliable) and the **learned
+model's own internal representations** (where twin and real inputs look different to it). The result is
+measured as a budget–performance curve: how much real data the loop needs to reach a given real task
+performance, compared with uniform allocation and with learning from real data only.
 
-**Why this topic, and why in this discipline.** The object is a data-efficient learning methodology
-(active learning, learning under distribution shift, uncertainty estimation), not a robot, a simulator or a
-benchmark, which places it in *information and communication technology*. The student uses existing twin
-pipelines, simulators and public datasets and does not develop new ones. **Visual navigation** is the
-primary testbed, because public scene datasets with dense real captures make it possible to count real
-data exactly without an own robot; **robotic manipulation** tests that the methods carry over to another
-task. Trials on a real robot (planned cooperation with a PWr robotics laboratory) validate, but do not
-decide, the conclusions. The topic fits the Department of Artificial Intelligence (K46), whose research
-groups include representation learning. The computation runs on the GPU infrastructure available to PWr
-researchers (WCSS, PLGrid).
+**Why this topic, and why in this discipline.** The object is a general, task- and domain-agnostic
+data-efficient learning methodology (active learning, learning under distribution shift, uncertainty
+estimation), not a particular robot, task, simulator or benchmark, which places it in *information and
+communication technology*. The student uses existing twin pipelines, simulators and public datasets and
+does not develop new ones. The methods are tested with the same settings on two testbeds of equal status,
+**robotic manipulation** and **visual navigation**, where public data make it possible to count real data
+exactly without an own robot. Trials on a real robot (planned cooperation with a PWr robotics laboratory)
+validate, but do not decide, the conclusions. The topic fits the Department of Artificial Intelligence
+(K46), whose research groups include representation learning. The computation runs on the GPU
+infrastructure available to PWr researchers (WCSS, PLGrid).
 
-**Potential application areas:** faster and cheaper deployment of learned robots in new buildings and
-workcells (service, assistive, warehouse and inspection robotics, flexible manipulation), with less time
-spent recording scenes and supervising real trials; guidance on how to record a site for a twin; and,
-beyond robotics, any system trained on reconstructed or synthetic data and deployed on real sensor data
-(industrial digital twins, perception for autonomous systems), where real data must be collected on a
-budget.
+**Potential application areas:** faster and cheaper deployment of learned systems in new places, such as
+robot workcells, warehouses, buildings and inspection sites, with less time spent collecting data and
+supervising real trials; guidance on how much real data to collect for a twin; and, beyond robotics, any
+model trained on reconstructed or simulated data and used on real sensor data (industrial digital twins,
+perception for autonomous systems), where real data must be collected on a budget.
 
+<!--
+Wave 13 (issue #28), 2026-09-26: generalized after pivot decision v3 (research/pivot-decision.md, top):
+domain-agnostic methodology; "policy" -> "policy or model"; "real rollouts/trials" -> "real-world data /
+interactions / trials"; the twin covers geometry and appearance (neural reconstruction) AND physical and
+dynamic parameters identified from real data (system identification; cf. §6 [22, 23, 27]: dynamics
+randomization, SimOpt, Phys2Real); manipulation and navigation are equal testbeds (no "primary"). The
+not-measured claim is now "not measured systematically across tasks" (manipulation point comparisons exist:
+X-Sim "10x less data collection time", RialTo; review-3 §5), hedged with "to our knowledge". Examples of
+physical parameters (masses, friction, actuation) are generic textbook examples, not claims about a work.
+-->
 <!--
 Review-3 (issue #27), 2026-09-26: R3-F4 the real images for the representation signal are a held-out slice
 of the capture (counted in its budget, §9 Stage II), so "without extra real data" became "from data the loop

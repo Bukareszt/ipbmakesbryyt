@@ -151,8 +151,22 @@ supervisor's agreement. The **Dean** approves after consulting the discipline di
 
 ## 5. Link to the mid-term evaluation (for planning)
 
-At the start of semester 5, the student submits the IPB, a written **autoreferat** on IPB progress, and a
-**15-minute presentation**. The committee has 3 members from the discipline, one of them external, and
-no supervisors. The result is positive or negative, and after a negative result the student can request
-a re-evaluation within 7 days. Write §3 so that the semester 1–4 outputs can be shown clearly at this
-review.
+The mid-term evaluation takes place in semester 5 (**November** for regular cohorts). A **negative result
+means removal** from the Doctoral School. You submit the IPB, an autoreferat of at most 5 pages, and give a
+15-minute presentation. The committee has 3 members from the discipline, 1 of them external, and it
+excludes the supervisor. The autoreferat restates each §3 task with its **% completion**, so every
+semester 1–4 task must be checkable.
+
+The committee scores 8 criteria (details in [research/benchmarks.md §2.1](research/benchmarks.md)). The IPB
+text itself must visibly satisfy these four:
+
+| Criterion | Where the IPB must satisfy it |
+|---|---|
+| (2) Is the submission date realistic? | §3 is honest and checkable, and §4 is 30.09.2029 |
+| (3) Are the hypotheses properly formulated? | §7: a thesis sentence plus operational hypotheses |
+| (4) Are the methods suitable? | §9 is organised by stage (method → data → metric → success criterion) |
+| (8) Is the plan international? | §3/§12: foreign co-authors, a summer school, a research visit abroad |
+
+Keep this file in sync with [research/benchmarks.md](research/benchmarks.md) (patterns and recommended
+edits), [research/resources.md](research/resources.md) (labs, compute, venue points, grants) and
+[research/references-check.md](research/references-check.md).

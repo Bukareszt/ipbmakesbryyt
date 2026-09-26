@@ -1,3 +1,41 @@
+# Decision v5 (student, 2026-09-26): the method uses VLA/VLM and world models, sim-first, fine-tuned in the twin
+
+**v5 overrides v4 on the method content. The goal, thesis and scope stay as in v4/v3:** one method that needs
+**less real data**; general real-to-sim-to-real; manipulation and navigation as equal testbeds.
+
+**Core idea.** Run everything in simulation. A **pretrained VLA policy** (open weights, e.g. OpenVLA, Octo,
+π0-family) is **fine-tuned in the digital twin**. A **world model** grounded in the twin, and a **VLM**, make
+the most of the twin, so that very little real data is needed.
+
+**Components (numbering kept):**
+- **C1 (real → twin: capture less).** A VLM identifies the task-relevant objects and regions from the
+  instruction and scene. Capture is guided to them by the twin's uncertainty. The twin is built by neural
+  reconstruction plus system identification.
+- **C2 (learn in the twin: sim-first fine-tuning).** The VLA is fine-tuned in the twin with RL and imitation
+  learning, using parameter-efficient methods such as LoRA. A **world model grounded in the twin** (trained
+  or adapted on twin data) generates additional variations and covers the regions where the twin is
+  uncertain. The VLM can serve as a success or reward judge in simulation. Training is uncertainty-aware.
+- **C3 (twin → real: few real data).** The twin, the world model and the VLA's own uncertainty predict where
+  sim and real disagree. Only those few real data or trials are collected, and they are used to correct the
+  twin and world model and to fine-tune the VLA.
+
+**Hypotheses.** H1–H4 keep their numbering and meaning. H4 (the thesis) compares the method with (a)
+real-only fine-tuning of the same VLA and (b) the strongest existing sim or twin fine-tuning pipeline for
+VLAs (verify which: e.g. RL fine-tuning of VLAs in simulation, SIMPLER-style twins). H2 also covers: "twin +
+world model" beats "twin only" at an equal real-data budget.
+
+**Novelty guardrail.** RL fine-tuning of VLAs in simulation and world-model-based VLA training are
+**crowded** (2025–2026). Do not claim either as new. Novelty = **the real-data budget of the whole loop**:
+task-aware capture for VLA fine-tuning, a twin-grounded world model to cover twin uncertainty, active
+selection of real data, and the measured ≥ 2× saving versus existing pipelines.
+
+**Feasibility.** Parameter-efficient fine-tuning of open ~7B VLAs on WCSS/PLGrid GPUs (verify the published
+compute requirements). Existing world-model checkpoints are adapted, not trained from scratch. Tier B
+SIMPLER provides real/sim paired evaluations of open VLAs, which fits this setup exactly.
+
+---
+(v4 below: goal, thesis and framing stay valid)
+
 # Decision v4 (student, 2026-09-26): the goal is ONE METHOD that needs LESS real data
 
 **v4 overrides v3/v2 on framing. Scope from v3 is unchanged:** general, domain-agnostic

@@ -32,9 +32,9 @@ and environments (GNM [21], ViNT [22]), and vision-language-action models map im
 actions, also for navigation [23, 24]; they still need data from the target place to work there. Learned
 world models predict future observations and can serve as simulators: navigation world models plan by
 imagining trajectories [25], and open world foundation models are post-trained per setup [26]. Recent
-work fine-tunes such models in a twin reconstructed from a phone capture and uses it to target real
-rollouts [27], or improves a world model with real rollouts [28]; each reports results at a fixed,
-hand-chosen amount of real data. Frozen visual encoders [29] make twin and real observations comparable,
+work fine-tunes a pretrained policy in a twin reconstructed from a phone capture and uses the twin to
+target real rollouts [27], or improves a world model with real rollouts [28]; each reports results at a
+fixed, hand-chosen amount of real data. Frozen visual encoders [29] make twin and real observations comparable,
 and prediction-powered inference [30] estimates real performance from many cheap predictions and a few
 real labels.
 

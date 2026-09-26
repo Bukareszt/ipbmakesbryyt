@@ -7,8 +7,8 @@ Systems (NeurIPS 2027)**. NeurIPS is peer-reviewed international conference proc
 **200 points** on the ministerial list (conference Lp. 87), assigned to the discipline *informatyka
 techniczna i telekomunikacja*. P1 reports the first two stages of the method for navigation models (stage 1
 and the first stage 2 results, RQ1–RQ2): capture of real data guided by the navigation task and by the
-twin's uncertainty (H1), and training of navigation models that follows the twin's uncertainty, with the
-twin extended by a learned world model (first H2 results). Both are evaluated on public scans of real
+twin's uncertainty (H1), and training of navigation models that follows the twin's uncertainty (first H2
+results). Both are evaluated on public scans of real
 buildings by the real data they save (task T4.2). If it is rejected, the revised paper goes to **CVPR
 2028** (expected deadline November 2027, also 200 points), and then to the next 200-point conference (§12).
 

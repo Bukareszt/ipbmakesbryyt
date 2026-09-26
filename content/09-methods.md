@@ -11,8 +11,10 @@ ScanNet++ [16] (10 held out from all tuning), "reality" is the laser-scan mesh t
 images and rendered in Habitat [1] with a robot-camera model. The twin is built from a subset of the
 separate phone capture of the same scene, so twin and "reality" share neither images nor reconstruction
 method; the largest capture budget stays below the full capture. Tasks are indoor goal-reaching
-navigation (e.g. image-goal and instruction-following), with a minimum path length set in a pilot so that
-P stays below its ceiling. Real data (captured views, real trials and demonstrations) is summed in one
+navigation (e.g. image-goal and point-goal; instruction-following where instructions are available), with
+a minimum path length set in a pilot so that P stays below its ceiling. "Reality" also has its own
+physical parameters (e.g. actuation noise), hidden from the method and learned only from counted real
+data; this physical gap is synthetic, and the robot checks it. Real data (captured views, real trials and demonstrations) is summed in one
 operator-time cost. The proxy's own error to held-out real images is reported, and every hypothesis is
 re-checked for sign with a second reference built from all DSLR images. P = success rate; path efficiency
 is also reported.
@@ -28,12 +30,12 @@ is also reported.
 - *Comparators:* uniform capture; task-blind and risk-weighted uncertainty selection [17, 19]; vision-
   language-guided reconstruction-quality selection [20].
 - *Criterion (H1):* budget–P curves (≥ 4 budgets, the same navigation learner trained in each twin);
-  ≥ 40% less capture than uniform at equal P, with the 95% bound of the ratio below 1.
+  ≥ 40% less capture (in views; operator time also reported) than uniform at equal P, with the 95% bound of the ratio below 1.
 
 **Stage 2 – training navigation models in the twin (RQ2, H2; sem. 4).**
 - *Method:* the navigation model is initialized from a pretrained foundation model (e.g. a general
   navigation model or a vision-language-action model [21–24]) and trained in the twin by imitation of
-  planner demonstrations and then by reinforcement learning, with parameter-efficient adaptation where the
+  planner demonstrations and then by reinforcement learning on a subset of scenes, with parameter-efficient adaptation where the
   model is large. Randomization strength follows the twin's uncertainty per region and per physical
   parameter, and twin samples far from a few real samples in a frozen-encoder space [29] are down-weighted;
   these real samples are held out from the capture and count towards its budget. A learned world model
@@ -56,8 +58,9 @@ is also reported.
   below 1).
 
 **Whole pipeline (RQ4, H4; sem. 6).** Budget curves (real data against P) of the whole method, of the
-strongest existing real-to-sim-to-real approach (uniform capture, uniform randomization, training in the
-twin and random or failure-driven real trials, with the same twin, learner and correction; e.g. [14, 27]),
+strongest existing real-to-sim-to-real approach, re-implemented for navigation and tuned with the same
+effort as the method (uniform capture, uniform randomization, training in the twin and random or
+failure-driven real trials, with the same reconstruction pipeline, learner and correction; e.g. [14, 27]),
 and of learning from real data only (imitation of real demonstrations, same initialization). The method's
 settings are fixed before this stage. *Criterion (H4):* ≥ 2× less real data than the existing approach at
 the target P, with the 95% bound of the ratio below 1, and the stage 1–3 effects keep their sign.

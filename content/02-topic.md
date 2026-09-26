@@ -1,7 +1,7 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
 **PL:** Uczenie modeli nawigacji robotów w cyfrowych bliźniakach przy mniejszej ilości danych
-rzeczywistych: metoda rzeczywistość–symulacja–rzeczywistość
+rzeczywistych: metoda typu rzeczywistość–symulacja–rzeczywistość
 
 **EN:** Learning robot navigation models in digital twins with less real data: a real-to-sim-to-real
 method

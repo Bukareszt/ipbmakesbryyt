@@ -16,8 +16,8 @@ the pipeline needs, and measuring how much it saves, is. The three stages are pa
 each tested at its own step:
 
 1. **Stage 1, real data → twin (RQ1, H1).** Capture of real data guided by what matters for the
-   navigation task and by where the twin is still uncertain, for both appearance and geometry and the
-   physical properties needed for navigation; compared with uniform and task-blind capture.
+   navigation task and by where the twin is still uncertain, for appearance, geometry and the physical
+   properties needed for navigation; compared with uniform and task-blind capture.
 2. **Stage 2, learning in the twin (RQ2, H2).** Training of navigation models that follows the twin's
    uncertainty, with the twin extended by a learned world model and the model initialized from pretrained
    foundation models; compared with uniform domain randomization.

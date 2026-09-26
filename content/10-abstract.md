@@ -12,7 +12,7 @@ nawigacji, a następnie przenosimy go z powrotem do rzeczywistości i tam sprawd
 z tych kroków wymaga jednak prawdziwych danych.
 
 Celem rozprawy jest opracowanie metody, która przejdzie tę drogę z dużo mniejszą ilością prawdziwych
-danych niż dotychczasowe podejścia. W pierwszym kroku zamiast nagrywać wszystko po równo, będziemy nagrywać
+danych niż dotychczasowe podejścia. W pierwszym kroku, zamiast nagrywać wszystko po równo, będziemy nagrywać
 przede wszystkim te miejsca, które są ważne dla poruszania się robota, a o których kopia wie jeszcze za
 mało. W drugim kroku, ponieważ kopia nigdy nie jest idealna, będziemy uczyć model tak, aby nie polegał na
 jej niepewnych fragmentach; pomogą w tym model świata, czyli program, który uczy się przewidywać, co
@@ -22,8 +22,8 @@ mylą, i wykorzystamy je do ich poprawienia. Badania będą prowadzone przede ws
 dostępnych skanach prawdziwych budynków, a wyniki zostaną potwierdzone na prawdziwym robocie.
 
 Spodziewanym efektem jest metoda, która pozwoli nauczyć robota poruszania się w nowym budynku przy dużo
-mniejszej ilości prawdziwych danych, oraz pomiar, ile prawdziwych danych oszczędza w porównaniu z
-dotychczasowymi podejściami. Może to przyspieszyć i potanić wdrażanie robotów mobilnych w magazynach,
+mniejszej ilości prawdziwych danych, oraz pomiar tego, ile prawdziwych danych pozwala ona zaoszczędzić w
+porównaniu z dotychczasowymi podejściami. Może to przyspieszyć i potanić wdrażanie robotów mobilnych w magazynach,
 szpitalach i biurach. Opracowane oprogramowanie zostanie udostępnione publicznie.
 
 ## Abstract for general public

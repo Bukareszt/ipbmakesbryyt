@@ -11,7 +11,7 @@ platform typically needs additional real-world data.
 **The sim-to-real gap.** Policies trained in simulation degrade on real hardware because of differences
 in appearance, geometry and dynamics [10, 11]. Kadian et al. [12] showed that simulation performance can
 be a poor predictor of real-world performance unless the simulator is carefully tuned, and introduced the
-Sim2Real Correlation Coefficient to measure how well it predicts. Truong et al. [13] found, surprisingly,
+Sim-vs-Real Correlation Coefficient (SRCC) to measure how well it predicts. Truong et al. [13] found, surprisingly,
 that lower-fidelity simulation with abstracted dynamics can transfer better for navigation. So *which*
 aspects of reality to model is itself an open research question.
 
@@ -24,13 +24,18 @@ adaptation methods [20] and progressive networks [21] reduce the amount of real 
 not remove the need for it.
 
 **Neural scene reconstruction and real-to-sim-to-real.** Neural Radiance Fields [22] and 3D Gaussian
-Splatting [23] produce photorealistic novel views from ordinary image captures, and 3DGS renders in real
-time. This allowed *digital-twin* simulation built from real data: NeRF2Real [24] trained vision-based
-bipedal skills inside a NeRF of the target scene, and RialTo [25] showed that a real-to-sim-to-real
-pipeline improves the robustness of manipulation policies with only a few real demonstrations. However,
-existing work mostly targets manipulation or single, static scenes. Mobile navigation adds four open
-problems: large and multi-room scenes; accurate collision geometry for sensor simulation; dynamic
-obstacles and people; and generalization to environments that were never captured.
+Splatting (3DGS) [23] produce photorealistic novel views from ordinary image captures, and 3DGS renders in
+real time. This allows *digital-twin* simulators built from real data: NeRF2Real [24] trained vision-guided
+bipedal skills inside a NeRF of the target scene, and RialTo [25] robustified manipulation policies with
+reinforcement learning in digital twins built from small amounts of real-world data. Since 2024 the idea
+has reached navigation. Gaussian-splatting simulators gave direct sim-to-real transfer of visual drone
+navigation policies [26–28]; VR-Robo [29] transferred RGB-only legged goal-reaching policies trained in a
+3DGS twin with mesh-based physics; Vid2Sim [30] built interactive urban simulators from monocular video and
+reported a 68.3% real-world success-rate gain over agents trained with prior simulators; and ReaDy-Go [31]
+added animated human avatars to train for moving obstacles. These systems are typically trained in one or a
+few captured scenes, and, to our knowledge, none measures how deployed performance depends on the amount of
+real data collected. Large multi-room scenes, accurate collision geometry and generalization to environments
+that were never captured also remain open.
 
 **Research gap.** There is no systematic study of the **trade-off between real-data budget and deployed
 navigation performance** in a real-to-sim-to-real pipeline. We also lack methods that (i) combine
@@ -63,4 +68,10 @@ addresses that gap.
 [22] B. Mildenhall et al., "NeRF: Representing Scenes as Neural Radiance Fields for View Synthesis," ECCV, 2020.
 [23] B. Kerbl et al., "3D Gaussian Splatting for Real-Time Radiance Field Rendering," ACM TOG (SIGGRAPH), 2023.
 [24] A. Byravan et al., "NeRF2Real: Sim2real Transfer of Vision-guided Bipedal Motion Skills using Neural Radiance Fields," ICRA, 2023.
-[25] M. Torne et al., "Reconciling Reality through Simulation: A Real-to-Sim-to-Real Approach for Robust Manipulation," RSS, 2024.
+[25] M. Torne Villasevil et al., "Reconciling Reality through Simulation: A Real-to-Sim-to-Real Approach for Robust Manipulation," RSS, 2024.
+[26] A. Quach et al., "Gaussian Splatting to Real World Flight Navigation Transfer with Liquid Networks," arXiv:2406.15149, 2024.
+[27] J. Low et al., "SOUS VIDE: Cooking Visual Drone Navigation Policies in a Gaussian Splatting Vacuum," IEEE RA-L, 2025.
+[28] Q. Chen et al., "GRaD-Nav: Efficiently Learning Visual Drone Navigation with Gaussian Radiance Fields and Differentiable Dynamics," IROS, 2025.
+[29] S. Zhu et al., "VR-Robo: A Real-to-Sim-to-Real Framework for Visual Robot Navigation and Locomotion," IEEE RA-L, 2025.
+[30] Z. Xie et al., "Vid2Sim: Realistic and Interactive Simulation from Video for Urban Navigation," CVPR, 2025.
+[31] S. Yoo et al., "ReaDy-Go: Real-to-Sim Dynamic 3D Gaussian Splatting Simulation for Environment-Specific Visual Navigation with Moving Obstacles," IEEE RA-L, 2026.

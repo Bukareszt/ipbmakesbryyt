@@ -1,3 +1,61 @@
+# Decision v7 (student, 2026-09-26): HOW TO REDUCE real data. General method; navigation is the main testbed, manipulation the generalization test
+
+**v7 overrides v6.** The dissertation is about **how to reduce the amount of real data**, not about measuring how
+much is needed. Budget curves and operator-minutes are only the evaluation of the method; they are not a
+contribution or a goal.
+
+**Goal (cel).** To develop a method that **reduces the amount of real data** needed to teach a robot a task
+through the real-to-sim-to-real loop.
+
+**Method: three reduction mechanisms, one per loop step**
+1. **Less capture.** Capture only what matters for the task and what is uncertain in the twin (H1).
+2. **Better use of simulation.** Train so that the twin's errors do not hurt, and fill gaps with a learned world
+   model (H2; the world model is an ablation).
+3. **Fewer real trials.** Choose the few real trials that correct the twin and the model the most (H3).
+
+H4, the thesis: the method as a whole reduces real data compared with the strongest existing
+real-to-sim-to-real approach.
+
+**Scope**
+- General real-to-sim-to-real. **Navigation** (indoor mobile robots) is the **main testbed**, and H1–H4 are
+  decided there.
+- **Manipulation** is the **generalization test**: the same method, unchanged, on ManiSkill3 with hidden
+  physics as the proxy reality, plus SIMPLER published sim/real results. There are no separate thresholds.
+- The title is general and mentions navigation and manipulation as examples.
+- The description stays at a general level. No checkpoint names in §2, §5, §7, §8 or §10.
+
+**Apply these deep-research recommendations** (reports/Uczenie nawigacji w cyfrowych bliźniakach.md):
+- **One unit.** Count all real effort in operator minutes (capture + demonstrations + on-robot trials with
+  resets).
+- **Budget grid.** Evaluate on a shared grid (e.g. 5/10/20/40/80 min). Define the target as a fraction of the
+  baseline's plateau.
+- **Pre-registered baselines per hypothesis:**
+  - H1: uniform capture; FisherRF-type selection (task-blind); risk/semantic-weighted selection.
+  - H2: uniform domain randomization; no domain randomization. Pre-register a difficulty regime where the
+    baseline reaches at most ~75% success.
+  - H3: random selection **and** a TwinRL-style failure-driven rule. The ≥50% threshold is decided against
+    random selection; against the failure-driven rule the claim is only "upper bound of the ratio < 1".
+    Precondition: a minimum sim-vs-real correlation (SRCC).
+  - H4: an assembled EmbodiedSplat-style capture/fine-tune pipeline plus RialTo/TwinRL-style real correction,
+    pre-registered and given the same budget.
+- **Tools.** Habitat-Sim/Lab + gsplat + COLMAP 4.x. Not Isaac Sim, which does not support A100/H100.
+- **Datasets.** ScanNet++ (the supervisor signs the licence; do not publish derived twins) plus MuSHRoom
+  (CC-BY-4.0) as a releasable set.
+- **Robot validation.** TurtleBot 4 Lite (~1.7k EUR, SzD Minigrant) or the K29 robots. Measure SRCC between
+  the proxy and the robot in 2 PWr rooms.
+- **Risks.** Proxy validity, the physics gap, the success ceiling and noise, static scenes only, scooping
+  (publish H1 early), and the ScanNet++ licence.
+- **Corrections.** Do not cite the RialTo "0/5/10/15 demos" ablation. Settle the ReaDy-Go venue
+  (T-RO vs RA-L) or cite it as arXiv.
+
+**Papers**
+- **P1:** NeurIPS 2027. Mechanism 1 (H1) in navigation.
+- **P2:** ICML 2028. Mechanisms 2–3 (H2, H3) in navigation, plus first manipulation results.
+- **P3:** NeurIPS 2028. The whole method (H4), with generalization to manipulation.
+
+---
+(earlier decisions below, for history)
+
 # Decision v6 (student, 2026-09-26): general description, navigation, pipeline real → twin → navigation models → real
 
 **v6 overrides v5/v4/v3 on level of detail and domain.** v5 was **too specific**. The IPB must describe, at a

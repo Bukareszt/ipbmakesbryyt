@@ -3,13 +3,12 @@
 The dissertation is carried out in **information and communication technology** (*informatyka techniczna i
 telekomunikacja*), in the area of machine learning. Its object is the **real-to-sim-to-real learning loop**
 of embodied policies with digital twins built by neural reconstruction of real scenes, and how to make this
-loop work with **less real data**. Visual navigation is the primary testbed and robotic manipulation the
-cross-task test. Building twins, simulators or benchmarks, control design and mechanical engineering are not
+loop work with **less real data**. Building twins, simulators or benchmarks, control design and mechanical engineering are not
 the object of the research; the student uses existing tools and public data.
 
 **Key original contribution.** To our knowledge, the first treatment of the real data in the whole
 real-to-sim-to-real loop as **one budget to be allocated actively**, with a method for each step of the loop
-and a measured budget law for navigation, where no real-data-budget curves have been published.
+and measured real-data budget curves for navigation, where none have been published.
 
 Contributions to machine learning methodology:
 
@@ -24,31 +23,30 @@ Contributions to machine learning methodology:
 3. **Collect few real rollouts (RQ3, H3).** An active selection method for real rollouts, driven by the
    predicted twin-to-real gap and its uncertainty, together with a procedure that uses the selected
    rollouts to correct both the twin and the policy, compared with random selection.
-4. **A budget law for the loop (RQ4, H4).** Budget–performance curves of the full loop that give the
+4. **Budget curves for the loop (RQ4, H4).** Budget–performance curves of the full loop that give the
    "exchange rate" between twin and real data (how much real data the loop needs, relative to learning from
-   real data only, to reach a given real success rate), compared with a uniform loop and a learned world
-   model used as the simulator, and a test of whether the loop carries over unchanged from navigation to
-   manipulation.
+   real data only, to reach a given real success rate), compared with a uniform loop and a world model as the
+   simulator, and a test of whether the methods carry over unchanged to manipulation.
 
 Contributions in engineering terms (ITiT):
 
 5. **Evaluation protocol and software (supports all RQs).** A proxy-reality protocol on public scene
-   datasets that counts real data exactly without a robot (a high-fidelity reference as "reality", a
-   low-budget twin as the simulator), and open-source code for the three methods and the budget curves,
-   built on existing twin pipelines and simulators. It tells a practitioner how much to record and how
-   many real trials to plan for a new site.
+   datasets that counts real data exactly without a robot (a laser-scan reference as "reality", a
+   low-budget twin from a separate capture as the simulator), and open-source code for the three methods
+   and the budget curves, built on existing twin pipelines and simulators. It tells practitioners roughly how much to record and
+   how many real trials to plan for a new site.
 
 **Significance for the discipline.** Real target-domain data is the main cost of deploying learned
 systems, and models are increasingly trained on reconstructed or synthetic data and deployed on real sensor
-data. Methods that decide where real data is worth spending, and a measured law of how much of it a twin
+data. Methods that decide where real data is worth spending, and a measured estimate of how much of it a twin
 can replace, are relevant to active learning, learning under distribution shift and uncertainty estimation
 in general, beyond robotics.
 
 **Dissemination.** Results are planned for peer-reviewed conferences worth 200 points and assigned to ITiT
-on the ministerial list of 5.01.2024: NeurIPS and ICLR (machine learning) and CVPR (computer vision), with
-ICML, ICCV and ECCV for resubmissions, as in §3, §11 and §12. P1 (RQ1–RQ2, task-aware capture and
-uncertainty-aware training) targets NeurIPS 2027; P2 (RQ3, active real-rollout selection and twin
-correction) ICLR or CVPR 2028; P3 (RQ4, budget law and manipulation) NeurIPS 2028, with ICLR 2029 as the
+on the ministerial list of 5.01.2024: NeurIPS, ICML and ICLR (machine learning) and CVPR (computer vision),
+with ICCV and ECCV for resubmissions, as in §3, §11 and §12. P1 (RQ1–RQ2, task-aware capture and first
+uncertainty-aware training results) targets NeurIPS 2027; P2 (RQ3, active real-rollout selection and twin
+correction) ICML 2028 or CVPR 2028; P3 (RQ4, budget law and manipulation) NeurIPS 2028, with ICLR 2029 as the
 fallback.
 
 <!-- Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md,
@@ -67,4 +65,7 @@ quality (niches-data N1). Item 3: active data collection in the twin setting is 
 1/2/0/3); closest: Active Fine-Tuning of Multi-Task Policies (arXiv:2410.05026).
 Venue list = coordinator decision, verified from the official 5.01.2024 xlsx (Lp: NeurIPS 87, ICML 847,
 ICLR 1674, CVPR 417, ICCV 442, ECCV 331). Paper-to-venue mapping = pivot-decision.md "Papers"
-(P3 fallback ICLR 2029 as in §3 T6.3, review-2 R2-F4). -->
+(P3 fallback ICLR 2029 as in §3 T6.3, review-2 R2-F4).
+Review-3 (issue #27), 2026-09-26: R3-F3 P2 = ICML 2028 or CVPR 2028 (ICLR 2028 dropped, §3 T5.3); P1 = H1 +
+first H2. R3-F11 "budget law" in the key contribution -> "budget curves" (a curve fitted on ~20 rooms is not
+a law); item 5 names the separate-capture reference (R3-F1) and says "estimate". -->

@@ -5,11 +5,15 @@
 Paper **P1** submitted for review to the main track of the **Conference on Neural Information Processing
 Systems (NeurIPS 2027)**. NeurIPS is peer-reviewed international conference proceedings worth
 **200 points** on the ministerial list (conference Lp. 87), assigned to the discipline *informatyka
-techniczna i telekomunikacja*. P1 reports Stages I–II (RQ1–RQ2): task-aware, uncertainty-guided capture of
-digital twins and uncertainty-aware training of policies on imperfect twins, evaluated by the real data
-they save (task T4.2). If it is rejected, the revised paper goes to **CVPR 2028** (expected deadline
+techniczna i telekomunikacja*. P1 reports Stage I and the first Stage II results (RQ1–RQ2): task-aware,
+uncertainty-guided capture of digital twins (H1) and uncertainty-aware training of policies on imperfect
+twins (first H2 results), evaluated by the real data they save (task T4.2). If it is rejected, the revised paper goes to **CVPR 2028** (expected deadline
 November 2027, also 200 points), and then to the next 200-point conference (§12).
 
+<!--
+Review-3 (issue #27), 2026-09-26: R3-F3 P1 = H1 + first H2 results, matching §3 T4.1 (H1 completed and
+first H2 by Apr 2027; H2 completed Jul 2027).
+-->
 <!--
 Wave 11 (issue #26), 2026-09-26: P1 content changed to pivot decision v2 (research/pivot-decision.md:
 "P1: NeurIPS 2027 (May 2027, §11). RQ1 + RQ2: task-aware capture and uncertainty-aware training"). The

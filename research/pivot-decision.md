@@ -59,7 +59,7 @@ compared with real-data-only learning, and does it hold beyond navigation?
 
 ## Papers (200-point ITiT conferences only)
 - **P1: NeurIPS 2027** (May 2027, §11). RQ1 + RQ2: task-aware capture and uncertainty-aware training.
-- **P2: ICLR 2028 or CVPR 2028** (semester 5). RQ3: active real-rollout selection and twin correction.
+- **P2: ICML 2028** (semester 5, ~Jan 2028; moved in review-3 so results exist before submission). RQ3: active real-rollout selection and twin correction.
 - **P3: NeurIPS 2028** (semester 6; fallback ICLR 2029). RQ4: full-loop budget law and manipulation.
 - **P4 (optional):** consolidation.
 

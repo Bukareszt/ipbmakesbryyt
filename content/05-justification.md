@@ -14,12 +14,12 @@ open is the **real data** the loop consumes. Each step spends it: the capture, t
 training robust to what the twin got wrong, and the real trials used to check and correct the policy.
 Today these amounts are chosen by habit: the scene is recorded uniformly, the policy is trained with
 generic randomization, and real trials are picked at random or by hand. How much real data a twin
-actually saves, especially for navigation, has not been measured.
+actually saves, especially for navigation, has, to our knowledge, not been measured.
 
 **What the dissertation proposes.** The real data needed by the loop can be reduced by **allocating it
 actively**: capture only what the policy needs to build the twin, train so that the policy is robust to
 the twin's errors, and collect only the few real rollouts that close the remaining gap. Two signals, both
-available without extra real data, guide these choices: the **uncertainty of the reconstruction** (where
+computed from data the loop already collects, guide these choices: the **uncertainty of the reconstruction** (where
 the twin is unreliable) and the **policy's own internal representations** (where twin and real inputs look
 different to the policy). The result is measured as a budget–performance curve: how much real data the loop
 needs to reach a given real success rate, compared with uniform allocation and with learning from real
@@ -43,6 +43,11 @@ beyond robotics, any system trained on reconstructed or synthetic data and deplo
 (industrial digital twins, perception for autonomous systems), where real data must be collected on a
 budget.
 
+<!--
+Review-3 (issue #27), 2026-09-26: R3-F4 the real images for the representation signal are a held-out slice
+of the capture (counted in its budget, §9 Stage II), so "without extra real data" became "from data the loop
+already collects". R3-F11 "to our knowledge" added to the not-measured claim.
+-->
 <!--
 Wave 11 (issue #25), 2026-09-26: rewritten after pivot decision v2 (research/pivot-decision.md, binding):
 object = the real-to-sim-to-real loop and using less real data; representations and uncertainty are tools,

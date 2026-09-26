@@ -5,8 +5,8 @@
 | Year | Papers (planned submission, 200 points each) | Code | Grants | Mobility, events |
 |---|---|---|---|---|
 | 1 (2025/26) | — | — | — | — |
-| 2 (2026/27) | P1 (RQ1–RQ2, task-aware capture, uncertainty-aware training): NeurIPS 2027, May 2027 (§11) | Loop on tier A | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
-| 3 (2027/28) | P2 (RQ3, few real rollouts, twin correction): CVPR or ICLR 2028; P3 (RQ4, budget of the full loop, manipulation): NeurIPS 2028 | Rollout selection | — | Mid-term; 3-month visit (sem. 6) |
+| 2 (2026/27) | P1 (RQ1–RQ2, task-aware capture, first uncertainty-aware training results): NeurIPS 2027, May 2027 (§11) | Loop on tier A | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
+| 3 (2027/28) | P2 (RQ3, few real rollouts, twin correction): ICML or CVPR 2028; P3 (RQ4, budget of the full loop, manipulation): NeurIPS 2028 | Rollout selection | — | Mid-term; 3-month visit (sem. 6) |
 | 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Full release | — | Dissertation |
 
 P1–P3 are the linked core of the dissertation; P4 is optional.
@@ -24,8 +24,8 @@ Jaguar 4x4, ROS 2); a written agreement is task T3.2 (Nov 2026).
   II–III have their own baselines (§7).
 - *3DGS uncertainty is poorly calibrated* (3–4): two estimators and an ensemble fallback, checked against
   the reference twin.
-- *Proxy reality is easier than reality* (4–7): the proxy's own error is reported; tier C checks the
-  direction of the effects.
+- *Proxy reality is easier than reality* (4–7): twin and reference come from separate captures, a second
+  reference checks the sign, the proxy's own error is reported, and tier C checks the direction.
 - *Real-only learning is strong at small budgets* (6): gains saturate quickly in a known location [10];
   H4 is reported as a full budget curve.
 - *Scooping* (3–6): twin-based robot learning moves fast [3–7, 11]; early preprints, monthly monitoring.
@@ -39,6 +39,10 @@ part of the dissertation.
 
 **Ethics and data.** Own captures are anonymized (GDPR); public datasets are used under their licences.
 
+<!--
+Review-3 (issue #27), 2026-09-26: R3-F3 P2 = ICML or CVPR 2028 (§3 T5.3); P1 = first H2 results; R3-F1
+proxy-reality risk names the separate-capture reference and the second-reference sign check (§9).
+-->
 <!--
 Wave 11 (issue #26), 2026-09-26: rewritten for pivot decision v2 (research/pivot-decision.md). Outputs
 table follows its paper plan (P1 NeurIPS 2027 RQ1+RQ2; P2 ICLR/CVPR 2028 RQ3; P3 NeurIPS 2028 RQ4, fallback

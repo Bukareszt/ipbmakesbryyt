@@ -1,22 +1,19 @@
 # §6 Zarys aktualnego stanu badań / State of the art (max 2 pages)
 
-**Real-to-sim-to-real with neural digital twins.** Simulators such as Habitat [1] made large-scale training
-of embodied agents possible, but a generic simulator is not the robot's scene. 3D Gaussian Splatting (3DGS) [2] now turns a short camera capture into a real-time,
+**Real-to-sim-to-real with neural digital twins.** Simulators such as Habitat [1] enable large-scale training of embodied agents, but not in the robot's own scene. 3D Gaussian Splatting (3DGS) [2] now turns a short camera capture into a real-time,
 photorealistic *digital twin* of that scene. Policies trained in such twins transfer to real robots in
-navigation (EmbodiedSplat [3], Vid2Sim [4], GaussGym [5]) and manipulation (RialTo [6], SplatSim [7]), and
+navigation and locomotion (EmbodiedSplat [3], Vid2Sim [4], GaussGym [5]) and manipulation (RialTo [6], SplatSim [7]), and
 GPU simulators ship twin environments (ManiSkill3 [8]). Building a twin is no longer the bottleneck; **real
-data** is: the capture that builds the twin and the real rollouts that correct the policy. Current systems
-fix this cost by hand. EmbodiedSplat uses a 20–30-minute phone capture
-per scene, and RialTo builds its twins from "small amounts of real-world data"; its ablation over 0–15 real
-demonstrations is the closest published analysis of a real-data budget.
+data** is: the capture that builds the twin and the real rollouts that correct the policy. Current systems fix this cost by hand: EmbodiedSplat uses a 20–30-minute phone capture
+per scene, and RialTo's ablation over 0–15 real demonstrations is the closest published analysis of a
+real-data budget.
 
 **How much real data does transfer need?** Real-only scaling studies relate performance to the number of real
 demonstrations in manipulation [9]; in navigation, diversity matters more than quantity and more data from
 a known location saturates quickly [10]. On the twin side, CASHER [11] reports
 performance that scales super-linearly with human effort, X-Sim [12] matches behaviour cloning with ten
 times less data-collection time, and sim-and-real co-training raises real success by 38% on average [13].
-Simulation can poorly predict real navigation results (Sim-vs-Real Correlation Coefficient,
-SRCC [14]), and lower-fidelity simulation can transfer better [15], so more capture is not automatically
+Simulation can poorly predict real navigation results [14], and lower-fidelity simulation can transfer better [15], so more capture is not automatically
 better. All of these report results at fixed or hand-chosen budgets. **We found no
 study that varies the capture budget of a twin as an experimental variable in navigation, or that fits
 real-data budget curves for the whole loop against real-only learning.**
@@ -24,36 +21,34 @@ real-data budget curves for the whole loop against real-only learning.**
 **Capturing less: active reconstruction and its uncertainty.** Active view selection chooses the images
 that improve a reconstruction most: FisherRF [16] maximizes the expected information gain on
 radiance-field parameters, GenNBV [17] learns a next-best-view policy that generalizes across scenes, and
-Bayes' Rays [18] estimates a volumetric uncertainty field for a trained neural radiance field. Their
-objective is reconstruction quality or coverage, not what a downstream policy needs; task-aware capture
-for twins has only 0–2 Semantic Scholar hits per year (2023–2026). ScanNet++ [19] pairs real captures of rooms
-with reference laser scans, so capture budgets can be varied offline.
+Bayes' Rays [18] estimates a volumetric uncertainty field for a trained neural radiance field. Risk-aware
+view acquisition [19] weights FisherRF by safety-critical regions during exploration. Their objective is
+reconstruction quality, coverage or safe exploration, not the success of a policy trained in the twin;
+we found at most two task-aware capture papers a year in 2023–2026. ScanNet++ [20] pairs laser scans with DSLR
+images and a separate phone stream, so capture budgets can be varied offline.
 
-**Training robustly on an imperfect twin.** Domain randomization varies appearance [20] or dynamics [21]
-uniformly within hand-set ranges, and SimOpt [22] adapts the randomization distribution from a few real
-rollouts. Domain adaptation aligns sim and real features in co-training [23], and a mechanistic analysis
-finds that representation alignment is the main effect of co-training [24]. Frozen encoders such as DINOv2
-[25] allow twin and real frames to be compared, and Phys2Real [26] trains with uncertainty over physical
-parameters. Still, a twin's own **reconstruction
-uncertainty** is rarely used as a training signal (0–1 hits per year), and weighting twin samples by their
-representation distance to a small real set appeared in one paper in 2023–2026.
+**Training robustly on an imperfect twin.** Domain randomization varies appearance [21] or dynamics [22]
+uniformly within hand-set ranges, and SimOpt [23] adapts the randomization distribution from a few real
+rollouts. Domain adaptation aligns sim and real features in co-training [24], and a mechanistic analysis
+finds that representation alignment is the main effect of co-training [25]. Frozen encoders (DINOv2 [26]) make twin and real frames comparable, and Phys2Real [27] trains with uncertainty over physical
+parameters. Still, a twin's own **reconstruction uncertainty** is rarely used as a training signal, and weighting twin
+samples by representation distance to a small real set appeared in one paper in 2023–2026.
 
 **Collecting few real rollouts.** Active learning selects the most informative real samples for sim-to-real
-adaptation in grasping [27], AMF [28] chooses which tasks to demonstrate under a demonstration budget, and
-active experiment selection reduces the cost of real evaluation [29]. CUPID [30] and DataMIL [31] select
-training data by its influence on closed-loop success. Prediction-powered inference [32] combines many
-cheap predictions with a few labels, SureSim [33] applies it to simulated and real trials, and SIMPLER
-[34] shows that simulated evaluation of manipulation policies can track real evaluation. GaussTwin [35]
-corrects a 3DGS twin from photometric error. These methods select demonstrations, tasks or trials; none selects
-the real rollouts that should correct a reconstructed twin and its policy.
+adaptation in grasping [28], AMF [29] chooses which tasks to demonstrate under a budget, and active
+experiment selection reduces the cost of real evaluation [30]. CUPID [31] and DataMIL [32] select
+training data by its influence on closed-loop success. Prediction-powered inference [33] combines many
+cheap predictions with a few labels, SureSim [34] applies it to simulated and real trials, and SIMPLER
+[35] shows that simulated evaluation of manipulation policies can track real evaluation. GaussTwin [36]
+corrects a 3DGS twin from photometric error. They select demonstrations, tasks or trials, not the real rollouts
+that should correct a reconstructed twin and its policy.
 
 **Research gap.** Real-to-sim-to-real works, but its real-data cost is set by hand and spent uniformly.
 Missing are (i) task-aware, uncertainty-guided capture
-judged by downstream policy success rather than image quality (RQ1), (ii) training that uses the twin's
-reconstruction uncertainty and its representation distance to a small real set (RQ2), (iii) active
+judged by downstream policy success rather than image quality (RQ1), (ii) training driven by reconstruction
+uncertainty and representation distance to a small real set (RQ2), (iii) active
 selection of the few real rollouts that correct the twin and the policy (RQ3), and (iv) a total real-data
-budget curve of the full loop against real-only learning, in navigation and manipulation (RQ4). This
-dissertation addresses that gap.
+budget curve of the full loop against real-only learning, in navigation and manipulation (RQ4).
 
 ### References
 [1] M. Savva et al., "Habitat," ICCV, 2019.
@@ -74,23 +69,24 @@ dissertation addresses that gap.
 [16] W. Jiang et al., "FisherRF," ECCV, 2024.
 [17] X. Chen et al., "GenNBV," CVPR, 2024.
 [18] L. Goli et al., "Bayes' Rays," CVPR, 2024.
-[19] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
-[20] J. Tobin et al., "Domain Randomization…," IROS, 2017.
-[21] X. B. Peng et al., "Sim-to-Real Transfer… with Dynamics Randomization," ICRA, 2018.
-[22] Y. Chebotar et al., "Closing the Sim-to-Real Loop," ICRA, 2019.
-[23] S. Cheng et al., "Generalizable Domain Adaptation for Sim-and-Real…," NeurIPS, 2025.
-[24] Y. Lei et al., "A Mechanistic Analysis of Sim-and-Real Co-Training…," arXiv:2604.13645, 2026.
-[25] M. Oquab et al., "DINOv2," TMLR, 2024.
-[26] M. Wang et al., "Phys2Real," arXiv:2510.11689, 2025.
-[27] M. Gilles et al., "MetaMVUC," IEEE RA-L, 2025.
-[28] M. Bagatella et al., "Active Fine-Tuning of Multi-Task Policies," ICML, 2025.
-[29] A. Anwar et al., "Efficient Evaluation of Multi-Task Robot Policies…," arXiv:2502.09829, 2025.
-[30] C. Agia et al., "CUPID," arXiv:2506.19121, 2025.
-[31] S. Dass et al., "DataMIL," arXiv:2505.09603, 2025.
-[32] A. N. Angelopoulos et al., "Prediction-Powered Inference," Science, 2023.
-[33] A. Badithela et al., "Reliable and Scalable Robot Policy Evaluation…," arXiv:2510.04354, 2025.
-[34] X. Li et al., "Evaluating Real-World Robot Manipulation Policies…," CoRL, 2024.
-[35] Y. Cai et al., "GaussTwin," arXiv:2603.05108, 2026.
+[19] G. Liu et al., "Risk-Aware Active View Acquisition…," arXiv:2403.11396, 2024.
+[20] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
+[21] J. Tobin et al., "Domain Randomization…," IROS, 2017.
+[22] X. B. Peng et al., "Sim-to-Real Transfer… with Dynamics Randomization," ICRA, 2018.
+[23] Y. Chebotar et al., "Closing the Sim-to-Real Loop," ICRA, 2019.
+[24] S. Cheng et al., "Generalizable Domain Adaptation for Sim-and-Real…," NeurIPS, 2025.
+[25] Y. Lei et al., "A Mechanistic Analysis of Sim-and-Real Co-Training…," arXiv:2604.13645, 2026.
+[26] M. Oquab et al., "DINOv2," TMLR, 2024.
+[27] M. Wang et al., "Phys2Real," arXiv:2510.11689, 2025.
+[28] M. Gilles et al., "MetaMVUC," IEEE RA-L, 2025.
+[29] M. Bagatella et al., "Active Fine-Tuning of Multi-Task Policies," ICML, 2025.
+[30] A. Anwar et al., "Efficient Evaluation of Multi-Task Robot Policies…," arXiv:2502.09829, 2025.
+[31] C. Agia et al., "CUPID," arXiv:2506.19121, 2025.
+[32] S. Dass et al., "DataMIL," arXiv:2505.09603, 2025.
+[33] A. N. Angelopoulos et al., "Prediction-Powered Inference," Science, 2023.
+[34] A. Badithela et al., "Reliable and Scalable Robot Policy Evaluation…," arXiv:2510.04354, 2025.
+[35] X. Li et al., "Evaluating Real-World Robot Manipulation Policies…," CoRL, 2024.
+[36] Y. Cai et al., "GaussTwin," arXiv:2603.05108, 2026.
 
 <!--
 Wave 11 (issue #26), 2026-09-26: rewritten for pivot decision v2 (research/pivot-decision.md, binding:
@@ -135,6 +131,14 @@ arXiv API returned nothing (429):
 - [31] DataMIL arXiv:2505.09603 (Dass, Khaddaj, Engstrom, ...).
 - [35] GaussTwin arXiv:2603.05108 (Cai, Jansonnie, de Farias, ...): "visual correction" driven by
   photometric error (abstract); ICRA 2026 per arXiv comment (novelty-options.md), cited as arXiv.
+Review-3 (issue #27), 2026-09-26: R3-F8 inserted [19] Liu, Jiang, Lei, Pandey, Daniilidis, Motee,
+"Beyond Uncertainty: Risk-Aware Active View Acquisition for Safe Robot Navigation and 3D Scene
+Understanding with FisherRF", arXiv:2403.11396 (arXiv abs page read 2026-09-26; OpenAlex W4392972342,
+2024; no journal-ref, so cited as arXiv). It is the closest H1 competitor (niches-data.md N1 "closest
+papers"). Old [19]-[35] -> [20]-[36]; §9 renumbered in the same way. R3-F16 GaussGym = "learning
+locomotion from pixels" (S2 title/abstract), so "navigation and locomotion". R3-F17 S2 hit counts removed
+from the visible text except "at most two ... per year". ScanNet++ wording from the arXiv:2308.11417
+abstract. 36 refs.
 Hit counts in the text (0-2, 0-1, one paper) are Semantic Scholar counts from research/niches-data.md
 (N1 task-aware capture 2/2/0/2; N9 twin-sample weighting 0/0/1/0) and research/pivot-decision.md
 (reconstruction uncertainty as training signal 0/0/1/1). "We found no study" rests on these counts and on

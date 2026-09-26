@@ -5,15 +5,24 @@
 Paper **P1** submitted for review to the main track of the **Conference on Neural Information Processing
 Systems (NeurIPS 2027)**. NeurIPS is peer-reviewed international conference proceedings worth
 **200 points** on the ministerial list (conference Lp. 87), assigned to the discipline *informatyka
-techniczna i telekomunikacja*. P1 reports the first two stages of the method for navigation models (stage 1
-and the first stage 2 results, RQ1–RQ2): capture of real data guided by the navigation task and by the
-twin's uncertainty (H1), and training of navigation models that follows the twin's uncertainty (first H2
-results). Both are evaluated on public scans of real
-buildings by the real data they save (task T4.2). If it is rejected, the revised paper goes to **CVPR
-2028** (expected deadline November 2027, also 200 points), and then to the next 200-point conference (§12).
+techniczna i telekomunikacja*. P1 reports the first reduction mechanism of the method, **less capture**
+(RQ1, H1), in indoor robot navigation: capture of real data guided by the task and by the twin's
+uncertainty, evaluated on public scans of real buildings by the real data it saves, in operator minutes,
+against pre-registered baselines (task T4.2). Because this mechanism is the most exposed to being
+published first by others, its result is also released as an early preprint. If P1 is rejected, the
+revised paper goes to **CVPR 2028** (expected deadline November 2027, also 200 points), and then to the
+next 200-point conference (§12).
 
 <!--
-Wave 16-W (issue #33), 2026-09-26: pivot decision v6 (general description, navigation only). P1 content =
+Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top): "P1: NeurIPS 2027.
+Mechanism 1 (H1) in navigation." The first H2 results are no longer part of P1 (they go to P2, ICML 2028,
+with H3 and the first manipulation results). Early preprint of H1 = the report's recommendation 7 (H1 is
+the most threatened by scooping and the easiest to measure; the report suggests RA-L, but the venue rule of
+issue #12 allows only 200-point ITiT conferences, so the early output is a preprint, §3 T4.1). Date,
+venue, points, timing (H1 completed by Apr 2027, §3 T4.1) and fallback unchanged.
+-->
+<!--
+(history) Wave 16-W (issue #33), 2026-09-26: pivot decision v6 (general description, navigation only). P1 content =
 stage 1 + first stage 2 results for navigation models; model names, VLA fine-tuning and manipulation
 removed. Date, venue, points, H1 + first H2 timing (§3 T4.1) and fallback unchanged.
 -->

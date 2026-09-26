@@ -1,49 +1,70 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Mobile robots that move around buildings, such as service, delivery, inspection and assistive robots,
-rely increasingly on learned **navigation models**. Such models need a lot of experience from the place
-where they will work, and collecting it in reality is slow, expensive and sometimes unsafe. Training in
-simulation avoids this cost but opens a **sim-to-real gap**: a model that works in a generic simulator
-often fails in a real building.
+Robots that learn a task from experience, such as moving around a building or handling objects, need a
+lot of that experience from the place where they will work, and collecting it in reality is slow,
+expensive and sometimes unsafe. Training in simulation avoids this cost but opens a **sim-to-real gap**: a
+model that works in a generic simulator often fails in the real place. **Digital twins** built from real
+data narrow this gap. Neural scene reconstruction turns a short video of a real scene into a
+photorealistic model of its geometry and appearance, and a few measurements give the physical properties
+that matter for the task. This gives the **real-to-sim-to-real loop**: acquire real data, build a twin,
+train the robot's model in it at scale, and transfer it back to reality, where a little more real data
+checks and corrects the twin and the model. Each part of the loop is an active research area, and twins
+built from a phone video already train navigation and manipulation models that work in reality.
 
-**Digital twins** built from real data narrow this gap. Neural scene reconstruction turns a short video or
-depth capture of a real building into a photorealistic model of its geometry and appearance, and a few
-measurements give the physical properties that matter for navigation. Learned **world models** can
-generate further situations, and pretrained **foundation models** provide a strong starting point. This
-gives a **real-to-sim-to-real pipeline**: acquire real data, build a twin, train the navigation model in
-it at scale, and transfer it back to reality, where a little more real data checks and corrects the twin
-and the model. Each of these parts is an active research area. What remains open is the **real data** the
-whole pipeline consumes: the capture that builds the twin, the real samples that make training robust to
-what the twin got wrong, and the real trials that correct the result. Today these amounts are chosen by
-habit: data is captured uniformly, training uses generic randomization, and real trials are picked at
-random or by hand. How much real data a twin actually saves in navigation has, to our knowledge, not been
-measured systematically.
+What remains open is **how much real data the loop needs, and how to need less of it**. In every existing
+pipeline the amount is fixed by hand: the scene is captured uniformly, training uses generic
+randomization, and real trials, if any at all, are chosen at random or by hand. To our knowledge, no
+navigation pipeline has a stage that corrects the twin with real trials, and none reports how success
+depends on the real data spent; in manipulation such accounting exists only at single points.
 
-**Goal of the dissertation.** The goal is to develop **a method** for real-to-sim-to-real learning of
-navigation models that reaches a given real-world navigation performance with **significantly less real
-data** than existing approaches. The method covers the three stages of the pipeline: (1) deciding which
-real data is worth acquiring to build the twin, (2) training navigation models in the imperfect twin,
-extended with world models and foundation models, so that its errors do not transfer, and (3) choosing the
-few real data that best correct the twin and the model. The thesis is that the whole method needs at least
-two times less real data than the strongest existing real-to-sim-to-real approach.
+**Goal of the dissertation.** The goal is to develop **a method that reduces the amount of real data**
+needed to teach a robot a task through the real-to-sim-to-real loop. The method acts at every step of the
+loop with one reduction mechanism: (1) **less capture**: acquire only the real data that matters for the
+task and that the twin is still uncertain about; (2) **better use of simulation**: train so that the
+twin's errors do not hurt, and fill its gaps with a learned world model; (3) **fewer real trials**: choose
+the few real trials that correct the twin and the model the most. The thesis is that the method as a whole
+needs at least two times less real data than the strongest existing real-to-sim-to-real approach. The
+amount of real data, counted in minutes of operator work, is only how the method is evaluated; measuring
+it is not the goal. Indoor robot navigation is the main testbed, on which the hypotheses are decided;
+robotic manipulation tests whether the same method, unchanged, carries over to another task.
 
 **Why this topic, and why in this discipline.** The object is a data-efficient learning method (active
 learning, learning under distribution shift, uncertainty estimation, adaptation of pretrained models), not
 a particular robot, simulator or benchmark, which places it in *information and communication technology*.
 The student builds on existing open reconstruction pipelines, simulators, pretrained models and public
 datasets. Public scans of real buildings make it possible to count real data exactly without an own robot;
-trials on a real robot (planned cooperation with a PWr robotics laboratory) validate, but do not decide,
-the conclusions. The topic fits the Department of Artificial Intelligence (K46), whose research groups
-include representation learning, and the training runs on the GPU infrastructure available to PWr
-researchers (WCSS, PLGrid).
+trials on a small mobile robot validate, but do not decide, the conclusions. The topic fits the Department
+of Artificial Intelligence (K46), whose research groups include representation learning, and the training
+runs on the GPU infrastructure available to PWr researchers (WCSS, PLGrid).
 
-**Potential application areas:** faster and cheaper deployment of mobile robots in new buildings, such as
+**Potential application areas:** faster and cheaper deployment of robots in new places, such as
 warehouses, hospitals, offices and inspection sites, with less time spent collecting data and supervising
 real trials; guidance on how much real data to collect for a twin; and, beyond robotics, any model trained
 on reconstructed or simulated data and used on real sensor data.
 
 <!--
-Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):
+the goal is a method that REDUCES real data (three reduction mechanisms, one per loop step); budget
+curves and operator minutes are only the evaluation; navigation = main testbed, manipulation =
+generalization test; general level of detail, no model or checkpoint names. Sources of the claims:
+- "twins built from a phone video already train navigation and manipulation models that work in reality"
+  = §6 [12-18] (EmbodiedSplat, Vid2Sim, GaussGym, ReaDy-Go, RialTo, X-Sim, TwinRL), all in the
+  deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md, table "Pełne potoki").
+- "no navigation pipeline has a stage that corrects the twin with real trials, and none reports how
+  success depends on the real data spent; in manipulation such accounting exists only at single points"
+  = the report's lead ("Żadna praca nawigacyjna nie zmienia budżetu ... Żadna nie ma etapu korekty ...
+  Żadna nie publikuje krzywej"; manipulation: RialTo, X-Sim, R2R2R, TwinRL single points) and its
+  recommendation 1 (name this in §5-§7). Hedged with "to our knowledge" (R3-F11).
+- Thesis = §7 H4 (>= 2x less than the strongest existing real-to-sim-to-real approach; new in v4, CONFIRM
+  with the supervisor).
+- "minutes of operator work" = the report's one-unit recommendation (B = capture + demonstrations +
+  on-robot trials with resets).
+- "small mobile robot" = TurtleBot 4 Lite (SzD Minigrant) or K29 robots (§9, §12); the lab is not named
+  here because the cooperation is not agreed.
+The generic application examples are examples, not claims about a work.
+-->
+<!--
+(history) Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
 general description; navigation (indoor mobile robots) is the domain; pipeline real data -> twin ->
 navigation models (with world models and foundation models as families, no names) -> real. No model or
 checkpoint names, no VLA/TwinRL detail, no manipulation (v6 "Level of detail", "Domain"). Goal = v6 goal;

@@ -1,81 +1,144 @@
 # §9 Planowane metody badawcze / Planned research methods (max 2 pages)
 
-The dissertation develops **one method** with three stages: real data → digital twin → training of
-navigation models in the twin → transfer back to reality with a few real data that correct the twin and
-the model. Stages 1–3 are developed and tested one at a time (RQ1–RQ3); the whole pipeline is then tested
-against existing approaches (RQ4). Existing open-source tools are used throughout: no simulator, dataset
-or foundation model is built from scratch.
+The dissertation develops **one method** with three reduction mechanisms, one per step of the
+real-to-sim-to-real loop: less capture, better use of simulation, fewer real trials. Each mechanism is
+developed and tested at its own step (RQ1–RQ3); the whole method is then tested against the strongest
+existing approach (RQ4). Existing open tools that run on the data-centre GPUs of WCSS and PLGrid are used
+throughout (Habitat-Sim/Lab [1], an open 3DGS library, COLMAP); nothing is built from scratch.
 
-**Evaluation protocol: proxy reality (decides the hypotheses).** On ≥ 20 public indoor scenes of
-ScanNet++ [16] (10 held out from all tuning), "reality" is the laser-scan mesh textured from the DSLR
-images and rendered in Habitat [1] with a robot-camera model. The twin is built from a subset of the
-separate phone capture of the same scene, so twin and "reality" share neither images nor reconstruction
-method; the largest capture budget stays below the full capture. Tasks are indoor goal-reaching
-navigation (e.g. image-goal and point-goal; instruction-following where instructions are available), with
-a minimum path length set in a pilot so that P stays below its ceiling. "Reality" also has its own
-physical parameters (e.g. actuation noise), hidden from the method and learned only from counted real
-data; this physical gap is synthetic, and the robot checks it. Real data (captured views, real trials and demonstrations) is summed in one
-operator-time cost. The proxy's own error to held-out real images is reported, and every hypothesis is
-re-checked for sign with a second reference built from all DSLR images. P = success rate; path efficiency
-is also reported.
+**Real data: one unit, one grid.** All real effort is counted in **operator minutes** B = capture +
+demonstrations + on-robot trials with resets; raw counts (frames, trials) are reported. Every approach gets the same budget grid, e.g. B ∈ {5, 10, 20, 40, 80} min, the same
+initialization, compute in the twin and test episodes. Each comparison yields the budget at which an
+approach reaches the target P, with a scene-level bootstrap interval for the budget ratio. The target P
+is a fraction of the baseline's plateau (e.g. 90% of its P at the largest budget), so "40%" and "2×" stay
+well defined when the baseline's curve flattens.
 
-**Stage 1 – transfer of real data into a digital twin (RQ1, H1; sem. 3–4).**
-- *Method:* the twin's appearance and geometry come from neural scene reconstruction (3DGS-type [10]),
-  run as a mesh in the simulator (as in [11]) or rendered directly; its physical part (e.g. traversable
-  surfaces, collisions, the robot's actuation noise) is estimated from a few measurements as a posterior
-  [15]. The next views are chosen where the twin's uncertainty (e.g. Fisher information [17] or an
-  uncertainty field [18] adapted to 3DGS) is highest in the regions that matter for navigation: along
-  planner paths between likely goals and, optionally, where a pretrained vision-language model grounds
-  the task. Candidates come from the recorded capture; capture time is estimated as a walking tour.
-- *Comparators:* uniform capture; task-blind and risk-weighted uncertainty selection [17, 19]; vision-
-  language-guided reconstruction-quality selection [20].
-- *Criterion (H1):* budget–P curves (≥ 4 budgets, the same navigation learner trained in each twin);
-  ≥ 40% less capture (in views; operator time also reported) than uniform at equal P, with the 95% bound of the ratio below 1.
+**Proxy reality (decides H1–H4).** On ≥ 20 scenes of ScanNet++ [21] (10 held out; licence signed
+by the supervisor; derived twins not published) and the rooms of MuSHRoom [22] (open licence; twins
+releasable), "reality" is the laser-scan mesh textured from the DSLR
+images and rendered in Habitat with a robot-camera model, with its own physical parameters (e.g.
+actuation noise, friction) hidden from the method and learned only from counted real data; this physical
+gap is synthetic, and the robot checks it. The twin is built from a subset of the separate phone capture
+of the same scene, so twin and "reality" share neither images nor reconstruction method; the largest
+budget stays below the full capture. Tasks are goal-reaching navigation (image-goal and point-goal) in
+static indoor scenes, with the difficulty set in a pilot. The sim-vs-real correlation [4] between twin and
+"reality" is measured per scene and must exceed a pre-registered threshold for H3. The proxy's own error
+is reported, and every hypothesis is re-checked for sign with a second reference from all DSLR images.
+P = success rate; path efficiency is also reported.
 
-**Stage 2 – training navigation models in the twin (RQ2, H2; sem. 4).**
-- *Method:* the navigation model is initialized from a pretrained foundation model (e.g. a general
-  navigation model or a vision-language-action model [21–24]) and trained in the twin by imitation of
-  planner demonstrations and then by reinforcement learning on a subset of scenes, with parameter-efficient adaptation where the
-  model is large. Randomization strength follows the twin's uncertainty per region and per physical
-  parameter, and twin samples far from a few real samples in a frozen-encoder space [29] are down-weighted;
-  these real samples are held out from the capture and count towards its budget. A learned world model
-  (e.g. a video world model [25, 26]) adapted on twin data generates additional trajectories where the twin
-  is most uncertain.
-- *Comparators:* uniform randomization of appearance [5] and dynamics [6], and none; ablations without the
-  world model, without uncertainty weighting and without foundation-model initialization.
+**Mechanism 1 – less capture (RQ1, H1; sem. 3–4).**
+- *Method:* the twin's appearance and geometry come from 3DGS [11], run as a mesh in the simulator (as in
+  [12]); its physical part is identified from a few trajectories as a posterior [19]. The next views are
+  chosen where the twin's uncertainty (Fisher information [23] or an uncertainty field [24] adapted to
+  3DGS) is highest in the regions that matter for the task, e.g. along planner paths between likely goals;
+  one task-weighted information criterion covers both views and physical parameters. Candidates come from
+  the recorded capture, timed as a walking tour.
+- *Pre-registered baselines:* uniform capture; task-blind information-driven selection [23]; risk- and
+  semantics-weighted selection with a reconstruction objective [25, 26]; task-blind identification of the
+  physical part [20].
+- *Criterion (H1):* ≥ 40% less capture than uniform at the target P (same learner in each twin; reference
+  budget below the plateau), upper 95% bound of the ratio below 1; against task-blind selection only the
+  upper bound below 1 is claimed.
+
+**Mechanism 2 – better use of simulation (RQ2, H2; sem. 4).**
+- *Method:* the model is initialized from a pretrained foundation model (e.g. a general navigation model
+  or a vision-language-action model [27–29]) and trained in the twin by imitation of planner
+  demonstrations, then by reinforcement learning on a subset of scenes. Randomization strength follows
+  the twin's uncertainty per region and per physical parameter, and twin samples far from a few real
+  samples (held out from the capture and counted in its budget) in a frozen-encoder space [34] are
+  down-weighted. A learned world model (e.g. a video world model [30, 31]) adapted on twin data generates
+  additional trajectories where the twin is most uncertain; it is an ablation without its own threshold.
+- *Pre-registered baselines:* uniform randomization of appearance [6] and dynamics [7]; no randomization;
+  ablations without the world model, uncertainty weighting and foundation-model initialization.
 - *Criterion (H2):* mean paired gain in P over uniform randomization ≥ 10 pp on held-out scenes, lower 95%
-  bound > 0, at each of ≥ 2 capture budgets.
+  bound > 0, at each of ≥ 2 budgets, in a pre-registered difficulty regime where the baseline reaches at
+  most ~75% success, with the 150–300 episodes per arm needed to detect 10 pp.
 
-**Stage 3 – transfer back to reality with few real data (RQ3, H3; end of sem. 4 – sem. 5).**
+**Mechanism 3 – fewer real trials (RQ3, H3; end of sem. 4 – sem. 5).**
 - *Method:* candidate real trials are scored by the predicted twin-to-reality gap, combining the twin's
-  uncertainty along the planned path, disagreement between twin and world model, and the navigation
-  model's own uncertainty (ensemble spread). The top-ranked trials are run in reality; they correct the
-  twin (re-capture where real and twin observations disagree, counted in the budget; posterior update of
-  physical parameters [7, 15]) and the model (co-training with twin data [9]). Real P from few trials is
-  estimated with prediction-powered inference [30].
-- *Comparators:* random selection, uniform coverage and failure-prone selection from the twin alone [27].
-- *Criterion (H3):* the target P with ≥ 50% fewer trials than random selection (95% bound of the ratio
-  below 1).
+  uncertainty along the planned path, disagreement between twin and world model, and the model's own
+  uncertainty (ensemble spread). The top-ranked trials are run in reality; they correct the twin
+  (re-capture where real and twin observations disagree, counted in the budget; posterior update of the
+  physical parameters [8, 19]) and the model (co-training with twin data [10]). Real P from few trials is
+  estimated with prediction-powered inference [35].
+- *Pre-registered baselines:* random selection; uniform coverage; a failure-driven rule that runs the
+  configurations where the twin predicts failure (as in [18]).
+- *Criterion (H3):* the target P with ≥ 50% fewer trials than random selection (upper 95% bound of the
+  ratio below 1), several runs per arm; against the failure-driven rule only the upper bound below 1 is
+  claimed. Published selection rules save 20–40% of trials [33]; 50% is expected only where the gap
+  concentrates in few configurations, hence the sim-vs-real precondition above.
 
-**Whole pipeline (RQ4, H4; sem. 6).** Budget curves (real data against P) of the whole method, of the
-strongest existing real-to-sim-to-real approach, re-implemented for navigation and tuned with the same
-effort as the method (uniform capture, uniform randomization, training in the twin and random or
-failure-driven real trials, with the same reconstruction pipeline, learner and correction; e.g. [14, 27]),
-and of learning from real data only (imitation of real demonstrations, same initialization). The method's
-settings are fixed before this stage. *Criterion (H4):* ≥ 2× less real data than the existing approach at
-the target P, with the 95% bound of the ratio below 1, and the stage 1–3 effects keep their sign.
+**Whole method (RQ4, H4; sem. 6).** Budget curves of the whole method and of the strongest existing
+approach. No navigation pipeline with a real-trial step exists, so this baseline is
+*assembled and pre-registered*: capture and fine-tuning as in [12] plus real-trial correction as in
+[16, 18], with the same reconstruction pipeline, learner, compute and budget; a zero-shot twin and
+learning from real data only (imitation, same initialization) are reference curves; the method's settings are fixed beforehand. *Criterion (H4):* ≥ 2× less real
+data than the assembled baseline at the target P, upper 95% bound of the ratio below 1, and the mechanism 1–3 effects keep their sign; ≥ 30–50 episodes per point.
 
-**Real-robot validation.** Two campaigns (sem. 5 and 7) with own phone or RGB-D captures of 2 rooms at PWr
-and a mobile robot: uniform capture versus the method, ~8 robot-hours per campaign; they check the
-direction of the results and never tune thresholds.
+**Generalization to manipulation (sem. 5–6).** The same method, settings unchanged, runs on tabletop
+tasks in ManiSkill3 [2], where a scene with hidden ground-truth physical parameters and its own rendering
+is "reality" and the twin is reconstructed from a subset of its views and a few interactions; this weaker
+proxy is checked against published paired sim-and-real evaluations [5]. No separate thresholds: only
+budget curves and the sign of the H1–H4 effects.
 
-**Statistics and compute.** Targets are defined from each comparator's own curve at its largest budget.
-Tests are one-sided at α = 0.05 with a scene-level bootstrap and Holm correction, pre-registered before each
-stage. Training runs on WCSS and PLGrid GPUs (computing grant applied for in sem. 3); smaller models are
-used for development. Code is released where dataset and model licences permit.
+**Real-robot validation.** Two campaigns (sem. 5 and 7) in 2 rooms at PWr with a small mobile robot (a
+TurtleBot 4 Lite from an SzD Minigrant, or a robot of the K29 laboratory), ~8 robot-hours each: own
+captures, uniform capture versus the method, and the proxy-vs-robot sim-vs-real correlation (the proxy's
+validity); the robot checks the direction of the results, never the thresholds.
+
+**Statistics, compute, openness.** Tests are one-sided at α = 0.05 with a scene-level bootstrap and Holm
+correction; each stage is pre-registered (baselines, thresholds, difficulty regime, correlation
+threshold). Training runs on WCSS and PLGrid GPUs (grant in sem. 3); costs are measured
+in the pilot. Released: code, configurations,
+scene lists, seeds, pre-registrations and the MuSHRoom-based twins; no assets derived from ScanNet++.
 
 <!--
-Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top) and
+the deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md, "Rekomendacje" and the
+per-hypothesis table). Applied here:
+- One unit (operator minutes B = capture + demonstrations + on-robot trials with resets) and the shared
+  budget grid {5, 10, 20, 40, 80} min; target P = fraction of the baseline's plateau (e.g. 90% of its P at
+  the largest budget); bootstrap CI of the budget ratio by scene.
+- Pre-registered baselines per hypothesis: H1 uniform / FisherRF-type task-blind [23] / risk- or
+  semantics-weighted with a reconstruction objective [25, 26] (+ ASID-type task-blind identification [20]
+  for the physical part); H2 uniform DR [6, 7] / no DR / ablations; H3 random / uniform coverage /
+  TwinRL-style failure-driven rule (SR(s0) < tau, [18]); H4 assembled baseline = EmbodiedSplat-style
+  capture + fine-tuning [12] + RialTo/TwinRL-style real correction [16, 18], same budget, + zero-shot +
+  real-only reference curve.
+- H2 difficulty regime (baseline <= ~75%), 150-300 episodes per arm (report: "detekcja +10 pp przy bazie
+  ~60% (alpha = 0,05 jednostronnie, moc 80%) wymaga rzędu 150-300 epizodów na ramię"); world model = ablation.
+- H3: >= 50% decided vs random; vs the failure-driven rule only upper bound < 1; precondition = SRCC
+  twin-vs-proxy above a pre-registered threshold; honest note that selection rules save 20-40% (report;
+  SureSim [33] 20-25%).
+- H4: >= 30-50 episodes per point (report table).
+- Tools: Habitat-Sim/Lab + gsplat + COLMAP 4.x (report: Isaac Sim does not support A100/H100, so it is
+  excluded; the visible text says "run on the data-centre GPUs of WCSS and PLGrid" instead of naming
+  Isaac). gsplat and COLMAP are software, not cited as references.
+- Datasets: ScanNet++ [21] (licence signed by the supervisor; no derived twins published) + MuSHRoom [22]
+  (CC-BY-4.0, releasable; ~10 rooms per the report).
+- Robot: TurtleBot 4 Lite (~1.7k EUR, SzD Minigrant) or K29 robots; SRCC proxy-vs-robot in 2 PWr rooms.
+- Scope: static indoor scenes (dynamic people = future work, §12).
+- Manipulation = generalization test: ManiSkill3 [2] with hidden physics as "reality" (Wave 13 protocol,
+  coordinator decision task_4385733a766f) + SIMPLER [5] published paired sim/real results; no thresholds.
+- Compute: the report's estimate (160-320 3DGS fits <= ~300 GPU-h; policy fine-tuning 10^3-10^4 GPU-h) is
+  OUR ESTIMATE, kept out of the visible text; "measured in the pilot" instead.
+- Kept from v6/review-4: separate captures (R3-F1), second reference sign check, >= 20 scenes / 10 held
+  out (R3-F10), pilot-set difficulty (R3-F6), planner-path relevance (R3-F9), walking-tour time (R3-F5),
+  held-out real samples counted (R3-F4), re-capture counted (R3-F12), real-only = imitation (R3-F2), RL on
+  a subset of scenes (R4-F9), hidden physical parameters of "reality" (R4-F2), the assembled baseline with
+  equal effort (R4-F3), image-goal and point-goal tasks (R4-F5; instruction-following dropped for space).
+- "one task-weighted information criterion covers both views and physical parameters" = the report's
+  methodological suggestion (FisherRF + ASID/SPI-Active in one task-weighted criterion; "such a
+  combination was not found in any source"). Design choice, CONFIRM with the supervisor.
+- H1 unit: operator minutes now (v7 one unit); frames also reported (was "views", R4-F6).
+Refs follow the Wave 18 §6 list: [1] Habitat, [2] ManiSkill3, [4] Kadian (SRCC), [5] SIMPLER, [6] Tobin,
+[7] Peng, [8] Chebotar, [10] Maddukuri, [11] 3DGS, [12] EmbodiedSplat, [16] RialTo, [18] TwinRL,
+[19] BayesSim, [20] ASID, [21] ScanNet++, [22] MuSHRoom, [23] FisherRF, [24] Bayes' Rays, [25] Liu et al.
+risk-aware, [26] AREA3D, [27] GNM, [28] ViNT, [29] OpenVLA, [30] NWM, [31] Cosmos, [33] SureSim,
+[34] DINOv2, [35] PPI. Reference numbers in the older comments below are pre-Wave-18.
+-->
+<!--
+(history) Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
 "methods per stage, method families only, brief evaluation protocol"; "§9 may give at most 'e.g.'
 examples of method families"; navigation only. Stages renamed I-IV -> 1-3 + whole pipeline (v6 numbering).
 Kept from v5/review-3: the non-circular proxy reality (R3-F1: laser-scan + DSLR reference vs twin from the

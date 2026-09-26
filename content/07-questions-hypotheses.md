@@ -1,41 +1,58 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
-**Goal.** To develop a method for real-to-sim-to-real learning of **navigation models** for indoor mobile
-robots that reaches a given real-world navigation performance with **significantly less real data** than
-existing approaches. The method has three stages: (1) transfer of real-world data into a digital twin,
-(2) training navigation models in the twin, extended with learned world models and pretrained foundation
-models, and (3) transfer back to reality, where a small amount of real data corrects the twin and the model.
+**Goal.** To develop a method that **reduces the amount of real data** needed to teach a robot a task
+through the real-to-sim-to-real loop: real data → digital twin → training in the twin → transfer back to
+reality. The method has three reduction mechanisms, one per step of the loop: (1) **less capture**,
+(2) **better use of simulation**, (3) **fewer real trials**. Indoor robot navigation is the main testbed,
+on which H1–H4 are decided; robotic manipulation is the generalization test of the same method, unchanged.
 
-**Thesis.** Deciding at every stage which real data to acquire and where the twin can be trusted makes
-the whole real-to-sim-to-real pipeline for navigation at least twice as economical in real data as
-existing real-to-sim-to-real approaches.
+**Thesis.** Capturing only what the task needs and the twin lacks, training so that the twin's errors do
+not hurt, and running only the real trials that correct the twin and the model most makes the whole
+real-to-sim-to-real loop at least twice as economical in real data as the strongest existing
+real-to-sim-to-real approach.
 
-**How the hypotheses are decided.** P is the navigation success rate in "reality". Real data (capture
-for the twin and real navigation trials) is counted in one operator-time cost. The hypotheses are decided
-on a non-circular proxy reality built from public scans of real buildings, in which "reality" and the twin
-come from separate captures; a real robot validates the direction of the results. Tests, confidence
-bounds and scene counts are given in §9.
+**How the hypotheses are decided.** All real effort is counted in one unit, **operator minutes** (capture,
+demonstrations and on-robot trials with resets), and every approach is evaluated on the same budget grid.
+P is the task success rate in "reality"; the target P is defined as a fraction of the baseline's plateau.
+The hypotheses are decided on a non-circular proxy reality built from public scans of real buildings, in
+which "reality" and the twin come from separate captures; every baseline is pre-registered; a real robot
+validates the direction of the results and the validity of the proxy. Tests, bounds and counts are in §9.
 
-**RQ1 (stage 1: real data → twin).** Which real data is worth acquiring to build a twin for navigation?
-**H1.** Capture guided by what matters for the navigation task and by where the twin is uncertain reaches
-the P of uniform capture with **at least 40% less capture**.
+**RQ1 (step 1: real data → twin).** Which real data is worth acquiring to build the twin?
+**H1.** Capture guided by what matters for the task and by where the twin is uncertain reaches the P of
+uniform capture with **at least 40% less capture**.
 
-**RQ2 (stage 2: learning in the twin).** How should navigation models be trained in an imperfect twin?
-**H2.** At the same real-data budget, training that follows the twin's uncertainty, with the twin extended
-by a learned world model, gives a P **at least 10 percentage points higher** than training with uniform
-domain randomization.
+**RQ2 (step 2: learning in the twin).** How should the model be trained so that the twin's errors do not
+hurt? **H2.** At the same real-data budget, training that follows the twin's uncertainty gives a P
+**at least 10 percentage points higher** than uniform domain randomization, in a pre-registered difficulty
+regime where the baseline succeeds in at most about 75% of episodes; filling the twin's gaps with a
+learned world model is an ablation of this step.
 
-**RQ3 (stage 3: twin → reality).** Which few real data correct the twin and the model best?
+**RQ3 (step 3: twin → reality).** Which few real trials correct the twin and the model best?
 **H3.** Real trials selected by the predicted twin-to-reality gap reach the target P with **at least 50%
-fewer trials** than randomly selected trials.
+fewer trials** than randomly selected trials, and with fewer trials than a failure-driven rule, provided
+the twin predicts reality well enough (a minimum sim-vs-real correlation, §9).
 
-**RQ4 (the whole pipeline).** How much real data does the method need compared with the alternatives?
-**H4 (thesis).** The whole method reaches the target P with **at least 2× less real data** than the
-strongest existing real-to-sim-to-real approach; learning from real data only is reported for reference.
+**RQ4 (the whole loop).** How much real data does the method need compared with the strongest existing
+approach, and does it carry over to another task? **H4 (thesis).** The whole method reaches the target P
+with **at least 2× less real data** than the strongest existing real-to-sim-to-real approach, assembled
+and pre-registered with the same budget; learning from real data only is reported for reference. In
+manipulation, with the method unchanged, the effects of H1–H4 keep their sign.
 
 A hypothesis that fails is reported as a measured curve, which still answers its question.
 
-<!-- Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+<!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top)
+and the deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md). Goal = v7 goal
+(reduce real data; three mechanisms = H1-H3; H4 = thesis); navigation decides H1-H4, manipulation =
+generalization test with no separate thresholds (v7 "Scope"). Applied recommendations: one unit (operator
+minutes), shared budget grid, target as a fraction of the baseline's plateau, pre-registered baselines, H2
+difficulty regime (baseline <= ~75% success), H3 decided vs random at >= 50% and vs the failure-driven
+(TwinRL-style) rule only as "fewer" (= upper bound of the ratio < 1 in §9), the SRCC precondition for H3,
+H4 baseline assembled and pre-registered with the same budget. The world model is an ablation of step 2
+(v6/v7), so it is no longer inside the H2 sentence as a required part. Thresholds kept: 40%, +10 pp, 50%,
+2x (H4 new in v4, CONFIRM with the supervisor). The details (bounds, alpha, counts, episodes per arm,
+SRCC threshold) are in §9. -->
+<!-- (history) Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
 general description, navigation only, pipeline real -> twin -> navigation models -> real; "formulate them
 simply (one or two sentences each). Keep one clear quantitative threshold per hypothesis; move the details
 (tests, alpha, counts) to §9, briefly." RQ1-RQ4 / H1-H4 numbering and the mapping to stages 1-3 + whole

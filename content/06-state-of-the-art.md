@@ -1,83 +1,135 @@
 # §6 Zarys aktualnego stanu badań / State of the art (max 2 pages)
 
-**Simulation and sim-to-real transfer in navigation.** Navigation models for mobile robots are commonly
-trained in simulators such as Habitat [1], where large-scale reinforcement learning essentially solves
-point-goal navigation after billions of steps [2]. Transfer to the real world is the open part:
+**Simulation and sim-to-real transfer.** Robot models for navigation and manipulation are commonly trained
+in simulators such as Habitat [1] and ManiSkill3 [2], where large-scale reinforcement learning essentially
+solves point-goal navigation after billions of steps [3]. Transfer to the real world is the open part:
 simulation success does not always predict real success, which motivated the Sim-vs-Real Correlation
-Coefficient [3], and lower-fidelity simulation can even transfer better [4]. Domain randomization varies
-appearance [5] or dynamics [6] uniformly within hand-set ranges, and real rollouts can adapt the
-simulation parameter distribution [7]. Real data still matters: in navigation, more data from a known
-location saturates quickly [8], and co-training on simulated and real data raises real success [9].
+Coefficient in navigation (it rose from 0.18 to 0.84 once one collision artefact was removed [4]) and
+paired sim-and-real evaluations in manipulation [5]. Domain randomization varies appearance [6] or dynamics [7] uniformly within hand-set
+ranges, and a few real rollouts can adapt the simulation parameter distribution [8]. Real data still
+matters: in navigation, more data from a known location saturates quickly [9], and co-training on
+simulated and real data raises real success [10].
 
 **From real data to digital twins.** Neural scene reconstruction, above all 3D Gaussian Splatting (3DGS)
-[10], turns a short real capture into a photorealistic model of a scene. Twins built this way train
-navigation models that transfer: EmbodiedSplat [11] reconstructs rooms from a phone capture and fine-tunes
-image-goal navigation in Habitat, Vid2Sim [12] builds interactive simulators for urban navigation from
-monocular video, and GaussGym [13] trains navigation and locomotion from pixels in reconstructed scenes.
-RialTo [14] shows the same loop for manipulation, building twins from small amounts of real data. The
-physical part of a twin can be identified from real trajectories as a posterior [15]. Datasets such as
-ScanNet++ [16] pair laser scans and DSLR images with a separate phone capture of the same scene. Building a
-twin is no longer the bottleneck; in these works the amount and choice of the real data that builds and
-corrects it are fixed by hand.
+[11], turns a short real capture into a photorealistic model of a scene. Twins built this way train models
+that transfer. In navigation, EmbodiedSplat [12] reconstructs rooms from a phone capture and fine-tunes
+image-goal navigation in Habitat, Vid2Sim [13] builds simulators for urban navigation from monocular
+video, GaussGym [14] trains navigation and locomotion from pixels, and ReaDy-Go [15] adds moving obstacles.
+In manipulation, RialTo [16] builds a twin from a scan and a few demonstrations, X-Sim [17] from a minute
+of human video, and TwinRL [18] fine-tunes a pretrained policy in a phone-captured twin and targets its
+few real rollouts at configurations where the twin predicts failure. The physical part of a twin can be identified from a small amount of real data, as a
+posterior over simulator parameters [19] or by exploration designed for identification [20]. Datasets such
+as ScanNet++ [21] pair laser scans and DSLR images with a separate phone capture of the same scene, and
+MuSHRoom [22] pairs phone and depth-camera captures with a reference mesh under an open licence. In all
+these works the amount of real data is fixed by hand: the navigation twins use between 15 seconds and 30
+minutes of video per scene and no real training trials, and the manipulation works report single points
+(e.g. a scan and 15 demonstrations instead of 50 demonstrations [16]) rather than curves.
 
 **Capturing the right real data.** Active view selection chooses the images that improve a reconstruction
-most: FisherRF [17] maximizes expected information gain, and Bayes' Rays [18] estimates an uncertainty
-field for a trained radiance field. Risk-aware view acquisition [19] weights FisherRF by safety-critical
-regions for navigation, and AREA3D [20] adds vision-language guidance. Their objective is reconstruction
-quality or safe exploration, not the success of a navigation model trained in the twin; we found at most
-two task-aware capture papers a year in 2023–2026.
+most: FisherRF [23] maximizes expected information gain, and Bayes' Rays [24] estimates an uncertainty
+field for a trained radiance field. Risk-aware view acquisition [25] weights FisherRF by safety-critical
+regions for navigation, and AREA3D [26] adds vision-language guidance. Their objective is reconstruction
+quality or safe exploration; none measures the success of a model trained in the resulting twin, and we
+found at most two task-aware capture papers a year in 2023–2026.
 
-**Foundation models and world models.** Pretrained navigation foundation models generalize across robots
-and environments (GNM [21], ViNT [22]), and vision-language-action models map images and instructions to
-actions, also for navigation [23, 24]; they still need data from the target place to work there. Learned
-world models predict future observations and can serve as simulators: navigation world models plan by
-imagining trajectories [25], and open world foundation models are post-trained per setup [26]. Recent
-work fine-tunes a pretrained policy in a twin reconstructed from a phone capture and uses the twin to
-target real rollouts [27], or improves a world model with real rollouts [28]; each reports results at a
-fixed, hand-chosen amount of real data. Frozen visual encoders [29] make twin and real observations comparable,
-and prediction-powered inference [30] estimates real performance from many cheap predictions and a few
-real labels.
+**Foundation models, world models and real trials.** Pretrained navigation foundation models generalize
+across robots and environments (GNM [27], ViNT [28]), and vision-language-action models map images and
+instructions to actions [29]; they still need data from the target place to work there. Learned world
+models predict future observations: navigation world models plan by imagining trajectories [30], and open
+world foundation models are post-trained per setup [31]; VLAW [32] improves a world model with real
+rollouts, at a fixed, hand-chosen number of them. Choosing which real trials to run has been studied for
+*evaluating* policies, where combining simulated and real trials saves a fifth to a quarter of the
+real-robot effort [33], not for *correcting* a twin and the model trained in it.
+Frozen visual encoders [34] make twin and real observations comparable, and prediction-powered inference
+[35] estimates real performance from many cheap predictions and a few real labels.
 
-**Research gap.** Real-to-sim-to-real learning of navigation models works, but the real data it consumes
-is set by hand and spent uniformly at every stage. Missing is one method that decides, for navigation:
-(i) which real data to acquire to build the twin (RQ1); (ii) how to train in an imperfect twin, extended
-with world models and foundation models, so that its errors do not transfer (RQ2); (iii) which few real
-data to collect to correct twin and model (RQ3); and (iv) evidence that the whole pipeline needs less real
-data than existing real-to-sim-to-real approaches (RQ4).
+**Research gap.** Real-to-sim-to-real learning works, but the real data it consumes is set by hand and
+spent uniformly at every step. No navigation pipeline has a stage that corrects the twin with real trials,
+and none reports how success depends on the real data spent; in manipulation the real data is accounted
+at single points, against learning from real data only, never against another real-to-sim-to-real
+pipeline. Missing is one method that reduces the real data at every step of the loop: (i) capture only
+what the task needs and the twin lacks (RQ1); (ii) train so that the twin's errors do not hurt, and fill
+its gaps with a learned world model (RQ2); (iii) run only the few real trials that correct twin and model
+most (RQ3); and (iv) evidence, in one unit and on one budget grid, that the whole method needs less real
+data than the strongest existing real-to-sim-to-real approach (RQ4).
 
 ### References
 [1] M. Savva et al., "Habitat," ICCV, 2019.
-[2] E. Wijmans et al., "DD-PPO," ICLR, 2020.
-[3] A. Kadian et al., "Sim2Real Predictivity," IEEE RA-L, 2020.
-[4] J. Truong et al., "Rethinking Sim2Real," CoRL, 2022.
-[5] J. Tobin et al., "Domain Randomization…," IROS, 2017.
-[6] X. B. Peng et al., "Sim-to-Real Transfer… with Dynamics Randomization," ICRA, 2018.
-[7] Y. Chebotar et al., "Closing the Sim-to-Real Loop," ICRA, 2019.
-[8] L. Suomela et al., "Data Scaling for Navigation…," IEEE RA-L, 2026.
-[9] A. Maddukuri et al., "Sim-and-Real Co-Training," RSS, 2025.
-[10] B. Kerbl et al., "3D Gaussian Splatting," ACM TOG, 2023.
-[11] G. Chhablani et al., "EmbodiedSplat," ICCV, 2025.
-[12] Z. Xie et al., "Vid2Sim," CVPR, 2025.
-[13] A. Escontrela et al., "GaussGym," arXiv:2510.15352, 2025.
-[14] M. Torne et al., "Reconciling Reality through Simulation," RSS, 2024.
-[15] F. Ramos et al., "BayesSim," RSS, 2019.
-[16] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
-[17] W. Jiang et al., "FisherRF," ECCV, 2024.
-[18] L. Goli et al., "Bayes' Rays," CVPR, 2024.
-[19] G. Liu et al., "Risk-Aware Active View Acquisition…," arXiv:2403.11396, 2024.
-[20] T. Xu et al., "AREA3D," arXiv:2512.05131, 2025.
-[21] D. Shah et al., "GNM," ICRA, 2023.
-[22] D. Shah et al., "ViNT," CoRL, 2023.
-[23] M. J. Kim et al., "OpenVLA," CoRL, 2024.
-[24] A.-C. Cheng et al., "NaVILA," arXiv:2412.04453, 2024.
-[25] A. Bar et al., "Navigation World Models," CVPR, 2025.
-[26] N. Agarwal et al., "Cosmos World Foundation Model Platform…," arXiv:2501.03575, 2025.
-[27] Q. Xu et al., "TwinRL," arXiv:2602.09023, 2026.
-[28] Y. Guo et al., "VLAW," arXiv:2602.12063, 2026.
-[29] M. Oquab et al., "DINOv2," TMLR, 2024.
-[30] A. N. Angelopoulos et al., "Prediction-Powered Inference," Science, 2023.
+[2] S. Tao et al., "ManiSkill3," RSS, 2025.
+[3] E. Wijmans et al., "DD-PPO," ICLR, 2020.
+[4] A. Kadian et al., "Sim2Real Predictivity," IEEE RA-L, 2020.
+[5] X. Li et al., "Evaluating Real-World Robot Manipulation Policies…," CoRL, 2024.
+[6] J. Tobin et al., "Domain Randomization…," IROS, 2017.
+[7] X. B. Peng et al., "Sim-to-Real Transfer… with Dynamics Randomization," ICRA, 2018.
+[8] Y. Chebotar et al., "Closing the Sim-to-Real Loop," ICRA, 2019.
+[9] L. Suomela et al., "Data Scaling for Navigation…," IEEE RA-L, 2026.
+[10] A. Maddukuri et al., "Sim-and-Real Co-Training," RSS, 2025.
+[11] B. Kerbl et al., "3D Gaussian Splatting," ACM TOG, 2023.
+[12] G. Chhablani et al., "EmbodiedSplat," ICCV, 2025.
+[13] Z. Xie et al., "Vid2Sim," CVPR, 2025.
+[14] A. Escontrela et al., "GaussGym," arXiv:2510.15352, 2025.
+[15] S. Yoo et al., "ReaDy-Go," IEEE RA-L, 2026.
+[16] M. Torne et al., "Reconciling Reality through Simulation," RSS, 2024.
+[17] P. Dan et al., "X-Sim," arXiv:2505.07096, 2025.
+[18] Q. Xu et al., "TwinRL," arXiv:2602.09023, 2026.
+[19] F. Ramos et al., "BayesSim," RSS, 2019.
+[20] M. Memmel et al., "ASID," arXiv:2404.12308, 2024.
+[21] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
+[22] X. Ren et al., "MuSHRoom," arXiv:2311.02778, 2023.
+[23] W. Jiang et al., "FisherRF," ECCV, 2024.
+[24] L. Goli et al., "Bayes' Rays," CVPR, 2024.
+[25] G. Liu et al., "Risk-Aware Active View Acquisition…," arXiv:2403.11396, 2024.
+[26] T. Xu et al., "AREA3D," arXiv:2512.05131, 2025.
+[27] D. Shah et al., "GNM," ICRA, 2023.
+[28] D. Shah et al., "ViNT," CoRL, 2023.
+[29] M. J. Kim et al., "OpenVLA," CoRL, 2024.
+[30] A. Bar et al., "Navigation World Models," CVPR, 2025.
+[31] N. Agarwal et al., "Cosmos World Foundation Model Platform…," arXiv:2501.03575, 2025.
+[32] Y. Guo et al., "VLAW," arXiv:2602.12063, 2026.
+[33] A. Badithela et al., "Reliable and Scalable Robot Policy Evaluation…," arXiv:2510.04354, 2025.
+[34] M. Oquab et al., "DINOv2," TMLR, 2024.
+[35] A. N. Angelopoulos et al., "Prediction-Powered Inference," Science, 2023.
 
-<!-- Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+<!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top)
+and the deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md). General
+real-to-sim-to-real (navigation main testbed, manipulation generalization test); the gap now says
+explicitly, per the report's recommendation 1, that no navigation pipeline has a real-trial correction
+stage or budget curves and that manipulation accounting is single points. 35 refs (limit <= 35).
+Reused from the Wave 16 list (verified in earlier waves, see the comments below): all except Truong
+(Rethinking Sim2Real) and NaVILA, dropped for space.
+Reinstated from earlier waves (verified then; formatted entries copied from the Wave 6/11/13 lists):
+- [2] ManiSkill3: Wave 6 comment, arXiv 2410.00425, Crossref doi:10.15607/RSS.2025.XXI.021.
+- [5] SIMPLER: Wave 6 comment, arXiv 2405.05941, PMLR vol. 270 (CoRL 2024); "paired sim-and-real
+  evaluations", "strong correlation" from the abstract -> "simulation can track real performance".
+- [17] X-Sim: Wave 11 comment, arXiv:2505.07096 (Dan, Kedia, Chao, ...); re-read on the arXiv API
+  2026-09-26 (title "X-Sim: Cross-Embodiment Learning via Real-to-Sim-to-Real"). "a minute of human
+  video" = the report's table ("1 min wideo człowieka").
+- [20] ASID: Wave 13 comment, arXiv:2404.12308 (Memmel et al.); abstract "leverage a small amount of
+  real-world data to autonomously refine a simulation model", "identifying articulation, mass, and other
+  physical parameters" -> "exploration designed for identification".
+- [33] SureSim: Wave 11 list [33] (Badithela et al., arXiv:2510.04354); "saves about a fifth to a quarter
+  of the real-robot effort" = the report ("SureSim oszczędza 20–25% wysiłku sprzętowego").
+New, from the report's sources (verified today on the arXiv API, export.arxiv.org, 2026-09-26):
+- [15] ReaDy-Go arXiv:2602.11575 (S. Yoo, Y. Jang, D. Kim, Y. Han, S. Jung, H. J. Kim). The report noted
+  a T-RO vs RA-L conflict; the arXiv comment now reads "Accepted by IEEE Robotics and Automation Letters
+  (RA-L)" and the arXiv DOI is 10.1109/LRA.2026.3707355, so it is cited as IEEE RA-L, 2026 (v7
+  correction settled). "adds moving obstacles" = title ("with Moving Obstacles").
+- [22] MuSHRoom arXiv:2311.02778 (X. Ren, W. Wang, D. Cai, T. Tuominen, J. Kannala, E. Rahtu), title
+  "MuSHRoom: Multi-Sensor Hybrid Room Dataset for Joint 3D Reconstruction and Novel View Synthesis".
+  Venue not confirmed here, so cited as arXiv. "phone and depth-camera captures with a reference mesh
+  under an open licence" = the report (iPhone + Kinect + reference mesh, CC-BY-4.0, Zenodo 13986996).
+Other figures in the visible text, all from the report: SRCC 0.18 -> 0.844 after removing the
+wall-sliding artefact (Kadian et al., arXiv:1912.06321); TwinRL "~20 min" on-robot interaction and
+failure-prone configurations (arXiv:2602.09023 abstract, also Wave 15 comment); navigation twins
+"15 s (Vid2Sim) to 20-30 min (EmbodiedSplat) of video, zero real training trials"; RialTo "scan + 15 demos
+vs BC with 50 demos" (report table; the "0/5/10/15 demos" ablation is NOT cited, per v7). "at most two
+task-aware capture papers a year" = niches-data.md N1 (2/2/0/2), unchanged.
+Old (Wave 16) -> new numbers: 1->1, 2->3, 3->4, 5->6, 6->7, 7->8, 8->9, 9->10, 10->11, 11->12, 12->13,
+13->14, 14->16, 15->19, 16->21, 17->23, 18->24, 19->25, 20->26, 21->27, 22->28, 23->29, 25->30, 26->31,
+27->18, 28->32, 29->34, 30->35; 4 (Truong) and 24 (NaVILA) dropped. §9 and §12 renumbered in the same
+wave. Reference numbers in the older comments below are pre-Wave-18.
+-->
+<!-- (history) Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
 general description; navigation (indoor mobile robots) is the domain; pipeline real data -> twin ->
 navigation models (extended with world models and foundation models) -> real. Manipulation-only works
 dropped from the visible text except RialTo [14] (general real-to-sim-to-real loop) and Maddukuri [9]

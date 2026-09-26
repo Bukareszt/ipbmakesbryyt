@@ -2,46 +2,63 @@
 
 **Planned outputs by year** (200-point conferences assigned to the discipline, list of 5.01.2024).
 
-| Year | Papers (planned submission, 200 points each) | Code | Grants | Mobility, events |
+| Year | Papers (planned submission, 200 points each) | Code | Grants, licences | Mobility, events |
 |---|---|---|---|---|
 | 1 (2025/26) | — | — | — | — |
-| 2 (2026/27) | P1 (stage 1 and first stage 2 results, RQ1–RQ2): NeurIPS 2027, May 2027 (§11) | Pipeline on public scans | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
-| 3 (2027/28) | P2 (stage 3, few real data, RQ3): ICML or CVPR 2028; P3 (the whole pipeline, RQ4): NeurIPS 2028 | Stage 3 code | — | Mid-term; 3-month visit (sem. 6) |
+| 2 (2026/27) | P1 (mechanism 1, RQ1): NeurIPS 2027, May 2027 (§11) | Proxy pipeline | ScanNet++; PLGrid; Minigrant; PRELUDIUM; Bekker | Summer school poster |
+| 3 (2027/28) | P2 (mechanisms 2–3, RQ2–RQ3, first manipulation results): ICML/CVPR 2028; P3 (whole method, RQ4): NeurIPS 2028 | Mechanism 3 code | — | Mid-term; visit (sem. 6) |
 | 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Method release | — | Dissertation |
 
-**Foreign research visit (candidate hosts, not yet contacted).** (1) Z. Kira's group, Georgia Tech:
-EmbodiedSplat [11]. (2) Multi-robot Systems Lab, Stanford University (M. Schwager): Gaussian-splatting
-scene models. A European host (Erasmus+ route) working on active reconstruction or sim-to-real transfer,
-and a foreign co-author for P2, are sought with the supervisor in sem. 4.
+**Foreign research visit (candidate hosts, not yet contacted):** Z. Kira's group, Georgia Tech
+(EmbodiedSplat [12]); M. Schwager's lab, Stanford (Gaussian-splatting scene models); a European host
+(Erasmus+) and a foreign co-author for P2 are sought in sem. 4.
 
-**Collaboration at PWr.** Robot validation is planned with the K29 *Denali* laboratory (Pioneer 3-DX,
-Jaguar 4x4, ROS 2); a written agreement is task T3.2 (Nov 2026).
+**Robot and scope.** A small mobile robot from an SzD Minigrant or one of the K29 *Denali* laboratory (task
+T3.2, Nov 2026); static indoor scenes only, moving people are future work.
 
 **Risks and mitigation** (semester affected).
-- *One stage gives no gain* (3–5): its budget curve still answers its RQ; H4 is still tested.
-- *Twin uncertainty is poorly calibrated* (3–4): two estimators and an ensemble fallback.
-- *Proxy reality is easier than reality* (4–7): separate captures for twin and reference, a second
-  reference and robot validation check the direction (§9).
-- *Learning from real data only is strong at small budgets* (6): in navigation, gains from more data in a
-  known location saturate quickly [8]; H4 is reported as a full budget curve.
-- *Compute* (3–7): WCSS and PLGrid grants in sem. 3; smaller models for development; fewer seeds.
-- *Crowded field, scooping* (3–6): twins, world models and fine-tuning in simulation are active areas,
-  with targeted or real rollouts [27, 28]; we claim only the real-data budget; early preprints.
-- *Licences, robot access* (3, 5, 7): gated or restricted models have open alternatives; without a
-  robot, validation moves by a semester (the proxy reality decides).
-- *Rejection at a top venue* (4–7): each paper has a resubmission path inside the 200-point set 2–4 months
-  later (NeurIPS → CVPR → ICML → ECCV/ICCV).
+- *Proxy validity* (3–7): a rendered scan is itself a simulator, and one collision artefact can destroy
+  sim-to-real predictivity [4]; separate captures, a second reference and the sim-vs-real correlation
+  measured against the robot (§9); conclusions are ranking-preserving.
+- *Physical gap* (3–6): friction, slip and actuation delays are absent from meshes; "reality" gets hidden
+  physical parameters, mechanism 3 corrects them, the robot checks them.
+- *Success ceiling and noise* (3–6): twins already reach high zero-shot success; a pre-registered
+  difficulty regime, hundreds of proxy episodes per arm and targets from the baseline's plateau; robot
+  trials confirm the direction only.
+- *No gain from one mechanism, or real-only learning strong at small budgets* (3–6): every curve still
+  answers its RQ, H4 is a full budget curve, and gains from a known location saturate quickly [9].
+- *Scooping* (3–6): several groups are one step from a budget curve [12, 18, 32]; H1 is published early
+  (preprint, sem. 4), the literature is re-checked quarterly; we claim the reduction, not the twin.
+- *ScanNet++ licence* (3–7): non-commercial, revocable, no redistribution; the supervisor signs; MuSHRoom
+  and own PWr rooms are the releasable fallback; no derived ScanNet++ assets.
+- *Compute, robot access* (3–7): standard PLGrid grant and WCSS, smaller models; without a robot,
+  validation moves by a semester (the proxy decides).
+- *Rejection* (4–7): resubmission inside the 200-point set 2–4 months later (NeurIPS → CVPR → ICML → ECCV/ICCV).
 
-**Future applicability.** The method is not specific to navigation; robotic manipulation is a natural
-extension after the dissertation.
-
-**Prior work (background only).** A pre-PhD NLP paper (ACL 2025 SRW, forecasting from hidden states); not
-part of the dissertation.
-
-**Ethics and data.** Own captures are anonymized (GDPR); public datasets are used under their licences.
+**Prior work, ethics.** A pre-PhD NLP paper (ACL 2025 SRW) is background only. Own captures are anonymized
+(GDPR); public datasets are used under their licences.
 
 <!--
-Wave 16-W (issue #33), 2026-09-26: pivot decision v6 (navigation only; manipulation "at most as future
+Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top) and the
+deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md, "Walidność proxy i wyścig z
+dużymi laboratoriami" and "Rekomendacje"). Outputs table: P1 = mechanism 1 (H1) + H1 preprint, P2 =
+mechanisms 2-3 + first manipulation results, P3 = whole method + manipulation (v7 papers); "Grants,
+licences" column adds the ScanNet++ licence and the PLGrid grant (sem. 3). Robot: TurtleBot 4 Lite
+(~1699 EUR gross per the report, Elektor listing; within the SzD Minigrant of up to 20k PLN) is named only
+as "a small mobile robot bought from an SzD Minigrant" here (§9 names the model); K29 Denali kept as the
+alternative. New risks from the report: proxy validity (Kadian SRCC 0.18 -> 0.844 after one artefact, [4]),
+physical gap (GaussGym "uniform physical parameters"), success ceiling and noise (twins 70-100% zero-shot;
+10-20 real trials confirm direction only), scooping with the named one-step groups ([12] EmbodiedSplat,
+[18] TwinRL, [32] VLAW; report also names FisherRF/RaEM, Splat-Nav/VISTA, Pavone group), ScanNet++
+licence (ToU: non-commercial, "strictly prohibited" redistribution, revocable, supervisor's handwritten
+signature), static scenes only (ReaDy-Go added moving people). Openness per recommendation 4: code,
+configurations, scene IDs, seeds, pre-registrations; MuSHRoom (CC-BY-4.0) and own rooms as releasable.
+"Future applicability" paragraph removed (manipulation is now inside the plan). "Twin uncertainty is poorly
+calibrated" merged into "one mechanism gives no gain" for space. Refs renumbered to the Wave 18 §6 list:
+EmbodiedSplat [11]->[12], Suomela [8]->[9], TwinRL [27]->[18], VLAW [28]->[32], Kadian = [4].
+-->
+<!--
+(history) Wave 16-W (issue #33), 2026-09-26: pivot decision v6 (navigation only; manipulation "at most as future
 applicability in §12"). Outputs table: P1-P3 by stage (P1 = stage 1 + first stage 2, P2 = stage 3, P3 =
 whole pipeline), venues unchanged. PWr manipulator removed from the collaboration line (manipulation is no
 longer a testbed). Risks: "component" -> "stage"; proxy-reality risk without tier B (manipulation-only);

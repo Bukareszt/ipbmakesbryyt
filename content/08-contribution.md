@@ -1,49 +1,66 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
 The dissertation is in **information and communication technology** (*informatyka techniczna i
-telekomunikacja*), area machine learning. Its object is the **real-to-sim-to-real pipeline for navigation
-models**: transferring real-world data into a digital twin, training navigation models in it and
-transferring them back to reality. Building simulators, world models, foundation models or benchmarks
-from scratch, control design and mechanical engineering are not the object of the research; the student
-uses existing tools, pretrained models and public data.
+telekomunikacja*), area machine learning. Its object is the **real-to-sim-to-real loop of robot learning
+and the real data it consumes**: transferring real-world data into a digital twin, training a model in
+it and transferring the model back to reality. Building simulators, world models, foundation models or
+benchmarks from scratch, control design and mechanical engineering are not the object of the research;
+the student uses existing tools, pretrained models and public data.
 
-**Key original contribution: the method.** To our knowledge, the first method for real-to-sim-to-real
-learning of navigation models that treats the real data of the whole pipeline as **one budget spent where
-it matters at every stage**. It targets a given real-world navigation performance with at least two times
-less real data than the strongest existing real-to-sim-to-real approach (RQ4, H4). Building twins,
-training in simulation and using world models or foundation models are not new; deciding which real data
-the pipeline needs, and measuring how much it saves, is. The three stages are parts of this one method,
-each tested at its own step:
+**Key original contribution: a method that reduces real data.** To our knowledge, the first method for
+real-to-sim-to-real robot learning that reduces the real data of the whole loop by acting at every one of
+its steps, with the first measurement, in one unit and on one budget grid, of how much real data such a
+loop needs. Its claim: a given real-world performance with at least two times less real data than the
+strongest existing real-to-sim-to-real approach (RQ4, H4). Building twins, training in
+simulation and using world models or foundation models are not new; reducing the real data they need is.
+The three reduction mechanisms are parts of this one method, each tested at its own step:
 
-1. **Stage 1, real data → twin (RQ1, H1).** Capture of real data guided by what matters for the
-   navigation task and by where the twin is still uncertain, for appearance, geometry and the physical
-   properties needed for navigation; compared with uniform and task-blind capture.
-2. **Stage 2, learning in the twin (RQ2, H2).** Training of navigation models that follows the twin's
-   uncertainty, with the twin extended by a learned world model and the model initialized from pretrained
-   foundation models; compared with uniform domain randomization.
-3. **Stage 3, twin → reality (RQ3, H3).** Selection of the few real trials that the predicted
-   twin-to-reality gap marks as most informative, used to correct both the twin and the model; compared
-   with random selection.
+1. **Less capture (RQ1, H1).** Capture of real data guided by what matters for the task and by where the
+   twin is still uncertain, for appearance, geometry and the physical properties the task needs; compared
+   with uniform capture and with task-blind and task-weighted selection aimed at reconstruction quality.
+2. **Better use of simulation (RQ2, H2).** Training that follows the twin's uncertainty, so that its
+   errors do not transfer, with a learned world model filling the twin's gaps; compared with uniform and
+   with no domain randomization.
+3. **Fewer real trials (RQ3, H3).** Selection of the few real trials that the predicted twin-to-reality
+   gap marks as most informative, used to correct both the twin and the model; compared with random and
+   with failure-driven selection.
+
+**Generalization.** H1–H4 are decided in indoor robot navigation; the same method, unchanged, is then run
+in robotic manipulation as a generalization test, with no separate thresholds.
 
 **How the method is evaluated and released** (supporting the method, not contributions in their own
-right). Budget–performance curves of the method against existing real-to-sim-to-real approaches and
-learning from real data only, which give the "exchange rate" between twin and real data; a proxy-reality
-protocol on public scans of real buildings that counts real data exactly without a robot (a separate,
-higher-fidelity reference plays "reality"); and open-source code of the method, built on existing
-reconstruction pipelines, simulators and pretrained models.
+right). Curves of success against operator minutes on a shared budget grid, against pre-registered
+baselines and learning from real data only; a proxy-reality protocol on public scans of real buildings
+that counts real data exactly without a robot (a separate, higher-fidelity reference with hidden physical
+parameters plays "reality"), validated against a real robot; and open code, configurations, scene lists,
+seeds and pre-registrations, built on existing tools.
 
 **Significance for the discipline.** Real target-domain data is the main cost of deploying learned
-systems; methods that decide where it is worth spending, and a measured estimate of how much of it a twin
-can replace, are relevant to active learning, learning under distribution shift, uncertainty estimation
-and adaptation of pretrained models in general, beyond navigation.
+systems; a method that decides where it is worth spending, and a measured estimate of how much of it a
+twin can replace, are relevant to active learning, learning under distribution shift, uncertainty
+estimation and adaptation of pretrained models in general, beyond robotics.
 
 **Dissemination.** Results are planned for peer-reviewed conferences worth 200 points and assigned to ITiT
 on the ministerial list of 5.01.2024: NeurIPS, ICML and ICLR (machine learning) and CVPR (computer vision),
-with ICCV and ECCV for resubmissions. P1 (stage 1 and first stage 2 results, RQ1–RQ2) targets NeurIPS
-2027; P2 (stage 3, RQ3) ICML 2028 or CVPR 2028; P3 (the whole pipeline against existing approaches, RQ4)
-NeurIPS 2028, with ICLR 2029 as the fallback.
+with ICCV and ECCV for resubmissions. P1 (mechanism 1, RQ1, in navigation) targets NeurIPS 2027; P2
+(mechanisms 2–3, RQ2–RQ3, in navigation, with first manipulation results) ICML 2028 or CVPR 2028; P3 (the
+whole method against existing approaches, RQ4, with the generalization to manipulation) NeurIPS 2028, with
+ICLR 2029 as the fallback.
 
-<!-- Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+<!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):
+key contribution = a method that REDUCES real data (three reduction mechanisms, one per loop step); the
+budget curves, the one unit (operator minutes), the budget grid, the proxy protocol and the code are how
+the method is evaluated and released, not contributions. Navigation decides H1-H4; manipulation =
+generalization test without separate thresholds (v7 "Scope"). "First evidence ... of how much real data
+such a loop needs" = the report's conclusion that no such curves exist in navigation and only single points
+in manipulation (reports/Uczenie nawigacji w cyfrowych bliźniakach.md), hedged with "to our knowledge"
+(R3-F11). Comparators per mechanism = the report's pre-registered baselines (H1: uniform, FisherRF-type,
+risk/semantic-weighted; H2: uniform DR, no DR; H3: random, failure-driven). Papers per v7: P1 = mechanism 1
+(H1) in navigation, NeurIPS 2027; P2 = mechanisms 2-3 (H2, H3) in navigation + first manipulation results,
+ICML 2028 (CVPR 2028 per §3 T5.4 only if H3 is complete by Nov 2027); P3 = the whole method (H4) with
+generalization to manipulation, NeurIPS 2028, fallback ICLR 2029. H4 threshold new in v4, CONFIRM with the
+supervisor. -->
+<!-- (history) Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
 general description, navigation only, stages 1-3 + whole pipeline. Key contribution = the method (v4
 framing kept); its claim = §7 H4 (>= 2x less than the strongest existing real-to-sim-to-real approach,
 CONFIRM with the supervisor). Novelty guardrail kept in general terms ("Building twins, training in

@@ -2,64 +2,66 @@
 
 ## Streszczenie popularnonaukowe
 
-Roboty, które mają chwytać przedmioty lub poruszać się po budynkach, coraz częściej korzystają z dużych,
-wstępnie wytrenowanych modeli sztucznej inteligencji, które rozumieją obraz i polecenia wydane słowami i
-na ich podstawie wybierają ruchy. Aby taki model dobrze działał w nowym miejscu i przy nowym zadaniu, trzeba
-go jeszcze douczyć, a zbieranie prawdziwych danych i prób jest powolne i kosztowne. Dlatego douczanie
-coraz częściej odbywa się w cyfrowym bliźniaku: wiernej kopii prawdziwego miejsca, którą można odtworzyć z
-nagrań i pomiarów, łącznie z wyglądem, kształtem i tym, jak rzeczy się poruszają. Powstaje w ten sposób
-pętla: zbieramy dane w rzeczywistości, budujemy kopię, douczamy w niej model, sprawdzamy go w
-rzeczywistości, poprawiamy i dopiero wtedy wdrażamy. Każdy z tych kroków wymaga jednak prawdziwych danych.
+Roboty, które poruszają się po budynkach, na przykład w magazynach, szpitalach czy biurach, coraz
+częściej korzystają z modeli nawigacji, które uczą się na podstawie doświadczenia. Aby taki model dobrze
+działał w konkretnym budynku, potrzebuje wielu danych z tego miejsca, a zbieranie ich w rzeczywistości
+jest powolne i kosztowne. Dlatego coraz częściej robot uczy się w cyfrowym bliźniaku: wiernej kopii
+prawdziwego budynku, którą można odtworzyć z krótkiego nagrania i kilku pomiarów. Powstaje w ten sposób
+droga w trzech krokach: zbieramy dane w rzeczywistości i budujemy z nich kopię, uczymy w niej model
+nawigacji, a następnie przenosimy go z powrotem do rzeczywistości i tam sprawdzamy oraz poprawiamy. Każdy
+z tych kroków wymaga jednak prawdziwych danych.
 
-Celem rozprawy jest opracowanie metody, która przejdzie przez tę pętlę z dużo mniejszą ilością
-prawdziwych danych niż dotychczasowe podejścia, niezależnie od zadania. Metoda ma trzy części, po jednej na
-każdy krok pętli. Zamiast nagrywać wszystko po równo, model rozumiejący obraz i język wskaże, co jest ważne
-dla zadania, a nagrywać będziemy przede wszystkim te miejsca, o których kopia wie jeszcze za mało. Ponieważ
-kopia nigdy nie jest idealna, model będziemy douczać tak, aby nie polegał na jej niepewnych fragmentach, a
-tam, gdzie kopia jest niepewna, dodatkowe sytuacje wygeneruje model świata, czyli program, który uczy się
-przewidywać, co wydarzy się dalej. Na koniec wybierzemy tylko te nieliczne próby w rzeczywistości, które
-najwięcej mówią o tym, gdzie system jeszcze zawodzi, i wykorzystamy je do poprawienia kopii, modelu świata i
-samego modelu. Tę samą metodę sprawdzimy na dwóch różnych zadaniach: chwytaniu przedmiotów ramieniem robota
-i poruszaniu się robota po budynkach. Badania będą prowadzone przede wszystkim na publicznie dostępnych
-danych, a wybrane wyniki zostaną potwierdzone na prawdziwym robocie.
+Celem rozprawy jest opracowanie metody, która przejdzie tę drogę z dużo mniejszą ilością prawdziwych
+danych niż dotychczasowe podejścia. W pierwszym kroku zamiast nagrywać wszystko po równo, będziemy nagrywać
+przede wszystkim te miejsca, które są ważne dla poruszania się robota, a o których kopia wie jeszcze za
+mało. W drugim kroku, ponieważ kopia nigdy nie jest idealna, będziemy uczyć model tak, aby nie polegał na
+jej niepewnych fragmentach; pomogą w tym model świata, czyli program, który uczy się przewidywać, co
+wydarzy się dalej, oraz duże modele wstępnie wytrenowane na wielu innych danych. W trzecim kroku wybierzemy
+tylko te nieliczne próby w rzeczywistości, które najwięcej mówią o tym, gdzie kopia i model jeszcze się
+mylą, i wykorzystamy je do ich poprawienia. Badania będą prowadzone przede wszystkim na publicznie
+dostępnych skanach prawdziwych budynków, a wyniki zostaną potwierdzone na prawdziwym robocie.
 
-Spodziewanym efektem jest jedna metoda, która pozwoli zbierać mniej danych, uczyć skuteczniej i wykonywać
-mniej kosztownych prób w rzeczywistości, oraz pomiar, ile prawdziwych danych oszczędza w porównaniu z
-douczaniem wyłącznie na prawdziwych danych i z dotychczasowymi podejściami. Może to przyspieszyć i potanić
-wdrażanie robotów w fabrykach, magazynach, szpitalach i biurach. Opracowane oprogramowanie zostanie
-udostępnione publicznie.
+Spodziewanym efektem jest metoda, która pozwoli nauczyć robota poruszania się w nowym budynku przy dużo
+mniejszej ilości prawdziwych danych, oraz pomiar, ile prawdziwych danych oszczędza w porównaniu z
+dotychczasowymi podejściami. Może to przyspieszyć i potanić wdrażanie robotów mobilnych w magazynach,
+szpitalach i biurach. Opracowane oprogramowanie zostanie udostępnione publicznie.
 
 ## Abstract for general public
 
-Robots that grasp objects or move around buildings increasingly rely on large, pretrained artificial
-intelligence models that understand images and spoken or written instructions and choose movements from
-them. For such a model to work well in a new place and on a new task, it still has to be trained further,
-and collecting real data and trials is slow and costly. That is why this further training increasingly
-takes place in a digital twin: a faithful copy of a real place that can be rebuilt from recordings and
-measurements, including how things look, their shape and how they move. This creates a loop: we collect
-data in reality, build the copy, train the model further in it, check it in reality, correct it and only
-then deploy it. Each of these steps, however, needs real data.
+Robots that move around buildings, for example in warehouses, hospitals or offices, increasingly rely on
+navigation models that learn from experience. For such a model to work well in a particular building, it
+needs a lot of data from that place, and collecting it in reality is slow and costly. That is why robots
+increasingly learn in a digital twin: a faithful copy of a real building that can be rebuilt from a short
+recording and a few measurements. This creates a path in three steps: we collect data in reality and
+build the copy from it, train the navigation model in the copy, and then transfer it back to reality,
+where we check and correct it. Each of these steps, however, needs real data.
 
-The goal of this dissertation is to develop a method that goes through this loop with much less real
-data than existing approaches, whatever the task. The method has three parts, one for each step of the
-loop. Instead of recording everything evenly, a model that understands images and language will point out
-what matters for the task, and we will record mainly the places about which the copy still knows too
-little. Because the copy is never perfect, we will train the model so that it does not rely on the
-uncertain parts of the copy, and where the copy is uncertain, extra situations will be generated by a
-world model, a program that learns to predict what happens next. Finally, we will choose only the few
-trials in reality that tell the most about where the system still fails, and use them to correct the
-copy, the world model and the model itself. We will test the same method on two different tasks: grasping
-objects with a robot arm and a robot moving around buildings. The research will be carried out mainly on
-publicly available data, and selected results will be confirmed on a real robot.
+The goal of this dissertation is to develop a method that follows this path with much less real data than
+existing approaches. In the first step, instead of recording everything evenly, we will record mainly the
+places that matter for the robot's movement and about which the copy still knows too little. In the second
+step, because the copy is never perfect, we will train the model so that it does not rely on the
+uncertain parts of the copy; a world model, a program that learns to predict what happens next, and large
+models pretrained on much other data will help with this. In the third step, we will choose only the few
+trials in reality that tell the most about where the copy and the model are still wrong, and use them to
+correct both. The research will be carried out mainly on publicly available scans of real buildings, and
+the results will be confirmed on a real robot.
 
-The expected result is one method that makes it possible to collect less data, train more effectively and
-carry out fewer costly trials in reality, and a measurement of how much real data it saves compared with
-training on real data only and with existing approaches. This may make deploying robots in factories,
-warehouses, hospitals and offices faster and cheaper. The software developed will be made publicly
-available.
+The expected result is a method that makes it possible to teach a robot to move around a new building with
+much less real data, and a measurement of how much real data it saves compared with existing approaches.
+This may make deploying mobile robots in warehouses, hospitals and offices faster and cheaper. The
+software developed will be made publicly available.
 
 <!--
-Wave 15 (issue #31), 2026-09-26: pivot decision v5 (research/pivot-decision.md, top). Both languages
+Wave 16-W (issue #33), 2026-09-26: pivot decision v6 (research/pivot-decision.md, top). Both languages
+rewritten in parallel: navigation of mobile robots in buildings is the only domain (manipulation /
+grasping removed); the pipeline is described as three steps real -> twin -> navigation model -> real (v6
+"Object" 1-3); step 2 names world models and pretrained foundation models as families ("a program that
+learns to predict what happens next", "large models pretrained on much other data"), no model names, no
+VLA; the expected result compares with existing approaches (§7 H4). PL and EN checked sentence by
+sentence: 3 paragraphs each, 5 / 5 / 3 sentences, same content.
+-->
+<!--
+(history) Wave 15 (issue #31), 2026-09-26: pivot decision v5 (research/pivot-decision.md, top). Both languages
 changed in parallel. Para 1 now starts from pretrained VLA models ("understand images and ... instructions
 and choose movements") that still need further training for a new place and task (OpenVLA arXiv:2406.09246,
 Octo arXiv:2405.12213 abstracts: fine-tuning to new settings), and the twin is where this further training

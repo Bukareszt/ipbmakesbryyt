@@ -1,55 +1,62 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Modern machine learning is limited less by models than by **data in the target domain**. Robot
-manipulators, mobile robots and other systems acting in the physical world need much experience, which is
-slow, expensive and sometimes risky to collect in reality. Pretrained open
-**vision-language-action (VLA) models**, trained on large robot datasets, have made the starting point much
-stronger, but they still need data from the target task and place to work there. Training in simulation
-avoids that cost but opens a **sim-to-real gap**.
+Mobile robots that move around buildings, such as service, delivery, inspection and assistive robots,
+rely increasingly on learned **navigation models**. Such models need a lot of experience from the place
+where they will work, and collecting it in reality is slow, expensive and sometimes unsafe. Training in
+simulation avoids this cost but opens a **sim-to-real gap**: a model that works in a generic simulator
+often fails in a real building.
 
-**Digital twins** built from real data narrow this gap. Neural scene reconstruction (3D Gaussian
-Splatting, Neural Radiance Fields) turns a short real capture into a photorealistic model of the geometry
-and appearance of a scene, and system identification estimates its physical parameters (masses, friction,
-actuation) from a few real interactions. Learned **world models** can generate further variations. This
-gives a **real-to-sim-to-real loop**: collect real data, build a twin, fine-tune in the twin, check and
-correct with a little more real data, deploy. Building twins, fine-tuning VLAs in simulation and training
-them in world models are all active research areas. What remains open is the **real data** the whole loop
-consumes. Each step spends it: the capture that builds the twin, the real data used to make learning
-robust to what the twin got wrong, and the real-world trials used to check and correct the result. Today
-these amounts are chosen by habit: data is collected uniformly, learning uses generic randomization, and
-real trials are picked at random or by hand. How much real data a twin actually saves has, to our
-knowledge, not been measured systematically across tasks.
+**Digital twins** built from real data narrow this gap. Neural scene reconstruction turns a short video or
+depth capture of a real building into a photorealistic model of its geometry and appearance, and a few
+measurements give the physical properties that matter for navigation. Learned **world models** can
+generate further situations, and pretrained **foundation models** provide a strong starting point. This
+gives a **real-to-sim-to-real pipeline**: acquire real data, build a twin, train the navigation model in
+it at scale, and transfer it back to reality, where a little more real data checks and corrects the twin
+and the model. Each of these parts is an active research area. What remains open is the **real data** the
+whole pipeline consumes: the capture that builds the twin, the real samples that make training robust to
+what the twin got wrong, and the real trials that correct the result. Today these amounts are chosen by
+habit: data is captured uniformly, training uses generic randomization, and real trials are picked at
+random or by hand. How much real data a twin actually saves in navigation has, to our knowledge, not been
+measured systematically.
 
-**Goal of the dissertation.** The goal is to develop **a method** for learning in the real-to-sim-to-real
-loop that reaches a given real-world performance with **significantly less real data** than existing
-approaches. A pretrained open VLA is fine-tuned sim-first in the twin. The method has three components,
-one per loop step: (C1) capture guided by a vision-language model (VLM) to the task-relevant parts of the
-scene where the twin is most uncertain, (C2) parameter-efficient fine-tuning that is robust to the twin's
-errors, in the twin and in a world model grounded in it that covers what the twin got wrong, and (C3)
-active selection of the few real-world data that correct the twin, the world model and the VLA. The
-**uncertainty** of the twin, the world model and the VLA guides all three. The thesis is that the method
-needs at most a tenth of the real data of fine-tuning the same VLA on real data only, and at least two
-times less than the strongest existing twin fine-tuning pipeline, in both testbeds.
+**Goal of the dissertation.** The goal is to develop **a method** for real-to-sim-to-real learning of
+navigation models that reaches a given real-world navigation performance with **significantly less real
+data** than existing approaches. The method covers the three stages of the pipeline: (1) deciding which
+real data is worth acquiring to build the twin, (2) training navigation models in the imperfect twin,
+extended with world models and foundation models, so that its errors do not transfer, and (3) choosing the
+few real data that best correct the twin and the model. The thesis is that the whole method needs at least
+two times less real data than the strongest existing real-to-sim-to-real approach.
 
-**Why this topic, and why in this discipline.** The object is a general, task- and domain-agnostic
-data-efficient learning methodology (active learning, learning under distribution shift, uncertainty
-estimation, adaptation of foundation models), not a particular robot, task, simulator or benchmark, which
-places it in *information and communication technology*. The student builds on existing open models,
-twin pipelines, simulators and public datasets. The method is tested with the
-same settings on two testbeds of equal status, **robotic manipulation** and **visual navigation**, where
-public data make it possible to count real data exactly without an own robot. Trials on a real robot
-(planned cooperation with a PWr robotics laboratory) validate, but do not decide, the conclusions. The
-topic fits the Department of Artificial Intelligence (K46), whose research groups include representation
-learning. Parameter-efficient fine-tuning of open VLAs runs on the GPU infrastructure available to PWr
+**Why this topic, and why in this discipline.** The object is a data-efficient learning method (active
+learning, learning under distribution shift, uncertainty estimation, adaptation of pretrained models), not
+a particular robot, simulator or benchmark, which places it in *information and communication technology*.
+The student builds on existing open reconstruction pipelines, simulators, pretrained models and public
+datasets. Public scans of real buildings make it possible to count real data exactly without an own robot;
+trials on a real robot (planned cooperation with a PWr robotics laboratory) validate, but do not decide,
+the conclusions. The topic fits the Department of Artificial Intelligence (K46), whose research groups
+include representation learning, and the training runs on the GPU infrastructure available to PWr
 researchers (WCSS, PLGrid).
 
-**Potential application areas:** faster and cheaper deployment of robot foundation models in new places,
-such as robot workcells, warehouses, buildings and inspection sites, with less time spent collecting data
-and supervising real trials; guidance on how much real data to collect for a twin; and, beyond robotics,
-any model adapted on reconstructed or simulated data and used on real sensor data.
+**Potential application areas:** faster and cheaper deployment of mobile robots in new buildings, such as
+warehouses, hospitals, offices and inspection sites, with less time spent collecting data and supervising
+real trials; guidance on how much real data to collect for a twin; and, beyond robotics, any model trained
+on reconstructed or simulated data and used on real sensor data.
 
 <!--
-Wave 15 (issue #31), 2026-09-26: pivot decision v5 (research/pivot-decision.md, top; method content; goal,
+Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+general description; navigation (indoor mobile robots) is the domain; pipeline real data -> twin ->
+navigation models (with world models and foundation models as families, no names) -> real. No model or
+checkpoint names, no VLA/TwinRL detail, no manipulation (v6 "Level of detail", "Domain"). Goal = v6 goal;
+the three stages = v6 "Object" 1-3; thesis = §7 H4 (>= 2x less than the strongest existing
+real-to-sim-to-real approach; new in v4, CONFIRM with the supervisor). "How much real data a twin saves in
+navigation has not been measured systematically" = the Wave 11 claim (crowdedness.md: "real-data-budget
+curves for navigation: none published"), hedged with "to our knowledge" (R3-F11). The generic application
+examples (service, delivery, inspection, assistive robots; warehouses, hospitals, offices) are examples,
+not claims about a work. "Each of these parts is an active research area" = §6 (twins [11-13], world models
+[25, 26], navigation foundation models [21, 22]). The "compute" sentence no longer names VLAs or LoRA.
+-->
+<!--
+(history) Wave 15 (issue #31), 2026-09-26: pivot decision v5 (research/pivot-decision.md, top; method content; goal,
 thesis and v3 scope unchanged). Changes:
 - Para 1: open VLAs as the starting point. "trained on large robot datasets" = OpenVLA arXiv:2406.09246
   ("970k real-world robot demonstrations"), Octo arXiv:2405.12213 ("800k trajectories from the Open

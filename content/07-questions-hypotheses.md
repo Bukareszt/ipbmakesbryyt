@@ -1,53 +1,57 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
-**Goal and thesis.** The goal is **a method** for learning in the real-to-sim-to-real loop that reaches a
-given real-world performance with **significantly less real data** than existing approaches: a pretrained
-open **vision-language-action (VLA) model** fine-tuned sim-first in a digital twin, with one component per
-loop step: (C1) capture guided by a vision-language model (VLM) to the
-task-relevant parts of the twin where it is most uncertain; (C2) uncertainty-aware, parameter-efficient
-fine-tuning in the twin and in a **world model grounded in the twin** that covers the twin's uncertain
-regions; (C3) active selection of a few real data to correct twin, world model and VLA. Thesis = H4;
-H1–H3 = component ablations. Testbeds (equal status): robotic manipulation and visual navigation.
+**Goal.** To develop a method for real-to-sim-to-real learning of **navigation models** for indoor mobile
+robots that reaches a given real-world navigation performance with **significantly less real data** than
+existing approaches. The method has three stages: (1) transfer of real-world data into a digital twin,
+(2) training navigation models in the twin, extended with learned world models and pretrained foundation
+models, and (3) transfer back to reality, where a small amount of real data corrects the twin and the model.
 
-**Tier A protocol (proxy reality).** In each testbed a **reference from a separate, higher-fidelity source
-plays "reality"**, and the twin (neural reconstruction + system identification) is built from a subset of
-a separate, cheaper capture, sharing no data. Navigation: ≥ 20 public indoor scenes (10 held out),
-laser-scan and DSLR reference, twin from the phone capture. Manipulation: a physics simulator with held-out
-physical parameters and its own rendering (the weaker proxy; tier B, published paired sim/real evaluations
-of open robot policies, checks it). Real data (capture = views and interaction samples; trials and demonstrations =
-episodes in the reference) is summed in one operator-time cost. P = task success rate in
-the reference. Tier A decides H1–H4; tiers B and C (real robot) report agreement. Tests: one-sided,
-α = 0.05, scene/seed bootstrap, Holm correction, pre-registered.
+**Thesis.** Deciding at every stage which real data to acquire and where the twin can be trusted makes
+the whole real-to-sim-to-real pipeline for navigation at least twice as economical in real data as
+existing real-to-sim-to-real approaches.
 
-**RQ1 (C1: capture less).** How little capture does a twin need, and can the task guide it?
-**H1.** C1 reaches the P of uniform capture with ≥ 40% less capture. *Decision:* on fitted capture–P
-curves, C_task(τ₁) ≤ 0.6 · C_uniform(τ₁), and the upper 95% bound of C_task / C_recon (task-blind
-uncertainty selection) is < 1; τ₁ = P of uniform capture at its largest budget.
+**How the hypotheses are decided.** P is the navigation success rate in "reality". Real data (capture
+for the twin and real navigation trials) is counted in one operator-time cost. The hypotheses are decided
+on a non-circular proxy reality built from public scans of real buildings, in which "reality" and the twin
+come from separate captures; a real robot validates the direction of the results. Tests, confidence
+bounds and scene counts are given in §9.
 
-**RQ2 (C2: learn in an imperfect twin).** How can fine-tuning be robust to the twin's errors?
-**H2.** At an equal capture budget, (a) C2 (augmentation and sample weights from the twin's uncertainty
-and the representation distance to a few held-out real samples) beats uniform domain randomization, and
-(b) twin + world model beats twin only. *Decision:* (a) mean
-paired P gain ≥ 10 pp on held-out scenes, lower 95% bound > 0; (b) lower 95% bound of the paired gain
-> 0; both at each of ≥ 2 capture budgets.
+**RQ1 (stage 1: real data → twin).** Which real data is worth acquiring to build a twin for navigation?
+**H1.** Capture guided by what matters for the navigation task and by where the twin is uncertain reaches
+the P of uniform capture with **at least 40% less capture**.
 
-**RQ3 (C3: few real data).** Which few real data close the gap?
-**H3.** C3 (trials selected by the gap predicted from twin, world model and VLA uncertainty) reaches
-the target P with ≥ 50% fewer trials than random selection. *Decision:* N_active(τ₃) ≤ 0.5 · N_random(τ₃)
-on fitted trial–P curves, upper 95% bound of the ratio < 1; τ₃ = P of random selection at its largest budget.
+**RQ2 (stage 2: learning in the twin).** How should navigation models be trained in an imperfect twin?
+**H2.** At the same real-data budget, training that follows the twin's uncertainty, with the twin extended
+by a learned world model, gives a P **at least 10 percentage points higher** than training with uniform
+domain randomization.
 
-**RQ4 (the whole method).** How much real data does the method need versus the alternatives?
-**H4 (thesis).** In each testbed, with C1–C3 and their hyperparameters unchanged, the method reaches the
-target P with (a) ≤ 10% of the real data of fine-tuning the same VLA on real data only and (b) ≥ 2× less
-real data than the strongest existing twin fine-tuning pipeline for VLAs (uniform capture, domain
-randomization, RL fine-tuning in the twin, random or failure-driven real trials). *Decision:*
-(a) B_M(τ₄) ≤ 0.1 · B_real(τ₄), upper 95% bound of the ratio < 0.2; (b) B_M(τ₅) ≤ 0.5 · B_pipe(τ₅), upper
-95% bound < 1; τ₄, τ₅ = P of each comparator at its largest budget; H1–H3 effects keep their sign and tier
-B agrees in direction.
+**RQ3 (stage 3: twin → reality).** Which few real data correct the twin and the model best?
+**H3.** Real trials selected by the predicted twin-to-reality gap reach the target P with **at least 50%
+fewer trials** than randomly selected trials.
 
-A hypothesis holds when all its parts pass; a failed one is reported as a curve.
+**RQ4 (the whole pipeline).** How much real data does the method need compared with the alternatives?
+**H4 (thesis).** The whole method reaches the target P with **at least 2× less real data** than the
+strongest existing real-to-sim-to-real approach; learning from real data only is reported for reference.
 
-<!-- Wave 15 (issue #31), 2026-09-26: rewritten after pivot decision v5 (research/pivot-decision.md, top;
+A hypothesis that fails is reported as a measured curve, which still answers its question.
+
+<!-- Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+general description, navigation only, pipeline real -> twin -> navigation models -> real; "formulate them
+simply (one or two sentences each). Keep one clear quantitative threshold per hypothesis; move the details
+(tests, alpha, counts) to §9, briefly." RQ1-RQ4 / H1-H4 numbering and the mapping to stages 1-3 + whole
+pipeline kept. Thresholds kept: H1 >= 40% less capture, H2 >= 10 pp (the H2(a) threshold), H3 >= 50% fewer
+trials, H4 >= 2x less than the strongest existing real-to-sim-to-real approach (the H4(b) threshold; new in
+v4, CONFIRM with the supervisor). Removed from the visible text per v6: H2(b) as a separate part (twin +
+world model vs twin only is now an ablation in §9, no threshold), H4(b) TwinRL/VLA detail (now "existing
+real-to-sim-to-real approaches" in general terms), model names, manipulation testbed, tier B (SIMPLER was
+manipulation-only). H4(a) "<= 10% of real-only data" dropped as a threshold (v6 allows one per hypothesis
+and the goal compares with existing approaches); real-only learning stays as a reported reference curve
+(§9). Fallback if the supervisor prefers the real-only thesis: H4 "at most 10% of the real data of
+learning from real data only" (the v2-v5 H4(a) threshold). Operationalizations (targets tau from each
+comparator's own curve at its largest budget, upper/lower 95% bounds, one-sided alpha = 0.05, Holm,
+scene bootstrap, >= 20 scenes / 10 held out, >= 2 budgets for H2, second-reference sign check) moved to
+§9 unchanged in substance. -->
+<!-- (history) Wave 15 (issue #31), 2026-09-26: rewritten after pivot decision v5 (research/pivot-decision.md, top;
 overrides v4 on method content; goal, thesis, v3 scope unchanged). RQ/H numbering, all thresholds (40%,
 +10 pp, 50%, <= 10%, >= 2x, bounds < 1 / > 0 / < 0.2), tier A/B/C protocol and review-3 fixes unchanged.
 Changes:

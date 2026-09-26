@@ -1,14 +1,26 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-**PL:** Metoda dostrajania modeli wizja–język–działanie w pętli rzeczywistość–symulacja–rzeczywistość
-wymagająca mniej danych rzeczywistych: ukierunkowane na zadanie zbieranie danych do budowy cyfrowych
-bliźniaków, uczenie w bliźniakach i modelach świata oraz aktywny wybór nielicznych danych rzeczywistych
+**PL:** Uczenie modeli nawigacji robotów w cyfrowych bliźniakach przy mniejszej ilości danych
+rzeczywistych: metoda rzeczywistość–symulacja–rzeczywistość
 
-**EN:** A method for fine-tuning vision-language-action models in the real-to-sim-to-real loop that needs
-less real data: task-aware capture for building digital twins, learning in twins and world models, and
-active selection of few real-world data
+**EN:** Learning robot navigation models in digital twins with less real data: a real-to-sim-to-real
+method
 
-<!-- Wave 15 (issue #31), 2026-09-26: rewritten after pivot decision v5 (research/pivot-decision.md, top;
+<!-- Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+"The title is short and general"; no model or checkpoint names; navigation is the domain; the object is a
+method for real-to-sim-to-real learning of navigation models that needs less real data. The title names
+the learned object (robot navigation models), the tool (digital twins), the goal (less real data) and the
+product (a real-to-sim-to-real method). The Wave 15 title (VLA fine-tuning, world models, C1-C3) is kept
+below as history.
+Alternatives for the supervisor:
+- EN "A real-data-efficient real-to-sim-to-real method for learning robot navigation" / PL "Oszczędna pod
+  względem danych rzeczywistych metoda uczenia nawigacji robotów w pętli rzeczywistość–symulacja–
+  rzeczywistość"
+- EN "From real data to digital twins and back: learning robot navigation with less real data" / PL "Od
+  danych rzeczywistych do cyfrowego bliźniaka i z powrotem: uczenie nawigacji robotów przy mniejszej
+  ilości danych rzeczywistych" -->
+
+<!-- (history) Wave 15 (issue #31), 2026-09-26: rewritten after pivot decision v5 (research/pivot-decision.md, top;
 method content; goal, thesis and v3 scope unchanged). The task allowed naming VLA and world models "only if
 it stays readable". The title keeps the v4 structure (one method, needs less real data, the loop, C1-C3)
 and adds the object being fine-tuned (vision-language-action models) and, in C2, world models. "Pretrained"

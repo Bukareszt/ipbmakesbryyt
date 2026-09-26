@@ -1,52 +1,58 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
 The dissertation is in **information and communication technology** (*informatyka techniczna i
-telekomunikacja*), area machine learning. Its object is the task- and domain-agnostic **real-to-sim-to-real
-learning loop**: building a digital twin (appearance, geometry and, where
-relevant, physical parameters) from limited real data, fine-tuning a policy (here a pretrained VLA) in it and transferring the result
-back to reality; it develops a method that makes this loop work with **less real data**. Building twins,
-world models, simulators or benchmarks, training foundation models from scratch, control design and mechanical engineering are not the object of the research;
-the student uses existing tools, open models and public data.
+telekomunikacja*), area machine learning. Its object is the **real-to-sim-to-real pipeline for navigation
+models**: transferring real-world data into a digital twin, training navigation models in it and
+transferring them back to reality. Building simulators, world models, foundation models or benchmarks
+from scratch, control design and mechanical engineering are not the object of the research; the student
+uses existing tools, pretrained models and public data.
 
 **Key original contribution: the method.** To our knowledge, the first method for real-to-sim-to-real
-learning that treats the real data of the whole loop as **one budget allocated actively at every step**
-when a pretrained open vision-language-action (VLA) model is fine-tuned sim-first in a digital twin and in
-a world model grounded in it. It targets a given real-world performance with at most a tenth of the real
-data of real-only fine-tuning of the same VLA and at least two times less than the strongest existing twin
-fine-tuning pipeline (RQ4, H4), with the same settings in robotic manipulation and visual navigation. Fine-tuning VLAs in simulation and in world models is not new; spending
-the loop's real data where it matters is. The three components are parts of
-this one method, each tested as an ablation at its own step:
+learning of navigation models that treats the real data of the whole pipeline as **one budget spent where
+it matters at every stage**. It targets a given real-world navigation performance with at least two times
+less real data than the strongest existing real-to-sim-to-real approach (RQ4, H4). Building twins,
+training in simulation and using world models or foundation models are not new; deciding which real data
+the pipeline needs, and measuring how much it saves, is. The three stages are parts of this one method,
+each tested at its own step:
 
-1. **C1, capture less (RQ1, H1).** A vision-language model picks the task-relevant objects and regions
-   from the instruction and scene, and capture (views for appearance and geometry, interactions for
-   physical parameters) goes where the twin is most uncertain in them; compared with uniform and
-   task-blind selection.
-2. **C2, learn robustly in an imperfect twin (RQ2, H2).** Parameter-efficient reinforcement and
-   imitation fine-tuning with augmentation and sample weights from the twin's uncertainty and the
-   representation distance to a few real samples, and a twin-grounded world model covering the twin's
-   uncertain regions; compared with uniform domain randomization and with the twin alone.
-3. **C3, transfer with few real data (RQ3, H3).** Active selection of real-world trials by the twin-to-real
-   gap predicted from the uncertainty of twin, world model and VLA, used to correct all three; compared
+1. **Stage 1, real data → twin (RQ1, H1).** Capture of real data guided by what matters for the
+   navigation task and by where the twin is still uncertain, for both appearance and geometry and the
+   physical properties needed for navigation; compared with uniform and task-blind capture.
+2. **Stage 2, learning in the twin (RQ2, H2).** Training of navigation models that follows the twin's
+   uncertainty, with the twin extended by a learned world model and the model initialized from pretrained
+   foundation models; compared with uniform domain randomization.
+3. **Stage 3, twin → reality (RQ3, H3).** Selection of the few real trials that the predicted
+   twin-to-reality gap marks as most informative, used to correct both the twin and the model; compared
    with random selection.
 
 **How the method is evaluated and released** (supporting the method, not contributions in their own
-right). Budget–performance curves of the method against real-only fine-tuning and the existing pipeline,
-which give the "exchange rate" between twin and real data; a proxy-reality protocol on public data that counts real data
-exactly without a robot (a separate, higher-fidelity reference as "reality"), applied in each domain; and open-source code of the
-method, built on existing open models, twin pipelines and simulators.
+right). Budget–performance curves of the method against existing real-to-sim-to-real approaches and
+learning from real data only, which give the "exchange rate" between twin and real data; a proxy-reality
+protocol on public scans of real buildings that counts real data exactly without a robot (a separate,
+higher-fidelity reference plays "reality"); and open-source code of the method, built on existing
+reconstruction pipelines, simulators and pretrained models.
 
 **Significance for the discipline.** Real target-domain data is the main cost of deploying learned
 systems; methods that decide where it is worth spending, and a measured estimate of how much of it a twin
-can replace, are relevant to active learning, learning under distribution shift, uncertainty
-estimation and adaptation of foundation models in general, beyond robotics.
+can replace, are relevant to active learning, learning under distribution shift, uncertainty estimation
+and adaptation of pretrained models in general, beyond navigation.
 
 **Dissemination.** Results are planned for peer-reviewed conferences worth 200 points and assigned to ITiT
 on the ministerial list of 5.01.2024: NeurIPS, ICML and ICLR (machine learning) and CVPR (computer vision),
-with ICCV and ECCV for resubmissions. P1 (C1 and first C2 results, RQ1–RQ2) targets
-NeurIPS 2027; P2 (C3, RQ3) ICML 2028 or CVPR 2028; P3 (the whole method against real-only fine-tuning and the
-existing pipeline in both domains, RQ4) NeurIPS 2028, with ICLR 2029 as the fallback.
+with ICCV and ECCV for resubmissions. P1 (stage 1 and first stage 2 results, RQ1–RQ2) targets NeurIPS
+2027; P2 (stage 3, RQ3) ICML 2028 or CVPR 2028; P3 (the whole pipeline against existing approaches, RQ4)
+NeurIPS 2028, with ICLR 2029 as the fallback.
 
-<!-- Wave 15 (issue #31), 2026-09-26: pivot decision v5 (research/pivot-decision.md, top; method content;
+<!-- Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+general description, navigation only, stages 1-3 + whole pipeline. Key contribution = the method (v4
+framing kept); its claim = §7 H4 (>= 2x less than the strongest existing real-to-sim-to-real approach,
+CONFIRM with the supervisor). Novelty guardrail kept in general terms ("Building twins, training in
+simulation and using world models or foundation models are not new"; v5 crowdedness,
+research/vla-wm-crowdedness.md). Removed per v6: VLA/VLM/LoRA wording, TwinRL/RialTo-style baseline
+detail, manipulation testbed. Real-only learning kept only as a reported curve (§7, §9). Papers P1-P3,
+venues and the review-3 R3-F3 mapping unchanged, content adapted to navigation. "To our knowledge" kept
+(R3-F11). -->
+<!-- (history) Wave 15 (issue #31), 2026-09-26: pivot decision v5 (research/pivot-decision.md, top; method content;
 goal, thesis, v3 scope and v4 framing unchanged: the key contribution is the method, C1-C3 are its parts,
 curves/protocol/code are how it is evaluated and released). Changes:
 - Key contribution now names the setting of v5: a pretrained open VLA fine-tuned sim-first in the twin and

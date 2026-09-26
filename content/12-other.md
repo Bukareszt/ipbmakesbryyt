@@ -5,39 +5,50 @@
 | Year | Papers (planned submission, 200 points each) | Code | Grants | Mobility, events |
 |---|---|---|---|---|
 | 1 (2025/26) | — | — | — | — |
-| 2 (2026/27) | P1 (method components C1 and first C2 results, RQ1–RQ2): NeurIPS 2027, May 2027 (§11) | Loop on tier A | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
-| 3 (2027/28) | P2 (component C3, few real data, RQ3): ICML or CVPR 2028; P3 (the whole method in both testbeds, RQ4): NeurIPS 2028 | C3 code | — | Mid-term; 3-month visit (sem. 6) |
+| 2 (2026/27) | P1 (stage 1 and first stage 2 results, RQ1–RQ2): NeurIPS 2027, May 2027 (§11) | Pipeline on public scans | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
+| 3 (2027/28) | P2 (stage 3, few real data, RQ3): ICML or CVPR 2028; P3 (the whole pipeline, RQ4): NeurIPS 2028 | Stage 3 code | — | Mid-term; 3-month visit (sem. 6) |
 | 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Method release | — | Dissertation |
 
 **Foreign research visit (candidate hosts, not yet contacted).** (1) Z. Kira's group, Georgia Tech:
-EmbodiedSplat [5]. (2) Multi-robot Systems Lab, Stanford University (M. Schwager): Gaussian-splatting scene
-models. A European host (Erasmus+ route) working on active reconstruction or sim-to-real
-transfer, and a foreign co-author for P2, are sought with the supervisor in sem. 4.
+EmbodiedSplat [11]. (2) Multi-robot Systems Lab, Stanford University (M. Schwager): Gaussian-splatting
+scene models. A European host (Erasmus+ route) working on active reconstruction or sim-to-real transfer,
+and a foreign co-author for P2, are sought with the supervisor in sem. 4.
 
 **Collaboration at PWr.** Robot validation is planned with the K29 *Denali* laboratory (Pioneer 3-DX,
-Jaguar 4x4, ROS 2) and, if available, a PWr manipulator; a written agreement is task T3.2 (Nov 2026).
+Jaguar 4x4, ROS 2); a written agreement is task T3.2 (Nov 2026).
 
 **Risks and mitigation** (semester affected).
-- *One component gives no gain* (3–5): its budget curve still answers its RQ; H4 is still tested.
+- *One stage gives no gain* (3–5): its budget curve still answers its RQ; H4 is still tested.
 - *Twin uncertainty is poorly calibrated* (3–4): two estimators and an ensemble fallback.
-- *Proxy reality is easier than reality* (4–7): separate sources for twin and reference; tiers B and C
-  check the direction (§9).
-- *Real-only fine-tuning is strong at small budgets* (6): gains saturate quickly in a known location
-  [13]; H4 is reported as a full budget curve.
-- *Compute* (3–7): ~23k H100-hours (§9); WCSS and PLGrid grants in sem. 3; LoRA and small VLAs for
-  development; if short, fewer seeds and one VLA.
-- *Crowded field, scooping* (3–6): VLA fine-tuning in simulation and world models is crowded, and twin
-  RL for VLAs exists [17, 21]; we claim only the real-data budget of the loop; early preprints.
-- *Licences, robot access* (3, 5, 7): OpenVLA weights carry Llama 2 terms and some checkpoints are
-  gated, so openpi's π0 is the fallback; without a robot, tier C moves by a semester (tier A decides).
+- *Proxy reality is easier than reality* (4–7): separate captures for twin and reference, a second
+  reference and robot validation check the direction (§9).
+- *Learning from real data only is strong at small budgets* (6): in navigation, gains from more data in a
+  known location saturate quickly [8]; H4 is reported as a full budget curve.
+- *Compute* (3–7): WCSS and PLGrid grants in sem. 3; smaller models for development; fewer seeds.
+- *Crowded field, scooping* (3–6): twins, world models and fine-tuning in simulation are active areas,
+  with targeted or real rollouts [27, 28]; we claim only the real-data budget; early preprints.
+- *Licences, robot access* (3, 5, 7): gated or restricted models have open alternatives; without a
+  robot, validation moves by a semester (the proxy reality decides).
 - *Rejection at a top venue* (4–7): each paper has a resubmission path inside the 200-point set 2–4 months
   later (NeurIPS → CVPR → ICML → ECCV/ICCV).
+
+**Future applicability.** The method is not specific to navigation; robotic manipulation is a natural
+extension after the dissertation.
 
 **Prior work (background only).** A pre-PhD NLP paper (ACL 2025 SRW, forecasting from hidden states); not
 part of the dissertation.
 
 **Ethics and data.** Own captures are anonymized (GDPR); public datasets are used under their licences.
 
+<!--
+Wave 16-W (issue #33), 2026-09-26: pivot decision v6 (navigation only; manipulation "at most as future
+applicability in §12"). Outputs table: P1-P3 by stage (P1 = stage 1 + first stage 2, P2 = stage 3, P3 =
+whole pipeline), venues unchanged. PWr manipulator removed from the collaboration line (manipulation is no
+longer a testbed). Risks: "component" -> "stage"; proxy-reality risk without tier B (manipulation-only);
+real-only risk cites Suomela [8] (new §6 numbering); compute risk without the ~23k H100-hour VLA estimate;
+scooping cites TwinRL [27] and VLAW [28] in general terms; licence risk generalized (no OpenVLA/Llama 2
+detail). New "Future applicability" paragraph (manipulation). EmbodiedSplat [5] -> [11].
+-->
 <!--
 Wave 15-U (issue #32), 2026-09-26: pivot decision v5 (VLA/VLM + world models). Outputs table unchanged; the
 line "P1-P3 present one method ... P4 is optional" was cut for the page limit (the table already says it). Risks: "real-only learning" -> "real-only fine-tuning" of the same pretrained VLA

@@ -1,99 +1,121 @@
 # §6 Zarys aktualnego stanu badań / State of the art (max 2 pages)
 
-**Real-to-sim-to-real with digital twins.** A real-to-sim-to-real loop builds a simulation of the target
-scene or object (a *digital twin*) from real data, learns a policy in it and transfers it back. Generic
-simulators such as Habitat [1] train at scale, but not in the target scene. 3D Gaussian Splatting (3DGS)
-[2] turns a short camera capture into a photorealistic twin, and policies trained in such twins transfer
-in manipulation (RialTo [3], SplatSim [4]) and navigation (EmbodiedSplat [5]); GPU simulators ship twin
-environments (ManiSkill3 [6]). Physical parameters are inferred from real trajectories as a posterior
-(BayesSim [7]). Building a twin is no longer the bottleneck; **real data** is: the capture that builds the
-twin and the real trials that correct it. Current systems fix this cost by hand;
-RialTo's ablation over 0–15 real demonstrations is the closest published analysis of a real-data budget.
+**Simulation and sim-to-real transfer in navigation.** Navigation models for mobile robots are commonly
+trained in simulators such as Habitat [1], where large-scale reinforcement learning essentially solves
+point-goal navigation after billions of steps [2]. Transfer to the real world is the open part:
+simulation success does not always predict real success, which motivated the Sim-vs-Real Correlation
+Coefficient [3], and lower-fidelity simulation can even transfer better [4]. Domain randomization varies
+appearance [5] or dynamics [6] uniformly within hand-set ranges, and real rollouts can adapt the
+simulation parameter distribution [7]. Real data still matters: in navigation, more data from a known
+location saturates quickly [8], and co-training on simulated and real data raises real success [9].
 
-**Pretrained vision-language-action (VLA) policies.** Open VLA models map camera images and an instruction
-to actions: OpenVLA [8], π0 [9] and, for navigation, NaVILA [10].
-They need fine-tuning for a new setup. Low-rank adaptation (LoRA) [11] makes this feasible on a single GPU
-[8], and the OFT recipe [12] raises success and speed. Fine-tuning still consumes real demonstrations: in
-navigation, more data from a known location saturates quickly [13], and sim-and-real co-training raises
-real success by 38% on average [14].
+**From real data to digital twins.** Neural scene reconstruction, above all 3D Gaussian Splatting (3DGS)
+[10], turns a short real capture into a photorealistic model of a scene. Twins built this way train
+navigation models that transfer: EmbodiedSplat [11] reconstructs rooms from a phone capture and fine-tunes
+image-goal navigation in Habitat, Vid2Sim [12] builds interactive simulators for urban navigation from
+monocular video, and GaussGym [13] trains navigation and locomotion from pixels in reconstructed scenes.
+RialTo [14] shows the same loop for manipulation, building twins from small amounts of real data. The
+physical part of a twin can be identified from real trajectories as a posterior [15]. Datasets such as
+ScanNet++ [16] pair laser scans and DSLR images with a separate phone capture of the same scene. Building a
+twin is no longer the bottleneck; in these works the amount and choice of the real data that builds and
+corrects it are fixed by hand.
 
-**Fine-tuning VLAs in simulation, twins and world models (crowded).** Reinforcement learning (RL)
-fine-tuning of VLAs in simulation improves on supervised fine-tuning, especially under distribution shift
-[15, 16]. TwinRL [17] fine-tunes a VLA with RL in a twin reconstructed from a smartphone capture and uses
-the twin to find failure-prone configurations for targeted real rollouts, reporting 20 minutes of on-robot
-interaction. Learned **world models** serve as the simulator instead: open world foundation models are
-post-trained per setup (Cosmos [18]; NWM [19] for navigation), VLAs are optimized on-policy inside them
-without real interaction [20], and VLAW [21] improves a world model with real rollouts and then the VLA
-with its synthetic data. GigaWorld-0 [22] combines 3DGS reconstruction, system identification and video
-generation into a data engine for VLAs. Open vision-language models (VLMs) such as Qwen2.5-VL [23] can
-judge task success [24]. Here they are components and baselines, each reported at a fixed, hand-chosen
-real-data budget.
+**Capturing the right real data.** Active view selection chooses the images that improve a reconstruction
+most: FisherRF [17] maximizes expected information gain, and Bayes' Rays [18] estimates an uncertainty
+field for a trained radiance field. Risk-aware view acquisition [19] weights FisherRF by safety-critical
+regions for navigation, and AREA3D [20] adds vision-language guidance. Their objective is reconstruction
+quality or safe exploration, not the success of a navigation model trained in the twin; we found at most
+two task-aware capture papers a year in 2023–2026.
 
-**Capturing less: active reconstruction and identification.** Active view selection chooses the images
-that improve a reconstruction most: FisherRF [25] maximizes expected information gain on radiance-field
-parameters, and Bayes' Rays [26] estimates an uncertainty field for a trained radiance field. Risk-aware
-view acquisition [27] weights FisherRF by safety-critical regions, ASID [28] designs exploration that
-identifies physical parameters from little real data, and AREA3D [29] adds VLM guidance to active
-reconstruction. Their objective is reconstruction quality, safe exploration or parameter accuracy, not the
-success of a policy fine-tuned in the twin; we found at most two task-aware capture papers a year in
-2023–2026. ScanNet++ [30] pairs laser scans and DSLR images with a separate phone stream, so budgets can
-be varied offline.
+**Foundation models and world models.** Pretrained navigation foundation models generalize across robots
+and environments (GNM [21], ViNT [22]), and vision-language-action models map images and instructions to
+actions, also for navigation [23, 24]; they still need data from the target place to work there. Learned
+world models predict future observations and can serve as simulators: navigation world models plan by
+imagining trajectories [25], and open world foundation models are post-trained per setup [26]. Recent
+work fine-tunes such models in a twin reconstructed from a phone capture and uses it to target real
+rollouts [27], or improves a world model with real rollouts [28]; each reports results at a fixed,
+hand-chosen amount of real data. Frozen visual encoders [29] make twin and real observations comparable,
+and prediction-powered inference [30] estimates real performance from many cheap predictions and a few
+real labels.
 
-**Learning in an imperfect twin, and collecting few real data.** Domain randomization varies appearance
-[31] or dynamics [32] uniformly within hand-set ranges; frozen encoders (DINOv2 [33]) make twin and real
-samples comparable. A twin's own reconstruction uncertainty is rarely used as a training signal, and we
-found no world model aimed at the regions where the twin is uncertain. On the real side,
-prediction-powered inference [34] combines many cheap predictions with a few labels, and SIMPLER [35]
-shows on paired simulated and real evaluations that simulation can track the real performance of
-manipulation policies. TwinRL picks failure-prone configurations for the policy, and VLAW corrects the
-world model with rollouts that are not selected; neither selects the few real trials by the joint
-uncertainty of twin, world model and policy under a counted budget.
-
-**Research gap.** Real-to-sim-to-real fine-tuning of VLAs works, but its real-data cost is set by hand,
-spent uniformly and measured in one domain per study. Missing is one method that allocates it actively at
-every step: (i) VLM-guided, task-aware capture of appearance and physical parameters, judged by task
-success (RQ1); (ii) fine-tuning in the twin and in a world model grounded in the twin, driven by the twin's
-uncertainty (RQ2); (iii) active selection of the few real data that correct twin, world model and VLA
-(RQ3); and (iv) evidence that it needs less real data than real-only fine-tuning of the same VLA and the
-strongest existing twin pipeline, measured the same way in manipulation and navigation (RQ4).
+**Research gap.** Real-to-sim-to-real learning of navigation models works, but the real data it consumes
+is set by hand and spent uniformly at every stage. Missing is one method that decides, for navigation:
+(i) which real data to acquire to build the twin (RQ1); (ii) how to train in an imperfect twin, extended
+with world models and foundation models, so that its errors do not transfer (RQ2); (iii) which few real
+data to collect to correct twin and model (RQ3); and (iv) evidence that the whole pipeline needs less real
+data than existing real-to-sim-to-real approaches (RQ4).
 
 ### References
 [1] M. Savva et al., "Habitat," ICCV, 2019.
-[2] B. Kerbl et al., "3D Gaussian Splatting," ACM TOG, 2023.
-[3] M. Torne et al., "Reconciling Reality through Simulation," RSS, 2024.
-[4] M. N. Qureshi et al., "SplatSim," ICRA, 2025.
-[5] G. Chhablani et al., "EmbodiedSplat," ICCV, 2025.
-[6] S. Tao et al., "ManiSkill3," RSS, 2025.
-[7] F. Ramos et al., "BayesSim," RSS, 2019.
-[8] M. J. Kim et al., "OpenVLA," CoRL, 2024.
-[9] K. Black et al., "π0," arXiv:2410.24164, 2024.
-[10] A.-C. Cheng et al., "NaVILA," arXiv:2412.04453, 2024.
-[11] E. J. Hu et al., "LoRA," ICLR, 2022.
-[12] M. J. Kim, C. Finn, P. Liang, "Fine-Tuning Vision-Language-Action Models…," RSS, 2025.
-[13] L. Suomela et al., "Data Scaling for Navigation…," IEEE RA-L, 2026.
-[14] A. Maddukuri et al., "Sim-and-Real Co-Training," RSS, 2025.
-[15] H. Li et al., "SimpleVLA-RL," arXiv:2509.09674, 2025.
-[16] J. Liu et al., "What Can RL Bring to VLA Generalization?," NeurIPS, 2025.
-[17] Q. Xu et al., "TwinRL," arXiv:2602.09023, 2026.
-[18] N. Agarwal et al., "Cosmos World Foundation Model Platform…," arXiv:2501.03575, 2025.
-[19] A. Bar et al., "Navigation World Models," CVPR, 2025.
-[20] F. Zhu et al., "WMPO," arXiv:2511.09515, 2025.
-[21] Y. Guo et al., "VLAW," arXiv:2602.12063, 2026.
-[22] GigaWorld Team, "GigaWorld-0," arXiv:2511.19861, 2025.
-[23] S. Bai et al., "Qwen2.5-VL Technical Report," arXiv:2502.13923, 2025.
-[24] Y. Du et al., "Vision-Language Models as Success Detectors," CoLLAs, 2023.
-[25] W. Jiang et al., "FisherRF," ECCV, 2024.
-[26] L. Goli et al., "Bayes' Rays," CVPR, 2024.
-[27] G. Liu et al., "Risk-Aware Active View Acquisition…," arXiv:2403.11396, 2024.
-[28] M. Memmel et al., "ASID," arXiv:2404.12308, 2024.
-[29] T. Xu et al., "AREA3D," arXiv:2512.05131, 2025.
-[30] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
-[31] J. Tobin et al., "Domain Randomization…," IROS, 2017.
-[32] X. B. Peng et al., "Sim-to-Real Transfer… with Dynamics Randomization," ICRA, 2018.
-[33] M. Oquab et al., "DINOv2," TMLR, 2024.
-[34] A. N. Angelopoulos et al., "Prediction-Powered Inference," Science, 2023.
-[35] X. Li et al., "Evaluating Real-World Robot Manipulation Policies…," CoRL, 2024.
+[2] E. Wijmans et al., "DD-PPO," ICLR, 2020.
+[3] A. Kadian et al., "Sim2Real Predictivity," IEEE RA-L, 2020.
+[4] J. Truong et al., "Rethinking Sim2Real," CoRL, 2022.
+[5] J. Tobin et al., "Domain Randomization…," IROS, 2017.
+[6] X. B. Peng et al., "Sim-to-Real Transfer… with Dynamics Randomization," ICRA, 2018.
+[7] Y. Chebotar et al., "Closing the Sim-to-Real Loop," ICRA, 2019.
+[8] L. Suomela et al., "Data Scaling for Navigation…," IEEE RA-L, 2026.
+[9] A. Maddukuri et al., "Sim-and-Real Co-Training," RSS, 2025.
+[10] B. Kerbl et al., "3D Gaussian Splatting," ACM TOG, 2023.
+[11] G. Chhablani et al., "EmbodiedSplat," ICCV, 2025.
+[12] Z. Xie et al., "Vid2Sim," CVPR, 2025.
+[13] A. Escontrela et al., "GaussGym," arXiv:2510.15352, 2025.
+[14] M. Torne et al., "Reconciling Reality through Simulation," RSS, 2024.
+[15] F. Ramos et al., "BayesSim," RSS, 2019.
+[16] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
+[17] W. Jiang et al., "FisherRF," ECCV, 2024.
+[18] L. Goli et al., "Bayes' Rays," CVPR, 2024.
+[19] G. Liu et al., "Risk-Aware Active View Acquisition…," arXiv:2403.11396, 2024.
+[20] T. Xu et al., "AREA3D," arXiv:2512.05131, 2025.
+[21] D. Shah et al., "GNM," ICRA, 2023.
+[22] D. Shah et al., "ViNT," CoRL, 2023.
+[23] M. J. Kim et al., "OpenVLA," CoRL, 2024.
+[24] A.-C. Cheng et al., "NaVILA," arXiv:2412.04453, 2024.
+[25] A. Bar et al., "Navigation World Models," CVPR, 2025.
+[26] N. Agarwal et al., "Cosmos World Foundation Model Platform…," arXiv:2501.03575, 2025.
+[27] Q. Xu et al., "TwinRL," arXiv:2602.09023, 2026.
+[28] Y. Guo et al., "VLAW," arXiv:2602.12063, 2026.
+[29] M. Oquab et al., "DINOv2," TMLR, 2024.
+[30] A. N. Angelopoulos et al., "Prediction-Powered Inference," Science, 2023.
 
+<!-- Wave 16-W (issue #33), 2026-09-26: rewritten after pivot decision v6 (research/pivot-decision.md, top):
+general description; navigation (indoor mobile robots) is the domain; pipeline real data -> twin ->
+navigation models (extended with world models and foundation models) -> real. Manipulation-only works
+dropped from the visible text except RialTo [14] (general real-to-sim-to-real loop) and Maddukuri [9]
+(general sim-and-real co-training result, used in §12). 30 refs (was 35); no new references: every entry
+was verified in an earlier wave (sources below), none was re-looked-up today.
+Reused from the Wave 15 list: Habitat, 3DGS, RialTo, EmbodiedSplat, BayesSim, OpenVLA, NaVILA, Suomela,
+Maddukuri, TwinRL, Cosmos, NWM, VLAW, FisherRF, Bayes' Rays, Liu et al. risk-aware, AREA3D, ScanNet++,
+Tobin, Peng, DINOv2, PPI (verification in the Wave 15/13/11 comments below and in
+research/vla-wm-crowdedness.md §2).
+Reinstated from earlier waves (verification in research/references-check.md and the Wave 11 comment below):
+- DD-PPO (Wijmans et al., ICLR 2020): references-check.md row 5, "Abstract confirms 2.5 billion steps and
+  'essentially solves' PointGoal nav" -> "essentially solves point-goal navigation after billions of steps".
+- Kadian et al., Sim2Real Predictivity, RA-L 2020, doi:10.1109/LRA.2020.3013848: row 12, metric name
+  "Sim-vs-Real Correlation Coefficient (SRCC)" from the abstract.
+- Truong et al., Rethinking Sim2Real, CoRL 2022: row 13, "lower fidelity transfers better for navigation".
+- Chebotar et al., Closing the Sim-to-Real Loop, ICRA 2019, doi:10.1109/ICRA.2019.8793789: "adapt the
+  simulation parameter distribution using a few real world roll-outs" (Wave 11 comment below).
+- Vid2Sim (Xie et al., CVPR 2025, doi:10.1109/CVPR52734.2025.00155): row 30, "Monocular video ->
+  interactive sim for urban navigation".
+- GaussGym (Escontrela et al., arXiv:2510.15352): review-3 R3-F15, S2 title "learning locomotion from
+  pixels" -> "navigation and locomotion".
+- GNM (Shah et al., ICRA 2023, doi:10.1109/ICRA48891.2023.10161227) and ViNT (Shah et al., CoRL 2023,
+  arXiv:2306.14846, "Accepted for oral presentation at CoRL 2023"): references-check.md rows 6-7 (Wave 1-2
+  list). "generalize across robots and environments": arXiv API abstracts re-read 2026-09-26, GNM
+  arXiv:2210.03370 ("broad generalization across environments and embodiments", comment "Presented at
+  ICRA 2023"), ViNT ("a foundation model ... for mobile robotics", "hundreds of hours of robotic navigation
+  from a variety of different robotic platforms").
+- EmbodiedSplat wording (phone capture, GS meshes in Habitat, image-goal navigation fine-tuning) from the
+  arXiv:2509.17430 abstract (review-3 evidence list).
+- NWM "plan by imagining trajectories": research/world-models.md row NWM ("plans navigation by simulating
+  trajectories (abstract)") and §167 ("plans by imagining trajectories").
+Dropped from the Wave 15 list (VLA/manipulation detail removed by v6): pi0, LoRA, OFT, SimpleVLA-RL,
+Liu et al. (RL for VLA), WMPO, GigaWorld-0, Qwen2.5-VL, Du et al., ASID, SplatSim, ManiSkill3, SIMPLER.
+Old (Wave 15) -> new numbers: 1->1, 2->10, 3->14, 5->11, 7->15, 8->23, 10->24, 13->8, 14->9, 17->27,
+18->26, 19->25, 21->28, 25->17, 26->18, 27->19, 29->20, 30->16, 31->5, 32->6, 33->29, 34->30.
+"we found at most two task-aware capture papers a year" = niches-data.md N1 (2/2/0/2), unchanged.
+Reference numbers in the older comments below are pre-Wave-16.
+-->
 <!-- Wave 15-U (issue #32), 2026-09-26: pivot decision v5 (VLA/VLM + world models, sim-first fine-tuning in
 the twin). New paragraphs on open VLAs + PEFT and on VLA fine-tuning in simulation / twins / world models
 (flagged as crowded, per the v5 novelty guardrail; research/vla-wm-crowdedness.md, S2 counts Q1 1/3/40/126,

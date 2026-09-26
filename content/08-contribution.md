@@ -7,13 +7,14 @@ it and transferring the model back to reality. Building simulators, world models
 benchmarks from scratch, control design and mechanical engineering are not the object of the research;
 the student uses existing tools, pretrained models and public data.
 
-**Key original contribution: a method that reduces real data.** To our knowledge, the first method for
-real-to-sim-to-real robot learning that reduces the real data of the whole loop by acting at every one of
-its steps, with the first measurement, in one unit and on one budget grid, of how much real data such a
-loop needs. Its claim: a given real-world performance with at least two times less real data than the
-strongest existing real-to-sim-to-real approach (RQ4, H4). Building twins, training in
-simulation and using world models or foundation models are not new; reducing the real data they need is.
-The three reduction mechanisms are parts of this one method, each tested at its own step:
+**Key original contribution: a scientific answer to how real data should be spent.** (i) A formulation
+of the real-to-sim-to-real loop as sequential experimental design over a real-data budget, with one
+criterion (expected reduction of the twin-to-reality performance gap per unit cost) and a
+domain-adaptation-style bound [38] that states when twin data can replace real data; (ii) a method that
+instantiates this criterion at every step of the loop and reaches a given real-world performance with at
+least two times less real data than the strongest existing approach (RQ4, H4); (iii) empirical knowledge
+of when and why the savings arise. What is new is not the twin but the principled spending of real data. The three
+mechanisms are instances of the criterion, each tested at its own step:
 
 1. **Less capture (RQ1, H1).** Capture of real data guided by what matters for the task and by where the
    twin is still uncertain, for appearance, geometry and the physical properties the task needs; compared
@@ -28,8 +29,7 @@ The three reduction mechanisms are parts of this one method, each tested at its 
 **Generalization.** H1–H4 are decided in indoor robot navigation; the same method, unchanged, is then run
 in robotic manipulation as a generalization test, with no separate thresholds.
 
-**How the method is evaluated and released** (supporting the method, not contributions in their own
-right). Curves of success against operator minutes on a shared budget grid, against pre-registered
+**How it is evaluated and released** (supporting, not contributions in their own right). Curves of success against operator minutes on a shared budget grid, against pre-registered
 baselines and learning from real data only; a proxy-reality protocol on public scans of real buildings
 that counts real data exactly without a robot (a separate, higher-fidelity reference with hidden physical
 parameters plays "reality"), validated against a real robot; and open code, configurations, scene lists,

@@ -1,43 +1,45 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
-**Goal.** To develop a method that **reduces the amount of real data** needed to teach a robot a task
-through the real-to-sim-to-real loop: real data → digital twin → training in the twin → transfer back to
-reality. The method has three reduction mechanisms, one per step of the loop: (1) **less capture**,
-(2) **better use of simulation**, (3) **fewer real trials**. Indoor robot navigation is the main testbed,
-on which H1–H4 are decided; robotic manipulation is the generalization test of the same method, unchanged.
+**Scientific problem.** Learning with a digital twin is learning under distribution shift in which the
+learner can *buy* target-domain (real) data at a cost, at three points of the real-to-sim-to-real loop:
+to build the twin, to train in it and to correct the model in reality. How to allocate a scarce real-data
+budget across these points so that the loss of real-world performance is smallest is an open problem of
+sequential experimental design [36, 37] that has not been posed for the whole loop.
 
-**Thesis.** Capturing only what the task needs and the twin lacks, training so that the twin's errors do
-not hurt, and running only the real trials that correct the twin and the model most makes the whole
-real-to-sim-to-real loop at least twice as economical in real data as the strongest existing
-real-to-sim-to-real approach.
+**Principle and theoretical claim.** The loop is formalised as sequential Bayesian experimental design in
+which each real datum (a view, an interaction, a trial) is valued by its **expected reduction of the
+twin-to-reality performance gap per unit cost**. Following domain-adaptation theory [38], the real
+performance of a model trained in the twin is bounded by its twin performance plus a discrepancy term on
+the states the task visits; the dissertation derives a task-weighted, uncertainty-based estimate of this
+term and the conditions under which spending real data on it pays off. The three mechanisms of the method,
+(1) less capture, (2) better use of simulation, (3) fewer real trials, are instances of this one criterion.
 
-**How the hypotheses are decided.** All real effort is counted in one unit, **operator minutes** (capture,
-demonstrations and on-robot trials with resets), and every approach is evaluated on the same budget grid.
-P is the task success rate in "reality"; the target P is defined as a fraction of the baseline's plateau.
-The hypotheses are decided on a non-circular proxy reality built from public scans of real buildings, in
-which "reality" and the twin come from separate captures; every baseline is pre-registered; a real robot
-validates the direction of the results and the validity of the proxy. Tests, bounds and counts are in §9.
+**Thesis.** Allocating real data by its expected gap reduction, rather than uniformly or by hand, makes the
+loop at least twice as economical in real data as the strongest existing real-to-sim-to-real approach.
 
-**RQ1 (step 1: real data → twin).** Which real data is worth acquiring to build the twin?
-**H1.** Capture guided by what matters for the task and by where the twin is uncertain reaches the P of
-uniform capture with **at least 40% less capture**.
+**How the hypotheses are decided.** Real effort is counted in **operator minutes** on one budget grid; P is
+the success rate in "reality" and the target P a fraction of the baseline's plateau. Decisions are made on a
+non-circular proxy reality from public scans of real buildings, with pre-registered baselines; a real
+robot validates the direction and the proxy. Navigation decides H1–H4; manipulation tests the same method,
+unchanged. Details are in §9.
 
-**RQ2 (step 2: learning in the twin).** How should the model be trained so that the twin's errors do not
-hurt? **H2.** At the same real-data budget, training that follows the twin's uncertainty gives a P
-**at least 10 percentage points higher** than uniform domain randomization, in a pre-registered difficulty
-regime where the baseline succeeds in at most about 75% of episodes; filling the twin's gaps with a
-learned world model is an ablation of this step.
+**RQ1 (step 1).** Which real data is worth acquiring to build the twin? **H1.** Capture chosen by the
+criterion reaches the P of uniform capture with **at least 40% less capture**.
 
-**RQ3 (step 3: twin → reality).** Which few real trials correct the twin and the model best?
-**H3.** Real trials selected by the predicted twin-to-reality gap reach the target P with **at least 50%
-fewer trials** than randomly selected trials, and with fewer trials than a failure-driven rule, provided
-the twin predicts reality well enough (a minimum sim-vs-real correlation, §9).
+**RQ2 (step 2).** How should the model be trained so that the twin's errors do not transfer? **H2.** At the
+same budget, training weighted by the twin's uncertainty gives a P **at least 10 pp higher** than uniform
+domain randomization, in a pre-registered regime where the baseline succeeds in ≤ ~75% of episodes; a
+learned world model filling the twin's gaps is an ablation.
 
-**RQ4 (the whole loop).** How much real data does the method need compared with the strongest existing
-approach, and does it carry over to another task? **H4 (thesis).** The whole method reaches the target P
-with **at least 2× less real data** than the strongest existing real-to-sim-to-real approach, assembled
-and pre-registered with the same budget; learning from real data only is reported for reference. In
-manipulation, with the method unchanged, the effects of H1–H4 keep their sign.
+**RQ3 (step 3).** Which few real trials correct the twin and the model best? **H3.** Trials chosen by the
+predicted gap reach the target P with **at least 50% fewer trials** than random ones, and fewer than a
+failure-driven rule, if the twin predicts reality well enough (minimum sim-vs-real correlation, §9).
+
+**RQ4 (theory and the whole loop).** When and why can twin data replace real data? **H4 (thesis).** The
+whole method reaches the target P with **at least 2× less real data** than the strongest existing
+approach (assembled, pre-registered, same budget), and the savings follow the conditions predicted by the
+theory: they grow with the twin-to-reality correlation and with how concentrated the gap is. In
+manipulation the effects keep their sign.
 
 A hypothesis that fails is reported as a measured curve, which still answers its question.
 

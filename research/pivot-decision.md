@@ -1,3 +1,15 @@
+# Addendum v7.1 (2026-09-26): scientific core
+The dissertation is scientific, not an implementation ("wdrożeniowy") doctorate. Its scientific problem is
+the allocation of scarce real data across the real-to-sim-to-real loop, treated as sequential Bayesian
+experimental design.
+- **Principle:** value each real datum by its expected reduction of the twin-to-reality gap per unit cost.
+- **Theory:** a task-weighted, domain-adaptation-style bound says when twin data can replace real data.
+- **Method:** the three reduction mechanisms are instances of this one criterion.
+- **H4** adds the falsifiable prediction that savings grow with the twin-to-reality correlation and with gap
+  concentration.
+
+See research/review-5-science.md.
+
 # Decision v7 (student, 2026-09-26): HOW TO REDUCE real data. General method; navigation is the main testbed, manipulation the generalization test
 
 **v7 overrides v6.** The dissertation is about **how to reduce the amount of real data**, not about measuring how

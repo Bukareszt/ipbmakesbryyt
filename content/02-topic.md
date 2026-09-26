@@ -1,9 +1,9 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-**PL:** Ograniczanie ilości danych rzeczywistych w uczeniu robotów w pętli rzeczywistość–symulacja–
-rzeczywistość z cyfrowymi bliźniakami: metoda z zastosowaniem w nawigacji i manipulacji
+**PL:** Wartość informacyjna danych rzeczywistych w uczeniu robotów w pętli rzeczywistość–symulacja–
+rzeczywistość: metoda ograniczania ich ilości z zastosowaniem w nawigacji i manipulacji
 
-**EN:** Reducing the amount of real data in real-to-sim-to-real robot learning with digital twins: a method
+**EN:** The value of real data in real-to-sim-to-real robot learning: a method for reducing its amount,
 with applications to navigation and manipulation
 
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):

@@ -12,7 +12,7 @@ sprawdzamy oraz poprawiamy. Każdy z tych kroków wymaga jednak prawdziwych dany
 jak mało by wystarczyło.
 
 Celem rozprawy jest opracowanie metody, która zmniejsza ilość prawdziwych danych potrzebnych na tej
-drodze. Metoda działa na każdym z trzech kroków. W pierwszym, zamiast nagrywać wszystko po równo, nagrywamy
+drodze. U jej podstaw leży jedno pytanie naukowe: ile wiedzy o rzeczywistości wnosi każda porcja prawdziwych danych w stosunku do jej kosztu, i kiedy kopia może je zastąpić. Metoda działa na każdym z trzech kroków. W pierwszym, zamiast nagrywać wszystko po równo, nagrywamy
 przede wszystkim te miejsca, które są ważne dla zadania, a o których kopia wie jeszcze za mało. W drugim,
 ponieważ kopia nigdy nie jest idealna, uczymy model tak, aby nie polegał na jej niepewnych fragmentach, a
 luki w kopii wypełnia program, który uczy się przewidywać, co wydarzy się dalej. W trzecim wybieramy tylko
@@ -38,7 +38,7 @@ to reality, where we check and correct it. Each of these steps, however, needs r
 knows how little would be enough.
 
 The goal of this dissertation is to develop a method that reduces the amount of real data this path needs.
-The method acts at each of the three steps. In the first, instead of recording everything evenly, we
+At its core lies one scientific question: how much each piece of real data tells us about reality relative to its cost, and when the copy can replace it. The method acts at each of the three steps. In the first, instead of recording everything evenly, we
 record mainly the places that matter for the task and about which the copy still knows too little. In the
 second, because the copy is never perfect, we train the model so that it does not rely on the copy's
 uncertain parts, and a program that learns to predict what happens next fills the gaps in the copy. In

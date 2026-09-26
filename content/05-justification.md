@@ -17,16 +17,17 @@ randomization, and real trials, if any at all, are chosen at random or by hand. 
 navigation pipeline has a stage that corrects the twin with real trials, and none reports how success
 depends on the real data spent; in manipulation such accounting exists only at single points.
 
-**Goal of the dissertation.** The goal is to develop **a method that reduces the amount of real data**
-needed to teach a robot a task through the real-to-sim-to-real loop. The method acts at every step of the
-loop with one reduction mechanism: (1) **less capture**: acquire only the real data that matters for the
-task and that the twin is still uncertain about; (2) **better use of simulation**: train so that the
-twin's errors do not hurt, and fill its gaps with a learned world model; (3) **fewer real trials**: choose
-the few real trials that correct the twin and the model the most. The thesis is that the method as a whole
-needs at least two times less real data than the strongest existing real-to-sim-to-real approach. The
-amount of real data, counted in minutes of operator work, is only how the method is evaluated; measuring
-it is not the goal. Indoor robot navigation is the main testbed, on which the hypotheses are decided;
-robotic manipulation tests whether the same method, unchanged, carries over to another task.
+**Scientific problem and goal.** The underlying problem is scientific: learning under distribution shift
+when target-domain data can be bought at a cost at several points of a learning loop. The dissertation
+poses the real-to-sim-to-real loop as sequential experimental design over a real-data budget, values each
+real datum by its expected reduction of the twin-to-reality performance gap per unit cost, and derives
+when twin data can replace real data. The goal is **a method, grounded in this principle, that reduces
+the amount of real data** needed to teach a robot a task, with one mechanism per step: (1) **less
+capture**; (2) **better use of simulation**, training so that the twin's errors do not transfer;
+(3) **fewer real trials**, choosing those that correct twin and model most. The thesis is that the method
+needs at least two times less real data than the strongest existing real-to-sim-to-real approach.
+Operator minutes are only the evaluation measure. Indoor navigation is the main testbed; manipulation
+tests whether the same method carries over.
 
 **Why this topic, and why in this discipline.** The object is a data-efficient learning method (active
 learning, learning under distribution shift, uncertainty estimation, adaptation of pretrained models), not

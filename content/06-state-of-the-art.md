@@ -3,18 +3,15 @@
 **Simulation and sim-to-real transfer.** Robot models for navigation and manipulation are commonly trained
 in simulators such as Habitat [1] and ManiSkill3 [2], where large-scale reinforcement learning essentially
 solves point-goal navigation after billions of steps [3]. Transfer to the real world is the open part:
-simulation success does not always predict real success, which motivated the Sim-vs-Real Correlation
-Coefficient in navigation (it rose from 0.18 to 0.84 once one collision artefact was removed [4]) and
-paired sim-and-real evaluations in manipulation [5]. Domain randomization varies appearance [6] or dynamics [7] uniformly within hand-set
-ranges, and a few real rollouts can adapt the simulation parameter distribution [8]. Real data still
-matters: in navigation, more data from a known location saturates quickly [9], and co-training on
-simulated and real data raises real success [10].
+simulation success need not predict real success (the Sim-vs-Real Correlation Coefficient rose from 0.18 to 0.84 once one collision artefact was removed [4]; paired evaluations in manipulation [5]). Domain randomization varies appearance [6] or dynamics [7] uniformly within hand-set
+ranges, and a few real rollouts can adapt the simulation parameter distribution [8]. In navigation,
+more data from a known location saturates quickly [9]; sim-and-real co-training raises real success [10].
 
 **From real data to digital twins.** Neural scene reconstruction, above all 3D Gaussian Splatting (3DGS)
 [11], turns a short real capture into a photorealistic model of a scene. Twins built this way train models
 that transfer. In navigation, EmbodiedSplat [12] reconstructs rooms from a phone capture and fine-tunes
 image-goal navigation in Habitat, Vid2Sim [13] builds simulators for urban navigation from monocular
-video, GaussGym [14] trains navigation and locomotion from pixels, and ReaDy-Go [15] adds moving obstacles.
+video, GaussGym [14] trains from pixels, and ReaDy-Go [15] adds moving obstacles.
 In manipulation, RialTo [16] builds a twin from a scan and a few demonstrations, X-Sim [17] from a minute
 of human video, and TwinRL [18] fine-tunes a pretrained policy in a phone-captured twin and targets its
 few real rollouts at configurations where the twin predicts failure. The physical part of a twin can be identified from a small amount of real data, as a
@@ -28,30 +25,28 @@ minutes of video per scene and no real training trials, and the manipulation wor
 **Capturing the right real data.** Active view selection chooses the images that improve a reconstruction
 most: FisherRF [23] maximizes expected information gain, and Bayes' Rays [24] estimates an uncertainty
 field for a trained radiance field. Risk-aware view acquisition [25] weights FisherRF by safety-critical
-regions for navigation, and AREA3D [26] adds vision-language guidance. Their objective is reconstruction
-quality or safe exploration; none measures the success of a model trained in the resulting twin, and we
-found at most two task-aware capture papers a year in 2023–2026.
+regions for navigation, and AREA3D [26] adds vision-language guidance. None measures the success of a model trained in the resulting twin (at most two task-aware capture papers a year, 2023–2026).
 
 **Foundation models, world models and real trials.** Pretrained navigation foundation models generalize
 across robots and environments (GNM [27], ViNT [28]), and vision-language-action models map images and
 instructions to actions [29]; they still need data from the target place to work there. Learned world
 models predict future observations: navigation world models plan by imagining trajectories [30], and open
 world foundation models are post-trained per setup [31]; VLAW [32] improves a world model with real
-rollouts, at a fixed, hand-chosen number of them. Choosing which real trials to run has been studied for
-*evaluating* policies, where combining simulated and real trials saves a fifth to a quarter of the
-real-robot effort [33], not for *correcting* a twin and the model trained in it.
+rollouts, at a fixed, hand-chosen number of them. Choosing real trials has been studied for *evaluating*
+policies (a fifth to a quarter less robot effort [33]), not for *correcting* a twin and its model.
 Frozen visual encoders [34] make twin and real observations comparable, and prediction-powered inference
 [35] estimates real performance from many cheap predictions and a few real labels.
+
+**Theory.** Domain-adaptation theory bounds target error by source error plus a discrepancy between domains
+[38], and Bayesian experimental design chooses measurements by expected information gain [36, 37]; neither
+has been applied to the allocation of real data across a real-to-sim-to-real loop.
 
 **Research gap.** Real-to-sim-to-real learning works, but the real data it consumes is set by hand and
 spent uniformly at every step. No navigation pipeline has a stage that corrects the twin with real trials,
 and none reports how success depends on the real data spent; in manipulation the real data is accounted
 at single points, against learning from real data only, never against another real-to-sim-to-real
-pipeline. Missing is one method that reduces the real data at every step of the loop: (i) capture only
-what the task needs and the twin lacks (RQ1); (ii) train so that the twin's errors do not hurt, and fill
-its gaps with a learned world model (RQ2); (iii) run only the few real trials that correct twin and model
-most (RQ3); and (iv) evidence, in one unit and on one budget grid, that the whole method needs less real
-data than the strongest existing real-to-sim-to-real approach (RQ4).
+pipeline. Missing are a principled criterion for spending real data across the whole loop, its theory, and
+a method built on it that reduces real data at every step (RQ1–RQ3) and in total (RQ4).
 
 ### References
 [1] M. Savva et al., "Habitat," ICCV, 2019.
@@ -89,6 +84,9 @@ data than the strongest existing real-to-sim-to-real approach (RQ4).
 [33] A. Badithela et al., "Reliable and Scalable Robot Policy Evaluation…," arXiv:2510.04354, 2025.
 [34] M. Oquab et al., "DINOv2," TMLR, 2024.
 [35] A. N. Angelopoulos et al., "Prediction-Powered Inference," Science, 2023.
+[36] K. Chaloner, I. Verdinelli, "Bayesian Experimental Design: A Review," Statistical Science, 1995.
+[37] T. Rainforth et al., "Modern Bayesian Experimental Design," Statistical Science, 2024.
+[38] S. Ben-David et al., "A theory of learning from different domains," Machine Learning, 2010.
 
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top)
 and the deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md). General

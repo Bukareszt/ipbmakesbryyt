@@ -1,3 +1,32 @@
+# Pivot decision v3 (student, 2026-09-26): GENERAL data-efficient real-to-sim-to-real
+
+**v3 overrides v2 on scope.** The research is about **real-to-sim-to-real in general**, not about navigation,
+driving, autonomy or robot "rollouts" in particular. The object is a **task- and domain-agnostic methodology**:
+building a simulation (digital twin) from limited real data, learning a policy or model in it, and transferring
+it back to reality with limited real data.
+
+- **Wording:**
+  - "real rollouts" → "real-world data / interactions / trials";
+  - "navigation policy" → "policy or model learned in the twin".
+- **Testbeds (at least 2, equal status; none is "primary"):** robotic manipulation and visual navigation. Pick
+  others only if verified public data exist. The methodology must not rely on task-specific components.
+- **What the twin contains:** geometry and appearance (neural reconstruction) **and**, where relevant,
+  physical and dynamic parameters identified from real data (system identification). "Capture less" covers
+  both kinds of real data.
+- **Hypotheses:** RQ1–RQ4 / H1–H4 keep their loop structure, numbering and thresholds, but are stated
+  domain-agnostically:
+  - H1: less real data to build the twin;
+  - H2: robust learning in an imperfect twin;
+  - H3: few, actively selected real-world data or interactions to correct the twin and the policy;
+  - H4: the whole-loop budget law holds across **both** domains.
+- **Evaluation tiers:** keep the review-3 protocol (a non-circular reference from a separate high-fidelity
+  source) as a *pattern*. Apply it in each domain using verified public datasets.
+- **Unchanged:** papers P1–P3 and their venues. No benchmark building. No simulator development. Semesters
+  1–2 unchanged.
+
+---
+(v2 text below, still valid except where v3 overrides it)
+
 # Pivot decision v2 (student, 2026-09-26): data-efficient real-to-sim-to-real
 
 Supersedes v1 (the representation-level thesis). **No benchmark building.** The object of research is the

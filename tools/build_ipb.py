@@ -589,7 +589,7 @@ def build(make_pdf: bool = True) -> int:
     chk = docx.Document(str(out_docx))
     alltext = "\n".join(p.text for p in chk.paragraphs)
     celltext = "\n".join(c.text for t in chk.tables for r in t.rows for c in r.cells)
-    for needle in (plain(md4).strip(), "RQ1", "Streszczenie", "Wijmans"):
+    for needle in (plain(md4).strip(), "RQ1", "Streszczenie", "[1] "):  # "[1] " = §6 reference list present
         assert needle in alltext or needle in celltext, f"validation: '{needle}' missing in output"
     assert "Wybierz dyscyplinę" not in celltext and "Wybierz wydział" not in celltext
     print(f"Wrote {out_docx.relative_to(ROOT)}  (re-read OK: {len(chk.paragraphs)} paragraphs, "

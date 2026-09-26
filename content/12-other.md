@@ -3,45 +3,52 @@
 **Planned outputs by year.** All papers target 200-point conferences assigned to the discipline (ministerial
 list of 5.01.2024; points to be re-checked against the new list expected in early 2027).
 
-| Year | Papers (planned submission, 200 points each) | Grants | Mobility, events |
-|---|---|---|---|
-| 1 (2025/26) | — | — | — |
-| 2 (2026/27) | P1, Stages I–II: NeurIPS 2027, May 2027 (§11); early option ICML 2027 | SzD Minigrant; NCN PRELUDIUM | Summer school poster |
-| 3 (2027/28) | P2 (Stage III): CVPR or ICLR 2028; P3 (Stage IV, cross-task): ECCV, NeurIPS or RSS 2028 | NAWA Bekker | Mid-term; 3-month visit (sem. 6) |
-| 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | — | Code and data release; dissertation |
+| Year | Papers (planned submission, 200 points each) | Data and code | Grants | Mobility, events |
+|---|---|---|---|---|
+| 1 (2025/26) | — | — | — | — |
+| 2 (2026/27) | P1 (RQ1, paired-frame benchmark and gap localization): NeurIPS 2027, May 2027 (§11) | Benchmark v1 | SzD Minigrant; NCN PRELUDIUM | Summer school poster |
+| 3 (2027/28) | P2 (RQ2, forecasting transfer and failure): CVPR or ICLR 2028; P3 (RQ3–RQ4, budget allocation, manipulation): NeurIPS or ECCV 2028 | Policy zoo | NAWA Bekker | Mid-term; 3-month visit (sem. 6) |
+| 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Full release | — | Dissertation |
 
 P1–P3 are the thematically linked core of the dissertation; P4 is optional.
 
-**Foreign research visit (candidate hosts, not yet contacted).** (1) Multi-robot Systems Lab, Stanford
-University (M. Schwager): Gaussian-splatting scene models and navigation. (2) Z. Kira's group, Georgia Tech:
-EmbodiedSplat [30]. A European host (which also opens the Erasmus+ 5–30-day route) is sought with the
-supervisor in sem. 4, with a foreign co-author for P2.
+**Foreign research visit (candidate hosts, not yet contacted).** (1) Z. Kira's group, Georgia Tech:
+EmbodiedSplat [4]. (2) Multi-robot Systems Lab, Stanford University (M. Schwager): Gaussian-splatting scene
+models and navigation. A European host (Erasmus+ route) and a foreign co-author for P2 are sought with the
+supervisor in sem. 4.
 
 **Collaboration at PWr.** Real-robot validation is planned with the *Denali* Autonomous Robots Laboratory
-(K29, W12N; Pioneer 3-DX, Jaguar 4x4, ROS 2); a written agreement is task T3.2 (Nov 2026). Optional
-manipulation validation may use K29's Robotics Laboratory arms. Consultations on 3D
-reconstruction with K46's genwro.AI group are possible.
+(K29, W12N; Pioneer 3-DX, Jaguar 4x4, ROS 2); a written agreement is task T3.2 (Nov 2026).
 
 **Risks and mitigation** (semester affected).
-- *Rejection at a top venue* (4–7): every paper has a resubmission path inside the 200-point set, to the
-  next deadline 2–4 months later (e.g. NeurIPS → ICLR or CVPR → ICML → ECCV/ICCV), after revision. With
-  three core papers and several yearly deadlines, the degree requirement does not depend on one decision.
-- *Changing venue points* (sem. 3–4): the new list may change points; venues are re-checked when it appears,
-  and the plan keeps several 200-point alternatives per paper.
-- *No robot access or sensor* (3–5): hypotheses are decided on public benchmarks and datasets; the robot
-  only validates, so it can move by a semester or to another PWr robot.
-- *Poor reconstruction of low-texture or large scenes* (3–4): depth priors, scene splitting, other scenes
-  from the public dataset.
-- *Sim-to-real predictivity fails* (4–5): pre-specified SRCC protocol; a negative result still answers RQ4.
-- *Scope creep from manipulation* (6–7): a generalization study on the Stage I pipeline and public
-  simulators; if time is short, it is reduced to simulation-only experiments.
+- *Policy zoo too small* (4–5): small policies, shared frozen encoders, imitation of a privileged planner;
+  the sem. 3 pilot fixes the size; WCSS and PLGrid grants.
+- *Twin–real pairs unavailable* (3): licence or quality limits on the chosen dataset. Other public datasets
+  with real captures and reference scans, and own captures at PWr.
+- *Scooping* (3–6): related lines (failure detection, policy interpretability) move fast. Early preprints and
+  benchmark release, monthly literature monitoring; the zoo and weight-space angle differentiate the work.
+- *Predictor learns only twin fidelity* (5): ablations with fixed fidelity; a negative result still answers RQ2.
+- *Proxy reality differs from reality* (5–7): tier C campaigns check agreement; they can move by a semester.
+- *Rejection at a top venue* (4–7): every paper has a resubmission path inside the 200-point set, 2–4
+  months later (e.g. NeurIPS → CVPR → ICML → ECCV/ICCV). The degree requirement does not depend on one
+  decision. *Changing venue points* (3–4): venues are re-checked when the new list appears.
 
-**Prior work (background only).** A pre-PhD NLP paper (ACL 2025 SRW) gives experience in representation
-learning; it is not part of the dissertation.
+**Prior work (background only).** A pre-PhD NLP paper (ACL 2025 SRW) forecasts from hidden states with a
+graph neural network over layers; Stage II adapts the method, but the paper is not part of the dissertation.
 
-**Ethics and data.** Own captures avoid or anonymize personal data (GDPR, PWr rules); public datasets are
-used under their licences.
+**Ethics and data.** Own captures anonymize personal data (GDPR); public datasets are used under their licences.
 
+<!--
+Wave 9 (issue #23), 2026-09-26: rewritten for the pivot (research/pivot-decision.md). Outputs table follows
+the pivot's paper plan (P1 NeurIPS 2027 RQ1; P2 ICLR/CVPR 2028 RQ2; P3 NeurIPS/ECCV 2028 RQ3+RQ4; P4
+optional) and adds a data/code column (benchmark, zoo). New risks: zoo too small, twin-real pairs
+unavailable, scooping (novelty-options.md §3 risks), predictor learns only fidelity, proxy reality. Removed:
+risks about reconstruction quality, SRCC failure and manipulation scope creep, the K29 manipulator and
+genwro.AI sentences (for the page limit; not needed after the pivot). EmbodiedSplat is now §6 ref [4].
+Scooping evidence: failure-detection and VLA-interpretability counts in novelty-options.md / niches-models.md.
+Prior-work sentence: doi:10.18653/v1/2025.acl-srw.61 (novelty-options.md §3: "forecasts from LLM hidden
+states with a GNN over layers").
+-->
 <!--
 Wave 6 (issue #15), 2026-09-26: P3 = cross-task (manipulation) paper, ECCV 2028 / NeurIPS 2028 or RSS 2028
 (RSS Lp 1277, 200 pts, ITiT); the old "robot paper to RSS" sentence folded into P3's venue list. New risk:

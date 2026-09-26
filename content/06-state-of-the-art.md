@@ -1,130 +1,128 @@
 # §6 Zarys aktualnego stanu badań / State of the art (max 2 pages)
 
-**Learning-based navigation and its data demands.** Photorealistic simulators such as Habitat [1, 2] and
-CARLA [3] made large-scale training of embodied agents possible. Wijmans et al. [4] reached near-perfect
-point-goal navigation only after 2.5 billion simulated frames, a volume out of reach on physical robots. *Navigation foundation models* (GNM [5], ViNT [6], NoMaD [7]) are trained on pooled
-real-robot datasets, and Open X-Embodiment [8] shows that robot learning scales with data. Such data is
-costly, and every new environment or platform typically needs more of it.
+**Digital twins have become a commodity.** Photorealistic simulators such as Habitat [1] and domain randomization [2]
+made large-scale training of embodied agents possible. 3D Gaussian Splatting (3DGS) [3] now turns a short phone or camera capture into a real-time, photorealistic
+*digital twin*. Twin-trained policies transfer to real robots in navigation (EmbodiedSplat [4], Vid2Sim [5],
+GaussGym [6]) and manipulation (RialTo [7], SplatSim [8]), and GPU simulators ship twin environments
+(ManiSkill3 [9]). Building twins is therefore no longer the bottleneck. The open question is **when a
+twin-trained policy will work in reality, and why**.
 
-**The sim-to-real gap.** Policies trained in simulation degrade on real hardware because of differences
-in appearance, geometry and dynamics [9, 10]. Kadian et al. [11] showed that simulation can poorly
-predict real-world performance and introduced the Sim-vs-Real Correlation Coefficient
-(SRCC) to measure it. Truong et al. [12] found that lower-fidelity simulation can transfer better, so
-*which* aspects of reality to model is itself open.
+**Predicting real performance from simulation.** Kadian et al. [10] introduced the Sim-vs-Real Correlation
+Coefficient (SRCC) and showed that simulation can poorly predict real navigation results. Truong et al. [11]
+found that lower-fidelity simulation can transfer better, so image fidelity is not the same as transfer.
+SIMPLER [12] reports strong sim-real correlation for manipulation evaluation, and pretrained visual
+representations rank similarly in simulation and reality [13]. All of these measure transfer at the level of
+*simulators* and success rates, after deployment.
 
-**Domain randomization and adaptation.** Domain randomization trains policies on widely varied synthetic
-appearance [13, 14] or dynamics [15], so that reality is just another variation, as in agile
-flight [16] and drone racing [17]. Its drawbacks are hand-tuned ranges and lower target-domain
-performance. Adaptive approaches fit simulation parameters to real rollouts [18], and
-domain adaptation [19] reduces, but does not remove, the need for real data.
+**The representation gap.** Sim-and-real co-training works with few real demonstrations [14], domain
+adaptation aligns sim and real features [15], and a mechanistic analysis finds that "structured
+representation alignment" is the primary effect of co-training [16]. ScanNet++ [17] pairs real captures of rooms
+with reference scans. Linear
+probes [18] and centered kernel alignment (CKA) [19] measure what each layer encodes and how similar two
+representations are. Frozen image and video encoders (DINOv2 [20], V-JEPA 2 [21]) are common policy
+backbones, and probing of vision-language-action models shows that action fine-tuning degrades their visual
+representations [22]. However, **no study has measured, on paired real and twin-rendered frames of the same
+pose, where inside encoders and policies the twin-vs-real gap arises, or how it shrinks with the capture
+budget.**
 
-**Neural scene reconstruction and real-to-sim-to-real.** Neural Radiance Fields [20] and 3D Gaussian
-Splatting (3DGS) [21] render photorealistic novel views from ordinary images, 3DGS in real time. This allows
-*digital-twin* simulators built from real data; NeRF2Real [22] trained bipedal
-skills inside a NeRF of the target scene. Since 2024 the idea has reached navigation: 3DGS twins
-transferred visual drone [24–26] and RGB-only legged [27] navigation policies directly to reality,
-Vid2Sim [28] built urban simulators from monocular video (a 68.3% real-world success-rate gain over prior
-simulators), and ReaDy-Go [29] added moving humans. Closest to this dissertation, EmbodiedSplat [30] fine-tunes
-pretrained image-goal policies in meshes from 20–30-minute phone captures, improves real-robot success in a
-captured scene and reports high SRCC. These systems use a fixed capture per scene: none varies the amount of
-real data or compares against policies trained on real robot experience at matched budgets.
+**Predicting performance from model internals.** Accuracy under distribution shift can be estimated from
+unlabeled target data [23]. A network's accuracy can be predicted from its weights alone [24], and
+populations of trained models ("model zoos" [25]) are now inputs to weight-space learning: equivariant
+metanetworks [26] and graph neural networks over the computational graph [27] predict generalization.
+They have been tested on image classifiers and implicit neural representations, **not on embodied
+policies or twin-to-real transfer**.
 
-**Digital twins for manipulation.** RialTo [23] robustifies manipulation policies by
-reinforcement learning in twins built from little real data; its ablation over 0–15 real demonstrations is
-the closest analysis of a real-data budget.
-SplatSim [36] renders simulation with Gaussian splats and transfers RGB manipulation policies zero-shot
-(86.25% real success vs. 97.5% for policies trained on real data). SIMPLER [37] shows that simulated
-evaluation of manipulation policies correlates strongly with real evaluation, and the GPU simulator
-ManiSkill3 [38] includes real-world digital-twin environments. Each work builds its twin for one task and
-embodiment; whether one pipeline serves navigation and manipulation, and at what capture and compute cost,
-has not been measured.
+**Failure prediction and calibrated monitoring.** Conformal prediction [28] gives distribution-free
+guarantees. FAIL-Detect [29] detects failures of imitation policies without failure data and calibrates
+thresholds with conformal prediction, and SAFE [30] finds that the features of vision-language-action models
+encode task success and failure across tasks. These monitors are calibrated and tested in the *same* domain.
+Whether a monitor calibrated in the twin keeps its coverage on real data has not been studied.
 
-**Learning under distribution shift.** In machine-learning terms the sim-to-real gap is a domain
-shift. Unsupervised domain adaptation aligns feature distributions adversarially [31] or at pixel and
-feature level [32]. Scaling laws [33] describe how performance grows with data, but not how *real* and
-*reconstructed* data trade off. 3D scene datasets (HM3D [34], ScanNet++ [35]) allow a controlled study, with
-real captures as a proxy for reality.
+**Spending a small real-data budget.** Data attribution estimates how training examples affect predictions
+[31], and CUPID [32] ranks robot demonstrations by their influence on closed-loop success.
+Prediction-powered inference [33] combines many cheap predictions with a few labels, and SureSim [34] uses it
+to correct simulated evaluation with a few paired real trials. Learned world models are also proposed as
+policy evaluators [35]. These tools treat the policy as a black box; none
+uses its internal representations to decide which twin data to weight, what to capture or which
+real rollouts to collect.
 
-**Research gap.** There is no systematic study of the **trade-off between real-data budget and deployed
-policy performance** in real-to-sim-to-real learning, nor a twin-building protocol with measured
-cost and fidelity across tasks. Also missing are methods that (i) combine twins with augmentation and
-representation alignment to generalize to uncaptured scenes and new tasks, and (ii) correct the twin from a
-few real rollouts. This dissertation addresses
-that gap in navigation, with manipulation as the generalization domain.
+**Research gap.** Twins are widely available, but there is **no representation-level account
+of how twin-trained policies transfer to reality**. Missing are (i) a paired real/twin benchmark that localizes the
+gap inside encoders and policies across capture budgets, (ii) predictors of real transfer and
+failure from policy internals (weights, hidden states) that beat simulator-level and image-fidelity
+baselines, (iii) methods that use such forecasts to spend a limited real-data budget, and (iv) evidence
+that these measures carry over from navigation to manipulation. This dissertation addresses that gap.
 
 ### References
 [1] M. Savva et al., "Habitat," ICCV, 2019.
-[2] A. Szot et al., "Habitat 2.0," NeurIPS, 2021.
-[3] A. Dosovitskiy et al., "CARLA," CoRL, 2017.
-[4] E. Wijmans et al., "DD-PPO," ICLR, 2020.
-[5] D. Shah et al., "GNM," ICRA, 2023.
-[6] D. Shah et al., "ViNT," CoRL, 2023.
-[7] A. Sridhar et al., "NoMaD," ICRA, 2024.
-[8] Open X-Embodiment Collaboration, "Open X-Embodiment," ICRA, 2024.
-[9] W. Zhao et al., "Sim-to-Real Transfer in Deep Reinforcement Learning for Robotics," IEEE SSCI, 2020.
-[10] S. Höfer et al., "Sim2Real in Robotics and Automation," IEEE T-ASE, 2021.
-[11] A. Kadian et al., "Sim2Real Predictivity," IEEE RA-L, 2020.
-[12] J. Truong et al., "Rethinking Sim2Real," CoRL, 2022.
-[13] J. Tobin et al., "Domain Randomization for Transferring Deep Neural Networks from Simulation to the Real World," IROS, 2017.
-[14] J. Tremblay et al., "Training Deep Networks with Synthetic Data," CVPRW, 2018.
-[15] X. B. Peng et al., "Sim-to-Real Transfer of Robotic Control with Dynamics Randomization," ICRA, 2018.
-[16] A. Loquercio et al., "Learning High-Speed Flight in the Wild," Sci. Robot., 2021.
-[17] E. Kaufmann et al., "Champion-level drone racing using deep reinforcement learning," Nature, 2023.
-[18] Y. Chebotar et al., "Closing the Sim-to-Real Loop," ICRA, 2019.
-[19] K. Bousmalis et al., "Using Simulation and Domain Adaptation to Improve Efficiency of Deep Robotic Grasping," ICRA, 2018.
-[20] B. Mildenhall et al., "NeRF," ECCV, 2020.
-[21] B. Kerbl et al., "3D Gaussian Splatting for Real-Time Radiance Field Rendering," ACM TOG, 2023.
-[22] A. Byravan et al., "NeRF2Real," ICRA, 2023.
-[23] M. Torne et al., "Reconciling Reality through Simulation," RSS, 2024.
-[24] A. Quach et al., "Gaussian Splatting to Real World Flight Navigation Transfer with Liquid Networks," arXiv:2406.15149, 2024.
-[25] J. Low et al., "SOUS VIDE," IEEE RA-L, 2025.
-[26] Q. Chen et al., "GRaD-Nav," IROS, 2025.
-[27] S. Zhu et al., "VR-Robo," IEEE RA-L, 2025.
-[28] Z. Xie et al., "Vid2Sim," CVPR, 2025.
-[29] S. Yoo et al., "ReaDy-Go," IEEE RA-L, 2026.
-[30] G. Chhablani et al., "EmbodiedSplat," ICCV, 2025.
-[31] Y. Ganin et al., "Domain-Adversarial Training of Neural Networks," JMLR, 2016.
-[32] J. Hoffman et al., "CyCADA," ICML, 2018.
-[33] J. Kaplan et al., "Scaling Laws for Neural Language Models," arXiv:2001.08361, 2020.
-[34] S. K. Ramakrishnan et al., "Habitat-Matterport 3D Dataset," NeurIPS Datasets and Benchmarks, 2021.
-[35] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
-[36] M. N. Qureshi et al., "SplatSim," ICRA, 2025.
-[37] X. Li et al., "Evaluating Real-World Robot Manipulation Policies in Simulation," CoRL, 2024.
-[38] S. Tao et al., "ManiSkill3," RSS, 2025.
-<!-- [31]-[35] added by the coordinator on 2026-09-26 for the ML-first reframing. Titles, first authors and years were verified on OpenAlex (arXiv 1505.07818, 1711.03213, 2001.08361, 2109.08238, 2308.11417). -->
-
-<!-- Wave 6 (issue #15), 2026-09-26: broadened to digital twins across tasks (navigation -> manipulation).
-New paragraph "Digital twins for manipulation"; RialTo [23] moved there with its 0-15-demo ablation;
-research gap now also names the twin-building protocol (cost + fidelity) and cross-task generalization.
-Three new refs, verified 2026-09-26:
-- [36] SplatSim: arXiv 2409.10161 (Qureshi, Garg, Yandun, Held, Kantor, Silwal); Crossref
-  doi:10.1109/ICRA55743.2025.11128339 (2025 IEEE ICRA). "86.25% vs 97.5%" read from the arXiv abstract.
-- [37] SIMPLER: arXiv 2405.05941 (Li, Hsu, Gu, ... Xiao); listed in PMLR vol. 270 (CoRL 2024). "Strong
-  correlation" from the abstract (paired sim-and-real evaluations).
-- [38] ManiSkill3: arXiv 2410.00425 (Tao, Xiang, Shukla, ... Su); Crossref doi:10.15607/RSS.2025.XXI.021
-  (Robotics: Science and Systems XXI). "Real-world digital twins" environments from the arXiv abstract.
-- [23] first author written as on arXiv 2403.03949 ("Marcel Torne").
-- Refs [32], [34], [35] titles cut at the colon / parenthesis for the page limit.
-- Trimmed elsewhere (flight/drone-racing sentence, EmbodiedSplat detail, SRCC sentence) to keep 2 pages;
-  all refs [1]-[35] still cited. The "has not been measured" sentence is our reading of [23], [36]-[38],
-  not a full survey: supervisor to confirm. -->
+[2] J. Tobin et al., "Domain Randomization for Transferring Deep Neural Networks…," IROS, 2017.
+[3] B. Kerbl et al., "3D Gaussian Splatting," ACM TOG, 2023.
+[4] G. Chhablani et al., "EmbodiedSplat," ICCV, 2025.
+[5] Z. Xie et al., "Vid2Sim," CVPR, 2025.
+[6] A. Escontrela et al., "GaussGym," arXiv:2510.15352, 2025.
+[7] M. Torne et al., "Reconciling Reality through Simulation," RSS, 2024.
+[8] M. N. Qureshi et al., "SplatSim," ICRA, 2025.
+[9] S. Tao et al., "ManiSkill3," RSS, 2025.
+[10] A. Kadian et al., "Sim2Real Predictivity," IEEE RA-L, 2020.
+[11] J. Truong et al., "Rethinking Sim2Real," CoRL, 2022.
+[12] X. Li et al., "Evaluating Real-World Robot Manipulation Policies…," CoRL, 2024.
+[13] S. Silwal et al., "What Do We Learn from a Large-Scale Study of Pre-Trained Visual…," ICRA, 2024.
+[14] A. Maddukuri et al., "Sim-and-Real Co-Training," RSS, 2025.
+[15] S. Cheng et al., "Generalizable Domain Adaptation for Sim-and-Real…," NeurIPS, 2025.
+[16] Y. Lei et al., "A Mechanistic Analysis of Sim-and-Real Co-Training…," arXiv:2604.13645, 2026.
+[17] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
+[18] G. Alain, Y. Bengio, "Understanding Intermediate Layers Using Linear…," arXiv:1610.01644, 2016.
+[19] S. Kornblith et al., "Similarity of Neural Network Representations…," ICML, 2019.
+[20] M. Oquab et al., "DINOv2," TMLR, 2024.
+[21] M. Assran et al., "V-JEPA 2," arXiv:2506.09985, 2025.
+[22] N. Kachaev et al., "Don't Blind Your VLA," arXiv:2510.25616, 2025.
+[23] S. Garg et al., "Leveraging Unlabeled Data to Predict OOD Performance," ICLR, 2022.
+[24] T. Unterthiner et al., "Predicting Neural Network Accuracy…," arXiv:2002.11448, 2020.
+[25] K. Schürholt et al., "Model Zoos," NeurIPS Datasets and Benchmarks, 2022.
+[26] A. Navon et al., "Equivariant Architectures for Deep Weight Spaces," ICML, 2023.
+[27] M. Kofinas et al., "Graph Neural Networks for Learning Equivariant…," ICLR, 2024.
+[28] A. N. Angelopoulos, S. Bates, "A Gentle Introduction to Conformal…," arXiv:2107.07511, 2021.
+[29] C. Xu et al., "Can We Detect Failures Without Failure Data?," RSS, 2025.
+[30] Q. Gu et al., "SAFE," NeurIPS, 2025.
+[31] S. M. Park et al., "TRAK," ICML, 2023.
+[32] C. Agia et al., "CUPID," arXiv:2506.19121, 2025.
+[33] A. N. Angelopoulos et al., "Prediction-Powered Inference," Science, 2023.
+[34] A. Badithela et al., "Reliable and Scalable Robot Policy Evaluation…," arXiv:2510.04354, 2025.
+[35] Y. Li et al., "WorldEval," arXiv:2505.19017, 2025.
 
 <!--
-Revision for issue #9 (research/review-1.md F11, F14), 2026-09-26:
-- Added [30] EmbodiedSplat. Verified: arXiv 2509.17430v2 (comment "paper accepted at ICCV, 2025"); Crossref
-  doi:10.1109/ICCV51701.2025.02359 (2025 IEEE/CVF ICCV); authors G. Chhablani, X. Ye, M. Z. Irshad, Z. Kira.
-  Claims read from the FULL TEXT (arXiv v2): iPhone 13 Pro Max + Polycam capture, "20-30 minutes of recording"
-  per scene; DN-Splatter meshes in Habitat-Sim; ImageNav policies pre-trained on HM3D/HSSD then fine-tuned;
-  real-world evaluation on a Stretch robot in one scene ("lounge"), 10 episodes; SRCC 0.87-0.97 for the
-  reconstructed meshes (abstract). The capture procedure is fixed (1000 sampled frames); the paper does not
-  vary the capture amount and has no policy trained on real robot data.
-- Novelty sentence narrowed. Full texts of old [24]-[31] (now [22]-[29]) were keyword-searched (arXiv PDFs:
-  "amount of", "number of demonstrations/images/frames", "real-world data", "minutes of"). Only RialTo [23]
-  varies real data: Appendix "RL from different amounts of real-world data" (0, 5, 10, 15 real demos; success
-  of RL fine-tuning) and a comparison with behaviour cloning from 15 and 50 real demos. Hence the sentence
-  now says the navigation systems do not vary it and names RialTo as the closest (manipulation) analysis.
-  Keyword search is not a close reading; the supervisor should still confirm.
-- Removed old [4] AirSim and old [21] Progressive Nets (least essential, for the page limit); renumbered.
-  Old -> new: 5-20 -> 4-19 (minus 1), 22-31 -> 20-29 (minus 2), EmbodiedSplat = 30.
-- Shortened reference entries: titles cut at the colon (main title kept; F14), (first author + "et al." for [9], venue abbreviations CVPRW, Sci. Robot.).
+Wave 9 (issue #23), 2026-09-26: rewritten for the pivot (research/pivot-decision.md): twins as a commodity
+-> simulator-level predictivity -> representation gap and probing -> weight-space learning -> failure
+prediction -> data attribution / prediction-powered evaluation / world models -> gap mapped to RQ1-RQ4.
+35 refs. Robotics-only refs pruned: Habitat 2.0, CARLA, DD-PPO, GNM, ViNT, NoMaD, Open X-Embodiment,
+Zhao/Höfer surveys, Tremblay, Peng, Loquercio, Kaufmann, Chebotar, Bousmalis, NeRF, NeRF2Real, drone and
+legged 3DGS navigation papers (Quach, SOUS VIDE, GRaD-Nav, VR-Robo), ReaDy-Go, DANN, CyCADA, Kaplan, HM3D.
+Old -> new numbers for refs kept: 1->1, 13->2, 21->3, 30->4, 28->5, 23->7, 36->8, 38->9, 11->10, 12->11,
+37->12, 35->17. Other sections citing old numbers must be updated (05 cited [4], 07 [11], 08 [23][24][30]).
+Long titles are cut with an ellipsis for the page limit (full titles below or via the arXiv IDs).
+Verification, 2026-09-26, Semantic Scholar batch API (title, year, venue, first authors, DOI):
+- [6] GaussGym arXiv 2510.15352 (Escontrela, Kerr, Allshire, Frey ...), arXiv only.
+- [13] Silwal et al. arXiv 2310.02219, doi:10.1109/ICRA57147.2024.10610218 (ICRA 2024). Claim "PVR trends in
+  simulation are generally indicative of real trends" from the abstract.
+- [14] Maddukuri et al. arXiv 2503.24361, RSS 2025 (S2 venue "Robotics"; crowdedness.md). [15] Cheng et al.
+  arXiv 2509.18631, NeurIPS 2025 (OT-inspired alignment of joint obs-action distributions, abstract).
+- [16] Lei et al. arXiv 2604.13645: "structured representation alignment ... primary role" (abstract).
+- [18] arXiv 1610.01644 (S2 lists ICLR; it was an ICLR 2017 workshop paper, so cited as arXiv).
+- [19] arXiv 1905.00414, ICML 2019. [20] arXiv 2304.07193, TMLR. [21] arXiv 2506.09985, no venue found.
+- [22] arXiv 2510.25616 (S2 venue AAMAS 2026 with doi:10.65109/PPER9186; cited as arXiv to be safe).
+  "Naive action fine-tuning degrades visual representations", "we probe VLA's hidden representations" (abstract).
+- [23] arXiv 2201.04234, ICLR 2022. [24] arXiv 2002.11448 (weights-only predictors, R2 > 0.98, 120k CNNs).
+- [25] arXiv 2209.14764, NeurIPS 2022 (Datasets and Benchmarks track). [26] arXiv 2301.12780, ICML 2023.
+  [27] arXiv 2403.12143, ICLR 2024 ("predicting generalization performance" in the abstract).
+- [28] arXiv 2107.07511 (also in Foundations and Trends in ML; cited as arXiv).
+- [29] FAIL-Detect arXiv 2503.08558, RSS 2025 (niches-eval.md; S2 venue "Robotics"); conformal thresholds and
+  no failure data, from the abstract. [30] SAFE arXiv 2506.09937, NeurIPS 2025 (S2); feature-space claim from
+  the abstract.
+- [31] TRAK arXiv 2303.14186, ICML 2023. [32] CUPID arXiv 2506.19121 (influence on closed-loop return).
+- [33] PPI arXiv 2301.09633, doi:10.1126/science.adi6000. [34] SureSim arXiv 2510.04354 (PPI with paired
+  real/sim evaluations). [35] WorldEval arXiv 2505.19017 (world model as a proxy real-world evaluator).
+- Kept refs were verified in earlier waves (see git history of this file); re-checked on S2 the same day.
+"No study has measured ..." and "not on embodied policies" rest on the Semantic Scholar counts in
+research/niches-map.md, niches-models.md and novelty-options.md (0-3 hits per year), not on a full survey:
+supervisor to confirm.
 -->

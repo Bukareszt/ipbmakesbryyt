@@ -1,70 +1,68 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
-**Thesis.** Embodied policies learned in a digital twin reconstructed from a small budget of real
-observations, with aligned representations, perform in the target
-domain not worse than policies learned from ≥ 10× more real data, and the method transfers across scenes
-and tasks. Visual navigation is the primary testbed; robotic manipulation tests generalization.
+**Thesis.** How well embodied policies trained in neural-reconstruction digital twins transfer to the real
+world can be **measured, localized and predicted from their internal representations**, and this lets a
+limited real-data budget be spent where it matters. Navigation is the primary testbed; manipulation is the
+cross-task test. RQ1–RQ2 (H1–H2) are the core of the dissertation; RQ3–RQ4 (H3–H4) build on them.
 
-**Core and extensions.** The dissertation stands on **RQ1–RQ2 with H1 and H4** (real-data budget,
-navigation). RQ3/H2 (cross-scene and cross-task generalization) and RQ4/H3 (correction,
-predictivity) are extensions.
+**Setting.** A *twin* is a 3D Gaussian Splatting reconstruction of a real scene built from a short capture;
+the *capture budget* is the number of capture minutes (views). Evaluation tiers: **(A)** proxy reality on
+public scene datasets with real captures and reference scans (≥ 10 scenes, some held out), which decides the
+hypotheses; **(B)** public real-world datasets and published real evaluations with real outcomes;
+**(C)** real-robot trials, validation only. A *policy zoo* (≥ 200 navigation policies varying scene, capture
+budget, architecture and training data) supplies the population for RQ2–RQ4. Tests are one-sided,
+α = 0.05, bootstrapped over scenes, Holm-corrected within each hypothesis and pre-registered in the
+repository. All thresholds are design choices to be confirmed with the supervisor.
 
-**RQ1.** Does training an embodied policy in a twin built from minutes of real video of the target scene
-(*real-to-sim*), then deploying it on real observations (*sim-to-real*), close the appearance and geometry gap?
-**RQ2.** How does target-domain performance scale with the real-data budget, and what budget suffices
-compared with learning from real data alone?
-**RQ3.** Which augmentation and representation-alignment objectives let policies generalize to scenes that
-were *not* captured and to another task and embodiment (navigation → manipulation)?
-**RQ4.** Can a few real rollouts correct the twin so that it predicts real performance?
+**RQ1 (measure and localize).** Where inside frozen encoders and twin-trained policies does the
+twin-vs-real gap arise, and how does it depend on the capture budget?
+**H1.** On paired real and twin-rendered frames of the same pose, the representation gap (1 − linear CKA,
+and the drop of linear-probe accuracy) (a) is *concentrated*: the third of layers with the largest gap holds
+≥ 50% of the summed gap in ≥ 80% of scenes; (b) decreases monotonically with the capture budget (trend test
+over ≥ 4 budgets); (c) differs between ≥ 10 frozen encoders (Friedman test); and (d) the encoders'
+robustness ranking predicts their downstream twin→real success rate (SR) with Spearman ρ ≥ 0.6.
 
-**Evaluation.** *Navigation:* (A, primary) ≥ 10 public indoor scenes with real video and a reference 3D
-scan that serves as the target domain ("proxy reality"), some held out as uncaptured; (B) real-world
-datasets for representation metrics; (C) real-robot validation in ≥ 2 PWr environments, 20 start–goal pairs
-× 3 trials per policy. Metrics: success rate (SR; primary), SPL, collisions. *Manipulation:* tabletop
-pick-and-place in twins of public scenes and objects in a public simulator; metric: task SR. *Budget* B =
-minutes of target-domain data (capture plus real experience). Baselines: a pretrained policy fine-tuned by
-behaviour cloning on target-domain data of budget B (*real-data-only*), and the same policy trained with
-domain randomization on generic scenes (*generic*). Tests: one-sided (α = 0.05), bootstrapped over scenes
-or start–goal pairs, Holm-corrected per hypothesis, pre-registered in the repository.
+**RQ2 (predict).** Can a twin-trained policy's real-world transfer and failures be forecast from its
+internals (hidden states, weights) without real rollouts?
+**H2.** (a) A predictor trained on the zoo (GNN over layers or weight-space metanetwork) predicts the
+twin→real SR gap on held-out scenes with ≥ 20% lower mean absolute error than the best of three baselines
+(twin SR alone, image fidelity PSNR/LPIPS, simulator-level predictivity); the lower 95% bound of the relative
+reduction must be > 0. (b) Hidden-state failure monitors calibrated conformally in the twin at 90% coverage
+keep coverage ≥ 85% on real data (ε = 5 pp).
 
-**H1 (RQ1, core).** A navigation policy trained only in the twin (a) beats the generic baseline in SR and
-(b) is **non-inferior** to the real-data-only baseline with a ≥ 10× larger budget: the lower 95% bound of
-SR_twin − SR_real is above −10 pp on tier A and above −15 pp on tier C (120 pooled episodes per policy;
-≈ 90% power at SR ≈ 0.8).
+**RQ3 (use).** Can these measures and forecasts allocate a limited real-data budget: which twin data to
+weight, what to capture and which real rollouts to collect?
+**H3.** Forecast-guided weighting, capture and rollout selection reaches the target real SR τ with ≥ 30%
+less real data (capture minutes + real rollouts) than uniform or random allocation: B_guided(τ) ≤
+0.7 · B_uniform(τ) on fitted budget–performance curves, with the upper 95% bound of the ratio < 1. τ is fixed
+in the pre-registration as the SR that uniform allocation reaches at the largest budget.
 
-**H2 (RQ3).** In uncaptured navigation scenes, and in manipulation with an unchanged pipeline,
-twin + augmentation + representation alignment reaches a higher SR than the twin alone and than the generic
-baseline, and alignment lowers the feature distance between reconstructed and real frames (tier B).
+**RQ4 (generalize).** Do the gap measures and predictors transfer across tasks and simulator families?
+**H4.** (a) A predictor trained on the navigation zoo, applied to a manipulation zoo without retraining,
+ranks policies by real outcome with Spearman ρ ≥ 0.5. (b) Its rank correlation with real outcomes exceeds
+that of a generic simulator (Sim-vs-Real Correlation Coefficient, SRCC) and of a learned world-model
+evaluator (95% CI of each paired difference excludes 0).
 
-**H3 (RQ4).** Over ≥ 10 navigation policy variants, the Sim-vs-Real Correlation Coefficient (SRCC) of the
-twin is higher than that of a generic simulator (95% CI of the difference excludes 0) and does not drop
-after refinement from real rollouts (lower 95% bound of the change ≥ −0.1).
+**Decision rule.** A hypothesis is supported when all its parts pass on tier A; tiers B and C report
+agreement and are not used to tune thresholds.
 
-**H4 (RQ2, core).** The full pipeline reaches a target navigation SR τ (best real-data-only SR minus 10 pp)
-with B_pipeline(τ) ≤ 0.1 · B_real(τ): the upper 95% bound of the ratio, from fitted budget–SR scaling
-curves, is ≤ 0.1. If real-data-only training misses τ within the largest
-feasible budget, the ratio is reported as a bound.
-
-<!-- Wave 6 (issue #14), 2026-09-26: broadened on the coordinator's decision. RQ1/RQ2 phrased for
-"embodied policies"; H1, H3, H4 stay decided on navigation (tiers A/B/C unchanged). RQ3/H2 broadened to
-cross-scene AND cross-task (navigation -> manipulation) generalization. Manipulation = public simulators and
-benchmarks first (concrete simulator/benchmark chosen in §9); real validation at PWr optional (K29
-Laboratorium Robotyki manipulators UR3/FANUC/ABB, availability UNVERIFIED), so no manipulation tier C is
-promised. "SR_recon" renamed "SR_twin". Evaluation paragraph compacted to keep the 1-page limit
-(tier A/C baselines and Holm correction unchanged in substance). -->
-<!-- Wave 5 (issue #11), 2026-09-26: reframed ML-first on the student's decision (AI/ML PhD, navigation =
-testbed; main evaluation on public simulators/benchmarks and real-world datasets; the real robot = validation
-subset, which reduces hardware risk). RQ1–RQ4 / H1–H4 numbering kept because §3, §8, §9 and §12 refer to it.
-- Tier A "proxy reality" = the reference scan of a public scene, rendered in the simulator, is the target
-  domain; the reconstruction is built from that scene's real video capture. The concrete dataset and
-  simulator are chosen in §9 / T3.1 (CONFIRM with §9: it needs scenes with both real video and a reference
-  scan). "Real experience" on tier A = rollouts in the reference scan. Tier B datasets: e.g. SCAND, RECON (§9).
-- H1(b) tier A margin −10 pp is a design choice (many scenes and episodes; power must be rechecked after the
-  pilot with scene-level clustering: CONFIRM supervisor). Tier C keeps the issue #9 rule: normal
-  approximation, SR = 0.8 both arms, one-sided α = 0.05, 120 pooled episodes at δ = 15 pp → power 0.90
-  (research/review-1.md F8). τ in H4 keeps 10 pp.
-- H2 "feature-distribution distance": e.g. Fréchet distance between encoder features; exact metric fixed in
-  the repository before Stage IV. Representation alignment added on the student's decision (representation
-  learning to close the sim-real distribution gap).
-- F10: real-data-only baseline = behaviour cloning / fine-tuning of a pretrained model (GNM/ViNT/NoMaD, §9).
-- F23: "real-to-sim" / "sim-to-real" glossed in RQ1. SRCC is from Kadian et al. [11] in §6. -->
+<!-- Wave 9 (issue #22), 2026-09-26: rewritten after the pivot (research/pivot-decision.md is binding:
+thesis, RQ1-RQ4 / H1-H4 numbering, thresholds rho >= 0.6, MAE -20%, epsilon = 5 pp, -30% real data,
+rho >= 0.5, tiers A/B/C, "all thresholds are design choices"). Operationalizations added here (CONFIRM
+supervisor; §9 must use the same wording):
+- "Concentrated" (H1a): top third of layers >= 50% of the summed gap in >= 80% of scenes. "Monotonic" (H1b):
+  one-sided trend test (e.g. Page / Jonckheere) over >= 4 capture budgets. "Differ" (H1c): Friedman test over
+  scenes with >= 10 frozen encoders (e.g. DINOv2, SigLIP, CLIP, VC-1-type, R3M-type, V-JEPA-type;
+  niches-models N4 suggests 8-10). Critical Spearman rho at one-sided alpha = 0.05 is about 0.64 for n = 8,
+  0.60 for n = 9 and 0.56 for n = 10, so rho >= 0.6 is only meaningful with >= 10 encoders.
+- Zoo size >= 200 is a design choice (novelty-options §3: "a few hundred to a few thousand small policies").
+- H2 baselines follow pivot-decision.md; "simulator-level predictivity" = SRCC-style rollout estimate in the
+  twin. Conformal level 90% is a design choice; epsilon = 5 pp is from pivot-decision.md. Real data for
+  H2b = tier B (real datasets) and tier A proxy reality (niches-eval N5).
+- H3 absorbs the former H1(b)/H4 budget curves (pivot-decision.md). "Real rollouts" on tier A = rollouts in
+  the reference scan. The former -10 pp/-15 pp non-inferiority margins and the "twin beats generic" claim
+  (crowded, novelty-synthesis.md) are dropped as hypotheses; twin-vs-generic can remain a sanity check in §9.
+- H4 manipulation zoo: ManiSkill3 twins, SIMPLER paired sim/real evaluations as labels (novelty-options §3;
+  exact checkpoints to be re-read from SIMPLER). World models only as a comparator (pivot scope).
+- Core RQ1-RQ2 (P1 NeurIPS 2027, P2 ICLR/CVPR 2028) vs. RQ3-RQ4 (P3) follows the paper plan in
+  pivot-decision.md; the core/extension label is our proposal for mid-term risk (CONFIRM supervisor). -->

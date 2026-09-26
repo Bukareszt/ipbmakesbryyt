@@ -2,13 +2,22 @@
 
 **May 2027 / maj 2027**
 
-Paper submitted for review to the **Conference on Neural Information Processing Systems (NeurIPS 2027)**,
-peer-reviewed international conference proceedings worth **200 points** on the ministerial list (conference
-Lp. 87), assigned to the discipline *informatyka techniczna i telekomunikacja*. It reports Stages I–II
-(learning from reconstructed scenes and the first real-data-budget curve on public benchmarks; task T4.2).
-If the results are ready earlier, the paper goes to **ICML 2027** (expected deadline late January 2027, also
-200 points). If it is rejected, the revised paper is resubmitted to the next 200-point conference (§12).
+Paper **P1** submitted for review to the **Conference on Neural Information Processing Systems (NeurIPS
+2027)**, main track or Datasets & Benchmarks track. NeurIPS is peer-reviewed international conference
+proceedings worth **200 points** on the ministerial list (conference Lp. 87), assigned to the discipline
+*informatyka techniczna i telekomunikacja*. P1 reports Stage I (RQ1): a benchmark of paired real and
+twin-rendered frames and the localization of the twin-vs-real gap inside frozen encoders and twin-trained
+policies (task T4.2). If it is rejected, the revised paper goes to **CVPR 2028** (expected deadline
+November 2027, also 200 points), and then to the next 200-point conference (§12).
 
+<!--
+Wave 9 (issue #23), 2026-09-26: P1 content changed to the pivot's RQ1 paper (research/pivot-decision.md:
+"P1: NeurIPS 2027 (May 2027, §11) ... Datasets & Benchmarks or main track; alternative CVPR 2028"). The ICML
+2027 early option is dropped because the pivot names CVPR 2028 as the alternative. CVPR 2028 deadline
+expected ~Nov 2027 from past cycles (research/venues-200.md): UNVERIFIED. CONFIRM (supervisor/coordinator):
+that a paper in the NeurIPS Datasets & Benchmarks track appears in the NeurIPS proceedings and so counts as
+the listed conference; if in doubt, submit P1 to the main track.
+-->
 <!--
 Issue #12 (coordinator decisions, 2026-09-26): only 200-pt conferences from the 5.01.2024 list assigned to
 ITiT; §11 = NeurIPS 2027, ~May 2027 (sem. 4), ICML 2027 as the early option. RA-L/IROS removed.

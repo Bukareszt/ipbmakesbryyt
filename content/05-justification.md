@@ -1,52 +1,70 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Modern machine learning is limited less by models than by **data in the target domain**. Deep
-reinforcement learning, imitation learning and large pretrained models learn strong behaviour, but only
-from very large amounts of experience: near-perfect point-goal navigation in simulation took billions of
-frames. For embodied agents (mobile robots, manipulators) such data can only come from the real world,
-where it is slow, expensive and sometimes risky to collect. The central question is therefore how to learn
-well from **a small, fixed budget of real data**.
+Modern machine learning is limited less by models than by **data in the target domain**. Embodied agents
+(mobile robots, manipulators) learn strong behaviour only from very large amounts of experience, often
+millions of trials or more. In the real world such data is
+slow, expensive and sometimes risky to collect, so a policy is usually trained in simulation and then
+deployed on real sensor data, where it often fails (the **sim-to-real gap**).
 
-Simulation is the usual answer, but policies trained there often fail on real inputs. This **sim-to-real
-gap** is a distribution shift between training and deployment data in appearance, geometry and dynamics.
-Domain randomization widens the training distribution by hand and still gives no guarantee for a
-particular target domain; training directly on real data does not scale.
+**Digital twins built by neural scene reconstruction** (3D Gaussian Splatting, Neural Radiance Fields)
+turn a few minutes of real video into a photorealistic, interactive model of the target scene, in which a
+policy can be trained at scale. Building such twins has quickly become routine: dozens of papers a year
+and more than ten open-source twin simulators. The open question has moved from *how to build a twin* to
+*when a policy trained in it can be trusted in reality*. Today this is answered in two unsatisfying ways:
+by running the policy in the real world (slow and costly, which is what the twin was meant to avoid) or by
+image-quality scores of the reconstruction, which are known to track real performance poorly. Neither says
+**where** the gap arises, and neither tells how to spend the few real observations one can afford.
 
-**Digital twins built by neural scene reconstruction** (Neural Radiance Fields, 3D Gaussian Splatting) open
-a third path. A few minutes of real video are turned into a photorealistic, interactive model of the target
-scene, in which a policy can be trained at scale (*real-to-sim-to-real*). This moves the cost from
-collecting experience to collecting cheap captures. It raises open machine-learning questions that have not
-been studied systematically: how performance **scales with the real-data budget**, which
-**representations** bring reconstructed and real data close enough, how to generalize beyond the captured
-scenes **and to other tasks and embodiments**, how a few real observations can correct the simulation, and
-what a twin costs to build and how faithful it is.
+**Why representations.** Whatever a policy does, it does through its internal representations: the
+features its encoder and layers compute from an image. This is where reconstructed and real inputs either
+meet or diverge. Machine learning now has mature tools to read representations: layer-wise probing,
+representational similarity (e.g. centred kernel alignment), and learning on network weights
+(metanetworks over model populations). They have been used to predict the accuracy and generalization of
+image classifiers and other networks from their weights, but not the real-world transfer of policies trained in twins. The dissertation
+asks whether this transfer can be **measured, localized and predicted from representations** without real
+rollouts, and whether such forecasts let a small real-data budget be spent where it matters: which twin
+data to weight, what to capture, and which real trials to run.
 
-**Why this topic, and why in this discipline.** The research object is a general, task-agnostic learning
-methodology, which places it in *information and communication technology*: data-efficient learning,
-learning from reconstructed data, representation learning under distribution shift, and methods for
-testing whether results from simulation can be trusted. **Visual navigation** is the primary testbed,
-because public simulators, benchmarks and real-world datasets allow controlled, reproducible measurement of
-the gap; trials on a real robot validate the conclusions. **Robotic manipulation** (e.g. tabletop
-pick-and-place in reconstructed scenes) is the generalization domain: it tests, mainly on public
-simulators and benchmarks, that the method is not specific to one task or robot. The topic fits the
-representation learning, computer vision and generative modelling work of the Department of Artificial
-Intelligence (K46). The computation-heavy parts can run on the GPU infrastructure available to PWr
-researchers (WCSS, PLGrid). The main result, a measured answer to "how much real data is enough", is useful
-whatever the outcome.
+**Why this topic, and why in this discipline.** The object is a learning and evaluation methodology, not a
+robot or a simulator, which places it in *information and communication technology* (representation
+learning, learning under distribution shift, model analysis). The student uses existing twin pipelines and
+simulators and does not develop new ones. **Visual navigation** is the primary testbed, because public
+scene datasets with real captures allow controlled, reproducible measurement without an own robot;
+**robotic manipulation** tests that the findings carry over to another task. Trials on a real robot
+(planned cooperation with a PWr robotics laboratory) validate, but do not decide, the conclusions. The
+topic fits the Department of Artificial Intelligence (K46), whose research groups include representation
+learning on graphs and models in weight space. The computation runs on the GPU infrastructure available to
+PWr researchers (WCSS, PLGrid). A benchmark of paired real and reconstructed data and a measured answer to
+"which representations survive reconstruction" are useful whatever the hypotheses' outcome.
 
-**Potential application areas:** service, assistive and warehouse robotics, inspection and delivery,
-flexible industrial manipulation, and rapid deployment of learned systems in new buildings and workcells
-with minimal on-site data collection. More broadly, the methods apply wherever models are trained on
-reconstructed or synthetic data and deployed on real sensor data: other embodied agents, industrial
-digital twins, and perception for autonomous systems.
+**Potential application areas:** faster and cheaper deployment of learned robots in new buildings and
+workcells (service, assistive, warehouse and inspection robotics, flexible manipulation); pre-deployment
+screening of candidate policies and safety monitors that flag likely failures; choosing which visual
+foundation models to use in twin-based training; and, beyond robotics, any system trained on reconstructed
+or synthetic data and deployed on real sensor data (industrial digital twins, perception for autonomous
+systems).
 
 <!--
-Wave 6 (issue #14), 2026-09-26: broadened to a general digital-twin policy-learning methodology on the
-coordinator's decision; navigation = primary testbed (all feasibility tiers A/B/C unchanged), manipulation =
-generalization domain on public simulators/benchmarks first (real validation at PWr optional; K29
-Laboratorium Robotyki lists UR3, FANUC LR Mate, ABB IRB 120 per research/resources.md, availability
-UNVERIFIED, so no PWr manipulator is named in the visible text). The twin pipeline cost/fidelity is a
-contribution (§8 item 5).
-Wave 5 (issue #11): ML-first framing. "Billions of frames" = Wijmans et al. [4] in §6 (2.5 billion frames).
-K46 groups and compute: research/resources.md §1–§2. The pre-PhD ACL 2025 SRW sentence stays only in §12.
+Wave 9 (issue #22), 2026-09-26: rewritten after the pivot to the representation-level thesis
+(research/pivot-decision.md). Sources for the claims (no bracketed citations here, to stay independent of
+§6 numbering, which another worker rewrites in parallel):
+- "millions of trials or more": e.g. DD-PPO (Wijmans et al., ICLR 2020) used 2.5 billion frames; the
+  reference was pruned from §6 in wave 9, so the visible text no longer quotes the number.
+- "dozens of papers a year, more than ten open-source twin simulators" = research/crowdedness.md and
+  novelty-synthesis.md (3DGS twins for robot learning 23 -> 96 -> 124 papers/yr 2024/25/26; >= 12
+  open-source twin simulators). Kept deliberately vague ("dozens").
+- "running the policy in the real world" = SRCC needs paired real rollouts (Kadian et al., RA-L 2020);
+  "image-quality scores track real performance poorly" = Truong et al., CoRL 2022 (lower fidelity can
+  transfer better) and novelty-options §4 (no fidelity metric predicting transfer found).
+- "used to predict accuracy/generalization of image classifiers and other networks" = weight-space learning /
+  model zoos (Schürholt et al. NeurIPS 2022; Navon et al. ICML 2023; Zhou et al. NeurIPS 2023; Kofinas et
+  al. ICLR 2024; ICLR 2025 Weight Space Learning workshop topic "inferring test performance or
+  generalization error from weights"), novelty-options §3. Not applied to twin-trained policies: S2
+  0/0/0/1/3 (2019-22/23/24/25/26), novelty-options §3 and niches-map rank 1.
+- K46 groups: https://ai.pwr.edu.pl/research-groups (read 2026-09-26), group "Uczenie reprezentacji w
+  grafach, grafy wiedzy i modele w przestrzeni wag".
+- Real robot = tier C, planned K29 Denali cooperation (not agreed; research/resources.md §1), so the lab is
+  not named in the visible text.
+- The pre-PhD ACL 2025 SRW paper stays only in §12 (review-1 decision), although its method (GNN over
+  per-layer hidden states) is the direct precursor of RQ2.
 -->

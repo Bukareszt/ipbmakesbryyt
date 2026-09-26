@@ -1,17 +1,19 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-**PL:** Efektywne pod względem danych przenoszenie polityk nawigacji robotów mobilnych z symulacji do
-rzeczywistości z wykorzystaniem neuronowej rekonstrukcji scen (podejście real-to-sim-to-real)
+**PL:** Efektywne pod względem danych uczenie maszynowe na podstawie neuronowych rekonstrukcji scen:
+zmniejszanie luki między symulacją a rzeczywistością dla polityk nawigacji wizyjnej przy ograniczonym
+budżecie danych rzeczywistych
 
-**EN:** Data-efficient sim-to-real transfer of mobile-robot navigation policies using real-to-sim-to-real
-neural scene reconstruction
+**EN:** Data-efficient machine learning from neural scene reconstructions: closing the simulation-to-reality
+gap for visual navigation policies under a limited real-data budget
 
-<!-- Wording follows research/benchmarks.md edit 17: the title names the object (mobile robots), the
-technique (neural scene reconstruction) and the goal (data efficiency); committees ask titles to name the
-domain and define key terms (R5 p. 14, R3 p. 48). The topic does not have to be the final title (S11).
-Key terms, defined in §5–§7: "real-to-sim-to-real" = capture the real target environment, reconstruct it
-as a simulation, train there, deploy back on the real robot; "neural scene reconstruction" = NeRF / 3D
-Gaussian Splatting. Alternatives to discuss with the supervisor:
-- "Real-to-sim-to-real learning of mobile-robot navigation policies from minimal real-world data"
-- "Closing the sim-to-real gap in mobile-robot navigation with neural scene reconstruction and limited
-  real-world data" -->
+<!-- Wave 5 (issue #11): reframed ML-first on the student's decision. This is an AI/ML PhD (K46, supervisor
+leads the Representation Learning group); the object of research is the learning methodology (learning from
+reconstructed data, representation learning across the sim-real distribution gap, scaling with the
+real-data budget); visual navigation is the application and testbed. The title names the method (learning
+from neural scene reconstructions), the problem (sim-to-real gap), the testbed (visual navigation policies)
+and the variable studied (real-data budget). Key terms are defined in §5–§7: "neural scene reconstruction" =
+NeRF / 3D Gaussian Splatting; "real-data budget" = minutes of real data (capture + real experience). The
+topic does not have to be the final title (S11). Shorter alternatives for the supervisor:
+- "Learning from neural scene reconstructions under a limited real-data budget"
+- "Data-efficient sim-to-real learning with neural scene reconstructions and representation alignment" -->

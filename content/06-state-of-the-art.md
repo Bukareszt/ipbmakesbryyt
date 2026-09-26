@@ -38,6 +38,8 @@ experience at matched budgets. The closest such analysis, in manipulation, is Ri
 real demonstrations [23]. Multi-room scenes, collision geometry and generalization to environments that
 were never captured also remain open.
 
+**Learning under distribution shift.** From a machine-learning perspective, the sim-to-real gap is a domain shift between training and deployment data. Unsupervised domain adaptation aligns feature distributions across domains adversarially [31] or at both pixel and feature level [32]. Neural scaling laws [33] describe how performance grows with the amount of data, but it is not known how *real* and *reconstructed* data trade off. Large 3D scene datasets (HM3D [34], ScanNet++ [35]) now make it possible to study this question in a controlled way, where real captures act as a proxy for reality.
+
 **Research gap.** There is no systematic study of the **trade-off between real-data budget and deployed
 navigation performance** in a real-to-sim-to-real pipeline. We also lack methods that (i) combine
 reconstructed scenes with targeted randomization to generalize beyond the captured environments, and
@@ -75,6 +77,12 @@ addresses that gap.
 [28] Z. Xie et al., "Vid2Sim," CVPR, 2025.
 [29] S. Yoo et al., "ReaDy-Go," IEEE RA-L, 2026.
 [30] G. Chhablani et al., "EmbodiedSplat," ICCV, 2025.
+[31] Y. Ganin et al., "Domain-Adversarial Training of Neural Networks," JMLR, 2016.
+[32] J. Hoffman et al., "CyCADA: Cycle-Consistent Adversarial Domain Adaptation," ICML, 2018.
+[33] J. Kaplan et al., "Scaling Laws for Neural Language Models," arXiv:2001.08361, 2020.
+[34] S. K. Ramakrishnan et al., "Habitat-Matterport 3D Dataset (HM3D)," NeurIPS Datasets and Benchmarks, 2021.
+[35] C. Yeshwanth et al., "ScanNet++: A High-Fidelity Dataset of 3D Indoor Scenes," ICCV, 2023.
+<!-- [31]-[35] added by the coordinator on 2026-09-26 for the ML-first reframing. Titles, first authors and years were verified on OpenAlex (arXiv 1505.07818, 1711.03213, 2001.08361, 2109.08238, 2308.11417). -->
 
 <!--
 Revision for issue #9 (research/review-1.md F11, F14), 2026-09-26:

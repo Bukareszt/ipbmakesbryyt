@@ -1,46 +1,51 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Autonomous mobile robots such as service robots, warehouse and inspection platforms, and delivery vehicles
-depend on perception-driven navigation policies. Modern learning-based approaches (deep reinforcement
-learning, imitation learning, large pretrained navigation models) outperform hand-engineered pipelines in
-unstructured scenes, but they are extremely data-hungry. Near-perfect point-goal navigation in simulation
-took billions of frames of experience. Collecting data at that scale on real robots is slow, expensive,
-and risky for the hardware and for people.
+Modern machine learning is limited less by models than by **data in the target domain**. Deep
+reinforcement learning, imitation learning and large pretrained models learn strong behaviour, but only
+from very large amounts of experience: near-perfect point-goal navigation in simulation took billions of
+frames. In many applications such data can only come from the real world, where it is slow, expensive and
+sometimes risky to collect. The central question is therefore how to learn well from **a small, fixed
+budget of real data**.
 
-Simulation is the natural alternative, but policies trained in simulation often fail when deployed on a
-real robot. This is the **sim-to-real gap**: differences in appearance (textures, lighting, sensor noise),
-geometry, and dynamics (friction, actuation delays). The standard remedy, domain randomization, requires
-careful manual design and still gives no guarantee for a particular target environment. The opposite
-option, training directly on real data, does not scale.
+Simulation and synthetic data are the usual answer, but models trained on them often fail on real inputs.
+This **sim-to-real gap** is a distribution shift between training and deployment data: in appearance
+(textures, lighting, sensor noise), geometry and dynamics. Domain randomization widens the training
+distribution by hand and still gives no guarantee for a particular target domain; training directly on
+real data does not scale.
 
-Recent progress in **neural scene reconstruction** (Neural Radiance Fields, 3D Gaussian Splatting) makes a
-third path possible: **real-to-sim-to-real**. A few minutes of real-world capture are turned into a
-photorealistic, interactive simulation of the target environment. The policy is trained there at scale and
-then deployed back on the real robot. This shifts the cost from collecting *robot experience* to
-collecting *cheap scene captures*. It is a promising way out of the data bottleneck, but it has not yet
-been studied systematically for mobile-robot navigation. Open questions include how much real data is
-really needed, how to generalize beyond the captured scenes, and how to correct the simulation with
-feedback from real rollouts.
+**Neural scene reconstruction** (Neural Radiance Fields, 3D Gaussian Splatting) opens a third path. A few
+minutes of real video are turned into a photorealistic, interactive model of the target environment, in
+which a model can be trained at scale (*real-to-sim-to-real*). This moves the cost from collecting
+experience to collecting cheap captures. It raises open machine-learning questions that have not been
+studied systematically: how performance **scales with the real-data budget**, which **representations**
+make the reconstructed and real data distributions close enough, how to generalize beyond the captured
+scenes, and how a few real observations can correct the simulation.
 
-**Why this topic, and why in this discipline.** The core problems are problems of *information and
-communication technology*: learning algorithms, data-efficient training methodology, software for
-building simulators from sensor data, and methods for evaluating whether simulation results can be
-trusted. The robot is the test platform, not the object of the research. The topic fits the machine
-learning, computer vision and representation learning work of the Department of Artificial Intelligence
-(K46), and the computation-heavy parts (3D reconstruction, large-scale policy training) can run on the
-GPU infrastructure available to PWr researchers (WCSS, PLGrid). Its main result, a measured answer to
-"how much real data is enough", is useful to both researchers and practitioners, whatever the outcome.
+**Why this topic, and why in this discipline.** The research object is a learning methodology, which
+places it in *information and communication technology*: data-efficient learning, learning from
+reconstructed and synthetic data, representation learning under distribution shift, and methods for
+testing whether results obtained in simulation can be trusted. **Visual navigation** of mobile robots is
+the application and testbed, chosen because public simulators, benchmarks and real-world datasets allow
+controlled, reproducible measurement of the gap. The main evaluation uses these public resources; trials on
+a real robot validate the conclusions. The topic fits the representation learning, computer vision and
+generative modelling work of the Department of Artificial Intelligence (K46). The computation-heavy parts
+(3D reconstruction, large-scale training) can run on the GPU infrastructure available to PWr researchers
+(WCSS, PLGrid). Its main result, a measured answer to "how much real data is enough", is useful whatever the
+outcome.
 
-**Potential application areas:** indoor service and assistive robotics, logistics and warehouse
-automation, inspection of industrial facilities, last-mile delivery, and rapid deployment of robots in new
-buildings with minimal on-site data collection. The methods also carry over to other embodied systems,
-such as manipulators and drones, and to digital twins of real environments more generally.
+**Potential application areas:** service, assistive and warehouse robotics, inspection and last-mile
+delivery, and rapid deployment of learned systems in new buildings with minimal on-site data collection.
+More broadly, the methods apply wherever models are trained on reconstructed or synthetic data and deployed
+on real sensor data: other embodied agents (manipulators, drones), digital twins, and perception models for
+autonomous systems.
 
 <!--
-Revision (issue #6, research/benchmarks.md edit 15): the sentence "continues my earlier work ... (ACL 2025
-SRW)" was removed so that the topic stands on its own. The ACL paper is pre-PhD and in NLP; the mid-term
-autoreferat forbids listing recruitment-stage achievements (S9) and off-topic papers are criticised (R1,
-AGH). It is kept only as methodological background in §12.
-Word count ≈ 470 (limit ~480 at 11 pt, spacing 1).
-Sources for the compute claim: research/resources.md §2 (WCSS Lem, PLGrid "Doktorant" affiliation).
+Wave 5 (issue #11): rewritten ML-first. The problem is framed as learning under a limited target-domain data
+budget and distribution shift; navigation is the testbed; main evaluation on public simulators/benchmarks
+and real-world datasets, the real robot (planned K29 "Denali" cooperation, §9) as validation. The
+"billions of frames" claim = Wijmans et al. [4] in §6 (2.5 billion frames). K46 groups: research/resources.md
+§1 (Representation Learning group led by the supervisor; genwro.AI works on generative models / 3D).
+Compute: research/resources.md §2 (WCSS Lem, PLGrid "Doktorant" affiliation; allocations to be applied for).
+Earlier revision (issue #6): the pre-PhD ACL 2025 SRW sentence stays removed (kept only in §12).
+Visible word count ≈ 440 (limit ~480 at 11 pt, spacing 1).
 -->

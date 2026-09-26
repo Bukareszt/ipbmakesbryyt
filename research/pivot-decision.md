@@ -1,60 +1,69 @@
-# Pivot decision (student, 2026-09-26): representation-level thesis
+# Pivot decision v2 (student, 2026-09-26): data-efficient real-to-sim-to-real
 
-Based on research/niches-map.md. This file is the single source of truth for waves 9–10.
+Supersedes v1 (the representation-level thesis). **No benchmark building.** The object of research is the
+real-to-sim-to-real loop itself, and how to make it work with **less real data**. Representations and
+uncertainty are *tools* inside the methods, not the object.
 
-**Thesis.** How well embodied policies trained in neural-reconstruction digital twins transfer to the real
-world can be **measured, localized and predicted from their internal representations**, and this lets a
-limited real-data budget be spent where it matters.
+**Thesis.** The real data needed in a real-to-sim-to-real loop can be reduced substantially by *allocating it
+actively*: capture only what the policy needs to build the twin, train so that the policy is robust to what
+the twin got wrong, and collect only the few real rollouts that close the remaining gap. All three steps are
+guided by reconstruction uncertainty and by the policy's own representations.
 
-**Object.** A policy is trained in a twin: a 3DGS reconstruction built from a short real capture. It is
-then deployed in reality. Navigation is the primary testbed; manipulation is the cross-task test. The
-student builds on existing twin pipelines and simulators and does not develop new ones.
+**Loop.** Real capture → twin (3DGS reconstruction, using existing tools) → policy training in the twin →
+a few real rollouts → twin/policy correction → deployment. Navigation is the primary testbed; manipulation
+is the cross-task test.
 
-## Research questions and hypotheses (numbering fixed)
+**Why this is open** (research/niches-data.md, niches-eval.md, niches-models.md; Semantic Scholar hits per
+year 2023/24/25/26):
+- Task-aware capture for twins: 2/2/0/2.
+- Active selection of real rollouts in the twin setting: open.
+- Representation-guided weighting of twin data: 0/0/1/0.
+- Reconstruction uncertainty as a training signal: 0/0/1/1.
+- Real-data-budget curves for navigation: none published (crowdedness.md).
 
-**RQ1 (measure and localize).** Where inside frozen encoders and twin-trained policies does the twin-vs-real
-gap arise, and how does it depend on the capture budget?
-- **H1.** On paired real and twin-rendered frames (same pose), the representation gap is concentrated in
-  identifiable layers and decreases monotonically with the capture budget. The gap is measured by linear
-  CKA and by the linear-probe accuracy drop. Frozen encoders differ significantly in their robustness to
-  reconstruction artifacts, and this robustness ranking predicts downstream twin→real transfer (Spearman
-  ρ ≥ 0.6).
+**What to avoid, because it is crowded:** "twin beats generic simulator", generic domain adaptation, building
+twin simulators, and building benchmarks.
 
-**RQ2 (predict).** Can a twin-trained policy's real-world transfer and failures be forecast from its
-internals (hidden states, weights) without real rollouts?
-- **H2.** Consider a predictor trained on a policy zoo: a GNN over layers or a weight-space metanetwork.
-  On held-out scenes it predicts the twin→real success-rate gap with at least 20% lower MAE than the
-  baselines: twin SR alone, image fidelity (PSNR/LPIPS), and simulator-level predictivity. In addition,
-  hidden-state failure monitors calibrated in the twin keep their conformal coverage on real data within
-  ε = 5 pp.
+## Research questions and hypotheses (numbering fixed; thresholds for the supervisor to confirm)
 
-**RQ3 (use).** Can these measures and predictions allocate a limited real-data budget? That is: which twin
-data to weight, what to capture, and which real rollouts to collect.
-- **H3.** Forecast-guided twin-data weighting, capture and rollout selection reaches a target real SR with
-  at least 30% less real data (capture minutes + real rollouts) than uniform or random allocation. The
-  evidence is budget–performance curves, which absorb the former H1(b)/H4.
+**RQ1 (real → sim: capture less).** How little capture data is needed to build a twin that is good enough
+for policy learning, and can the capture be guided by the task?
+- **H1.** Task-aware, uncertainty-guided capture (views chosen where the policy's task-relevant regions have
+  high reconstruction uncertainty) reaches the same downstream success rate as uniform capture with at least
+  40% less capture (minutes or views).
 
-**RQ4 (generalize).** Do the gap measures and predictors transfer across tasks and simulator families?
-- **H4.** A predictor trained on the navigation zoo keeps its ranking ability on manipulation (Spearman
-  ρ ≥ 0.5). Representation-based prediction also predicts real outcomes better than two alternatives:
-  simulator-level SRCC of a generic simulator, and a learned world-model evaluator.
+**RQ2 (in sim: train robustly on an imperfect twin).** How should a policy be trained so that it is robust to
+the twin's reconstruction errors?
+- **H2.** Uncertainty-aware training (augmentation and sample weighting driven by per-region reconstruction
+  uncertainty and by the representation distance to a small real set) improves real transfer over uniform
+  domain randomization, at an equal capture budget, by at least 10 pp success rate.
 
-All thresholds are design choices for the supervisor to confirm.
+**RQ3 (sim → real: collect few real rollouts).** Which few real rollouts should be collected to close the
+remaining gap, and how should they be used to correct the twin and the policy?
+- **H3.** Real rollouts selected actively (by predicted gap or uncertainty) reach the target success rate
+  with at least 50% fewer real rollouts than random selection.
 
-## Evaluation tiers (unchanged idea)
-- **A:** proxy reality on public real scans with twins (e.g. ScanNet++). This tier decides the hypotheses.
-- **B:** real-world datasets or published real evaluations with paired real outcomes.
-- **C:** real-robot validation (planned K29 Denali collaboration). Validation only.
+**RQ4 (whole loop: budget and generalization).** What is the total real-data budget of the full loop,
+compared with real-data-only learning, and does it hold beyond navigation?
+- **H4.** The full loop reaches the target success rate with at most 10% of the real data needed by
+  real-only learning (an "exchange rate" budget curve), and the method carries over to manipulation with
+  the pipeline unchanged.
 
-## Papers (200-pt ITiT conferences only)
-- **P1:** NeurIPS 2027 (May 2027, §11). RQ1: a benchmark of paired real and twin frames, plus localization
-  of the gap. Datasets & Benchmarks or main track; alternative CVPR 2028.
-- **P2:** ICLR 2028 or CVPR 2028 (sem. 5). RQ2: forecasting transfer and failure from internals.
-- **P3:** NeurIPS 2028 (sem. 6), fallback ICLR 2029 (ECCV 2028 dropped in review-2: results not ready by March 2028). RQ3 + RQ4: budget allocation and cross-task transfer
-  (manipulation).
-- **P4 (optional):** ICLR 2029 or CVPR 2029 (sem. 7). Consolidated study.
+## Evaluation (no own benchmark)
+- **Tier A: proxy reality.** Use existing public real scans (e.g. ScanNet++). A full-capture, high-fidelity
+  twin plays "reality", and a low-budget twin is the training simulator. This makes it possible to count
+  "real data" precisely without a robot. This tier decides the hypotheses.
+- **Tier B: real-world datasets.** Existing datasets and published paired sim/real results.
+- **Tier C: real-robot validation.** Planned K29 Denali collaboration, plus own phone or RGB-D captures of
+  PWr rooms. Validation only.
+
+## Papers (200-point ITiT conferences only)
+- **P1: NeurIPS 2027** (May 2027, §11). RQ1 + RQ2: task-aware capture and uncertainty-aware training.
+- **P2: ICLR 2028 or CVPR 2028** (semester 5). RQ3: active real-rollout selection and twin correction.
+- **P3: NeurIPS 2028** (semester 6; fallback ICLR 2029). RQ4: full-loop budget law and manipulation.
+- **P4 (optional):** consolidation.
 
 ## Scope
-- Semesters 1–2 in §3 stay as they are. T2.1 wording may be adapted to the new RQs.
-- World models appear only as a comparator (H4) and a source of frozen features.
-- No development of twin simulators.
+- Semesters 1–2 in §3 stay as they are; the T2.1 wording may be adapted.
+- World models appear only as a comparator where relevant (e.g. H4 baseline), with no training.
+- No benchmark or simulator development. The student builds on existing tools.

@@ -1,3 +1,45 @@
+# Decision v6 (student, 2026-09-26): general description, navigation, pipeline real → twin → navigation models → real
+
+**v6 overrides v5/v4/v3 on level of detail and domain.** v5 was **too specific**. The IPB must describe, at a
+general level, **how data from the real world is transferred into a digital twin and how navigation models
+are then trained on it** and transferred back to reality, with **less real data** as the goal.
+
+**Object.** A method (a procedure or pipeline) for real-to-sim-to-real learning of **navigation models**, with
+three stages:
+1. **Transfer of real-world data into a digital twin.** Acquire real data (e.g. short video or RGB-D capture,
+   a few measurements) and build a twin: appearance and geometry by neural scene reconstruction, plus the
+   physical properties needed for navigation. The emphasis is on *which* real data is worth acquiring.
+2. **Training navigation models in the twin.** Large-scale training in simulation. The twin can be extended
+   with learned world models and with pretrained foundation models (vision-language / vision-language-action).
+   These are named as *families of methods*, not specific checkpoints.
+3. **Transfer back to reality.** Deploy and validate, using a small amount of real data to correct the twin
+   and the model.
+
+**Goal.** A method that reaches a given real-world navigation performance with **significantly less real
+data** than existing approaches.
+
+**Hypotheses.** Keep RQ1–RQ4 / H1–H4 mapped to stages 1, 2 and 3, plus the whole pipeline. Formulate them
+**simply** (one or two sentences each). Keep one clear quantitative threshold per hypothesis; move the
+details (tests, α, counts) to §9, briefly.
+
+**Level of detail:**
+- The title is short and general.
+- No specific model or checkpoint names (OpenVLA, π0, Qwen, Cosmos, NWM, …) in §2, §5, §7, §8 or §10.
+- §9 may give at most "e.g." examples of method families.
+- Remove H2(b) and H4(b) details about TwinRL and VLAs from the visible text. Keep the comparison with
+  "existing real-to-sim-to-real approaches" in general terms.
+- §6 stays scholarly: verified references, at most 2 pages.
+
+**Domain.** Navigation (indoor mobile robots) is the domain. Manipulation is no longer a testbed; mention it
+at most as future applicability in §12.
+
+**Unchanged:** the evaluation idea (a non-circular proxy reality on public scans, real-robot validation),
+papers P1–P3 at 200-point venues (content adapted to navigation), semesters 1–2, and the review-3 fixes where
+still relevant.
+
+---
+(earlier decisions below, for history)
+
 # Decision v5 (student, 2026-09-26): the method uses VLA/VLM and world models, sim-first, fine-tuned in the twin
 
 **v5 overrides v4 on the method content. The goal, thesis and scope stay as in v4/v3:** one method that needs

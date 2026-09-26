@@ -2,49 +2,55 @@
 
 **Learning-based navigation and its data demands.** Photorealistic simulators such as Habitat [1, 2] and
 CARLA [3] made large-scale training of embodied agents possible. Wijmans et al. [4] reached near-perfect
-point-goal navigation, but only after 2.5 billion frames of simulated experience, a volume out of reach on
-physical robots. *Navigation foundation models* (GNM [5], ViNT [6], NoMaD [7]) are trained on pooled
-real-robot datasets, and Open X-Embodiment [8] shows that robot learning scales with data. Collecting such
-data is still costly, and every new environment or platform typically needs more real-world data.
+point-goal navigation only after 2.5 billion simulated frames, a volume out of reach on physical robots. *Navigation foundation models* (GNM [5], ViNT [6], NoMaD [7]) are trained on pooled
+real-robot datasets, and Open X-Embodiment [8] shows that robot learning scales with data. Such data is
+costly, and every new environment or platform typically needs more of it.
 
 **The sim-to-real gap.** Policies trained in simulation degrade on real hardware because of differences
-in appearance, geometry and dynamics [9, 10]. Kadian et al. [11] showed that simulation performance can
-be a poor predictor of real-world performance unless the simulator is carefully tuned, and introduced the
-Sim-vs-Real Correlation Coefficient (SRCC) to measure it. Truong et al. [12] found that lower-fidelity
-simulation with abstracted dynamics can transfer better for navigation. So *which* aspects of reality to
-model is itself an open question.
+in appearance, geometry and dynamics [9, 10]. Kadian et al. [11] showed that simulation can poorly
+predict real-world performance and introduced the Sim-vs-Real Correlation Coefficient
+(SRCC) to measure it. Truong et al. [12] found that lower-fidelity simulation can transfer better, so
+*which* aspects of reality to model is itself open.
 
 **Domain randomization and adaptation.** Domain randomization trains policies on widely varied synthetic
-appearance [13, 14] or dynamics [15], so that reality looks like just another variation. It powers
-landmark results in agile flight [16] and drone racing [17]. Its drawbacks are hand-tuned randomization
-ranges and robustness bought at the cost of performance in the specific target domain. Adaptive
-approaches fit simulation parameters to real rollouts [18], and domain adaptation [19] reduces the amount
-of real data needed, but does not remove the need for it.
+appearance [13, 14] or dynamics [15], so that reality is just another variation, as in agile
+flight [16] and drone racing [17]. Its drawbacks are hand-tuned ranges and lower target-domain
+performance. Adaptive approaches fit simulation parameters to real rollouts [18], and
+domain adaptation [19] reduces, but does not remove, the need for real data.
 
 **Neural scene reconstruction and real-to-sim-to-real.** Neural Radiance Fields [20] and 3D Gaussian
-Splatting (3DGS) [21] produce photorealistic novel views from ordinary image captures, and 3DGS renders in
-real time. This allows *digital-twin* simulators built from real data: NeRF2Real [22] trained bipedal
-skills inside a NeRF of the target scene, and RialTo [23] robustified manipulation policies in digital
-twins built from small amounts of real data. Since 2024 the idea has reached navigation: 3DGS simulators
-gave direct sim-to-real transfer of visual drone navigation [24–26]; VR-Robo [27] transferred RGB-only
-legged goal-reaching policies from a 3DGS twin with mesh-based physics; Vid2Sim [28] built urban
-simulators from monocular video and reported a 68.3% real-world success-rate gain over prior simulators;
-ReaDy-Go [29] added animated humans as moving obstacles. Closest to this dissertation, EmbodiedSplat [30]
-fine-tunes pretrained image-goal navigation policies in meshes reconstructed from 20–30-minute phone
-captures of indoor scenes, improves real-robot success rate in a captured scene, and reports high SRCC
-for the reconstructed meshes. These navigation systems use a fixed capture per scene: none varies the
-amount of real data (capture length, real rollouts) or compares against policies trained on real robot
-experience at matched budgets. The closest such analysis, in manipulation, is RialTo's ablation over 0–15
-real demonstrations [23]. Multi-room scenes, collision geometry and generalization to environments that
-were never captured also remain open.
+Splatting (3DGS) [21] render photorealistic novel views from ordinary images, 3DGS in real time. This allows
+*digital-twin* simulators built from real data; NeRF2Real [22] trained bipedal
+skills inside a NeRF of the target scene. Since 2024 the idea has reached navigation: 3DGS twins
+transferred visual drone [24–26] and RGB-only legged [27] navigation policies directly to reality,
+Vid2Sim [28] built urban simulators from monocular video (a 68.3% real-world success-rate gain over prior
+simulators), and ReaDy-Go [29] added moving humans. Closest to this dissertation, EmbodiedSplat [30] fine-tunes
+pretrained image-goal policies in meshes from 20–30-minute phone captures, improves real-robot success in a
+captured scene and reports high SRCC. These systems use a fixed capture per scene: none varies the amount of
+real data or compares against policies trained on real robot experience at matched budgets.
 
-**Learning under distribution shift.** From a machine-learning perspective, the sim-to-real gap is a domain shift between training and deployment data. Unsupervised domain adaptation aligns feature distributions across domains adversarially [31] or at both pixel and feature level [32]. Neural scaling laws [33] describe how performance grows with the amount of data, but it is not known how *real* and *reconstructed* data trade off. Large 3D scene datasets (HM3D [34], ScanNet++ [35]) now make it possible to study this question in a controlled way, where real captures act as a proxy for reality.
+**Digital twins for manipulation.** RialTo [23] robustifies manipulation policies by
+reinforcement learning in twins built from little real data; its ablation over 0–15 real demonstrations is
+the closest analysis of a real-data budget.
+SplatSim [36] renders simulation with Gaussian splats and transfers RGB manipulation policies zero-shot
+(86.25% real success vs. 97.5% for policies trained on real data). SIMPLER [37] shows that simulated
+evaluation of manipulation policies correlates strongly with real evaluation, and the GPU simulator
+ManiSkill3 [38] includes real-world digital-twin environments. Each work builds its twin for one task and
+embodiment; whether one pipeline serves navigation and manipulation, and at what capture and compute cost,
+has not been measured.
+
+**Learning under distribution shift.** In machine-learning terms the sim-to-real gap is a domain
+shift. Unsupervised domain adaptation aligns feature distributions adversarially [31] or at pixel and
+feature level [32]. Scaling laws [33] describe how performance grows with data, but not how *real* and
+*reconstructed* data trade off. 3D scene datasets (HM3D [34], ScanNet++ [35]) allow a controlled study, with
+real captures as a proxy for reality.
 
 **Research gap.** There is no systematic study of the **trade-off between real-data budget and deployed
-navigation performance** in a real-to-sim-to-real pipeline. We also lack methods that (i) combine
-reconstructed scenes with targeted randomization to generalize beyond the captured environments, and
-(ii) use a small number of real rollouts to iteratively correct the simulation. This dissertation
-addresses that gap.
+policy performance** in real-to-sim-to-real learning, nor a twin-building protocol with measured
+cost and fidelity across tasks. Also missing are methods that (i) combine twins with augmentation and
+representation alignment to generalize to uncaptured scenes and new tasks, and (ii) correct the twin from a
+few real rollouts. This dissertation addresses
+that gap in navigation, with manipulation as the generalization domain.
 
 ### References
 [1] M. Savva et al., "Habitat," ICCV, 2019.
@@ -69,7 +75,7 @@ addresses that gap.
 [20] B. Mildenhall et al., "NeRF," ECCV, 2020.
 [21] B. Kerbl et al., "3D Gaussian Splatting for Real-Time Radiance Field Rendering," ACM TOG, 2023.
 [22] A. Byravan et al., "NeRF2Real," ICRA, 2023.
-[23] M. Torne Villasevil et al., "Reconciling Reality through Simulation," RSS, 2024.
+[23] M. Torne et al., "Reconciling Reality through Simulation," RSS, 2024.
 [24] A. Quach et al., "Gaussian Splatting to Real World Flight Navigation Transfer with Liquid Networks," arXiv:2406.15149, 2024.
 [25] J. Low et al., "SOUS VIDE," IEEE RA-L, 2025.
 [26] Q. Chen et al., "GRaD-Nav," IROS, 2025.
@@ -78,11 +84,30 @@ addresses that gap.
 [29] S. Yoo et al., "ReaDy-Go," IEEE RA-L, 2026.
 [30] G. Chhablani et al., "EmbodiedSplat," ICCV, 2025.
 [31] Y. Ganin et al., "Domain-Adversarial Training of Neural Networks," JMLR, 2016.
-[32] J. Hoffman et al., "CyCADA: Cycle-Consistent Adversarial Domain Adaptation," ICML, 2018.
+[32] J. Hoffman et al., "CyCADA," ICML, 2018.
 [33] J. Kaplan et al., "Scaling Laws for Neural Language Models," arXiv:2001.08361, 2020.
-[34] S. K. Ramakrishnan et al., "Habitat-Matterport 3D Dataset (HM3D)," NeurIPS Datasets and Benchmarks, 2021.
-[35] C. Yeshwanth et al., "ScanNet++: A High-Fidelity Dataset of 3D Indoor Scenes," ICCV, 2023.
+[34] S. K. Ramakrishnan et al., "Habitat-Matterport 3D Dataset," NeurIPS Datasets and Benchmarks, 2021.
+[35] C. Yeshwanth et al., "ScanNet++," ICCV, 2023.
+[36] M. N. Qureshi et al., "SplatSim," ICRA, 2025.
+[37] X. Li et al., "Evaluating Real-World Robot Manipulation Policies in Simulation," CoRL, 2024.
+[38] S. Tao et al., "ManiSkill3," RSS, 2025.
 <!-- [31]-[35] added by the coordinator on 2026-09-26 for the ML-first reframing. Titles, first authors and years were verified on OpenAlex (arXiv 1505.07818, 1711.03213, 2001.08361, 2109.08238, 2308.11417). -->
+
+<!-- Wave 6 (issue #15), 2026-09-26: broadened to digital twins across tasks (navigation -> manipulation).
+New paragraph "Digital twins for manipulation"; RialTo [23] moved there with its 0-15-demo ablation;
+research gap now also names the twin-building protocol (cost + fidelity) and cross-task generalization.
+Three new refs, verified 2026-09-26:
+- [36] SplatSim: arXiv 2409.10161 (Qureshi, Garg, Yandun, Held, Kantor, Silwal); Crossref
+  doi:10.1109/ICRA55743.2025.11128339 (2025 IEEE ICRA). "86.25% vs 97.5%" read from the arXiv abstract.
+- [37] SIMPLER: arXiv 2405.05941 (Li, Hsu, Gu, ... Xiao); listed in PMLR vol. 270 (CoRL 2024). "Strong
+  correlation" from the abstract (paired sim-and-real evaluations).
+- [38] ManiSkill3: arXiv 2410.00425 (Tao, Xiang, Shukla, ... Su); Crossref doi:10.15607/RSS.2025.XXI.021
+  (Robotics: Science and Systems XXI). "Real-world digital twins" environments from the arXiv abstract.
+- [23] first author written as on arXiv 2403.03949 ("Marcel Torne").
+- Refs [32], [34], [35] titles cut at the colon / parenthesis for the page limit.
+- Trimmed elsewhere (flight/drone-racing sentence, EmbodiedSplat detail, SRCC sentence) to keep 2 pages;
+  all refs [1]-[35] still cited. The "has not been measured" sentence is our reading of [23], [36]-[38],
+  not a full survey: supervisor to confirm. -->
 
 <!--
 Revision for issue #9 (research/review-1.md F11, F14), 2026-09-26:

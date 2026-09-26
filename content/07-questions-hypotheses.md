@@ -12,7 +12,7 @@ hypotheses; **(B)** public real-world datasets and published real evaluations wi
 **(C)** real-robot trials, validation only. A *policy zoo* (≥ 200 navigation policies varying scene, capture
 budget, architecture and training data) supplies the population for RQ2–RQ4. Tests are one-sided,
 α = 0.05, bootstrapped over scenes, Holm-corrected within each hypothesis and pre-registered in the
-repository. All thresholds are design choices to be confirmed with the supervisor.
+repository. All thresholds are design choices fixed in that pre-registration.
 
 **RQ1 (measure and localize).** Where inside frozen encoders and twin-trained policies does the
 twin-vs-real gap arise, and how does it depend on the capture budget?
@@ -33,13 +33,15 @@ keep coverage ≥ 85% on real data (ε = 5 pp).
 **RQ3 (use).** Can these measures and forecasts allocate a limited real-data budget: which twin data to
 weight, what to capture and which real rollouts to collect?
 **H3.** Forecast-guided weighting, capture and rollout selection reaches the target real SR τ with ≥ 30%
-less real data (capture minutes + real rollouts) than uniform or random allocation: B_guided(τ) ≤
+less real data than uniform or random allocation (capture minutes + real rollouts, converted to one
+operator-time cost at a pre-registered rate): B_guided(τ) ≤
 0.7 · B_uniform(τ) on fitted budget–performance curves, with the upper 95% bound of the ratio < 1. τ is fixed
 in the pre-registration as the SR that uniform allocation reaches at the largest budget.
 
 **RQ4 (generalize).** Do the gap measures and predictors transfer across tasks and simulator families?
-**H4.** (a) A predictor trained on the navigation zoo, applied to a manipulation zoo without retraining,
-ranks policies by real outcome with Spearman ρ ≥ 0.5. (b) Its rank correlation with real outcomes exceeds
+**H4.** (a) A predictor trained on the navigation zoo, applied without retraining to manipulation policies
+with published paired sim/real results (≥ 12 policy–task pairs), ranks them by real outcome with Spearman
+ρ ≥ 0.5. (b) Its rank correlation with real outcomes exceeds
 that of a generic simulator (Sim-vs-Real Correlation Coefficient, SRCC) and of a learned world-model
 evaluator (95% CI of each paired difference excludes 0).
 
@@ -65,4 +67,11 @@ supervisor; §9 must use the same wording):
 - H4 manipulation zoo: ManiSkill3 twins, SIMPLER paired sim/real evaluations as labels (novelty-options §3;
   exact checkpoints to be re-read from SIMPLER). World models only as a comparator (pivot scope).
 - Core RQ1-RQ2 (P1 NeurIPS 2027, P2 ICLR/CVPR 2028) vs. RQ3-RQ4 (P3) follows the paper plan in
-  pivot-decision.md; the core/extension label is our proposal for mid-term risk (CONFIRM supervisor). -->
+  pivot-decision.md; the core/extension label is our proposal for mid-term risk (CONFIRM supervisor).
+Review-2 (issue #24), 2026-09-26: (R2-F1) removed the visible "to be confirmed with the supervisor"
+(returned review-1 F5); (R2-F2) H4(a) is decided on manipulation policies that have published paired
+sim/real results (SIMPLER), because an own ManiSkill3 twin-trained zoo has no real outcomes; >= 12
+policy-task pairs because the one-sided alpha = 0.05 critical Spearman rho is about 0.50 at n = 12 (0.56 at
+n = 10), so rho >= 0.5 is only meaningful from n = 12 (reviewer calculation, standard tables); the exact set
+is re-read from SIMPLER in T6.1. (R2-F8) H3 real data summed in one cost unit (operator time), rate fixed in
+the pre-registration. Thresholds and numbering unchanged. -->

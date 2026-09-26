@@ -3,7 +3,7 @@
 ## Streszczenie popularnonaukowe
 
 Roboty uczą się dziś samodzielnego działania, na przykład poruszania się po budynku lub chwytania
-przedmiotów, metodą prób i błędów. Potrzebują do tego milionów prób, więc zwykle ćwiczą w symulacji
+przedmiotów, metodą prób i błędów. Potrzebują do tego bardzo wielu prób, więc zwykle ćwiczą w symulacji
 komputerowej. Coraz częściej jest nią cyfrowy bliźniak: wierna, fotorealistyczna kopia prawdziwego miejsca,
 którą metody sztucznej inteligencji potrafią odtworzyć z krótkiego filmu nagranego telefonem. Kopia nigdy
 nie jest jednak idealna. Bywa rozmyta, ma drobne zniekształcenia i inaczej oddaje światło. Robot, który
@@ -30,7 +30,7 @@ wyuczone modele zostaną udostępnione publicznie.
 ## Abstract for general public
 
 Robots today learn to act on their own, for example to move around a building or to grasp objects, by
-trial and error. They need millions of trials, so they usually practise in a computer simulation.
+trial and error. They need a very large number of trials, so they usually practise in a computer simulation.
 Increasingly, this is a digital twin: a faithful, photorealistic copy of a real place that artificial
 intelligence methods can reconstruct from a short video recorded with a phone. The copy, however, is never
 perfect. It can be blurry, have small distortions and render light differently. A robot that does very
@@ -54,6 +54,10 @@ reaches the real world, and to reduce the number of costly trials in reality. Th
 robots in warehouses, hospitals, offices and factories faster and cheaper. The software, data and trained
 models developed will be made publicly available.
 
+<!--
+Review-2 (issue #24), 2026-09-26, R2-F14: "milionów prób" / "millions of trials" -> "bardzo wielu prób" /
+"a very large number of trials" in both versions (same change, PL = EN kept).
+-->
 <!--
 Wave 9 (issue #22), 2026-09-26: rewritten in both languages in parallel after the pivot
 (research/pivot-decision.md). Mapping: "in which part of the model differences appear, how they shrink when

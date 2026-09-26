@@ -21,14 +21,15 @@ with reference scans. Linear
 probes [18] and centered kernel alignment (CKA) [19] measure what each layer encodes and how similar two
 representations are. Frozen image and video encoders (DINOv2 [20], V-JEPA 2 [21]) are common policy
 backbones, and probing of vision-language-action models shows that action fine-tuning degrades their visual
-representations [22]. However, **no study has measured, on paired real and twin-rendered frames of the same
+representations [22]. However, **we found no study that measured, on paired real and twin-rendered frames of the same
 pose, where inside encoders and policies the twin-vs-real gap arises, or how it shrinks with the capture
 budget.**
 
 **Predicting performance from model internals.** Accuracy under distribution shift can be estimated from
 unlabeled target data [23]. A network's accuracy can be predicted from its weights alone [24], and
 populations of trained models ("model zoos" [25]) are now inputs to weight-space learning: equivariant
-metanetworks [26] and graph neural networks over the computational graph [27] predict generalization.
+metanetworks [26] learn directly on weights, and graph neural networks over the computational graph [27]
+predict generalization.
 They have been tested on image classifiers and implicit neural representations, **not on embodied
 policies or twin-to-real transfer**.
 
@@ -90,6 +91,13 @@ that these measures carry over from navigation to manipulation. This dissertatio
 [34] A. Badithela et al., "Reliable and Scalable Robot Policy Evaluation…," arXiv:2510.04354, 2025.
 [35] Y. Li et al., "WorldEval," arXiv:2505.19017, 2025.
 
+<!--
+Review-2 (issue #24), 2026-09-26: R2-F9 (a) [26] Navon et al. abstract (arXiv 2301.12780, re-read via the
+arXiv API today) does not report generalization prediction, so the claim is now attached to [27] only
+(Kofinas et al. abstract: "predicting generalization performance"). (b) "no study has measured" -> "we
+found no study that measured" (the gap rests on S2 counts, not a full survey). Numbering unchanged; all
+bracketed citations in §9 and §12 were checked against this list.
+-->
 <!--
 Wave 9 (issue #23), 2026-09-26: rewritten for the pivot (research/pivot-decision.md): twins as a commodity
 -> simulator-level predictivity -> representation gap and probing -> weight-space learning -> failure

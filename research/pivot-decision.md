@@ -50,7 +50,7 @@ All thresholds are design choices for the supervisor to confirm.
 - **P1:** NeurIPS 2027 (May 2027, §11). RQ1: a benchmark of paired real and twin frames, plus localization
   of the gap. Datasets & Benchmarks or main track; alternative CVPR 2028.
 - **P2:** ICLR 2028 or CVPR 2028 (sem. 5). RQ2: forecasting transfer and failure from internals.
-- **P3:** ECCV 2028 or NeurIPS 2028 (sem. 6). RQ3 + RQ4: budget allocation and cross-task transfer
+- **P3:** NeurIPS 2028 (sem. 6), fallback ICLR 2029 (ECCV 2028 dropped in review-2: results not ready by March 2028). RQ3 + RQ4: budget allocation and cross-task transfer
   (manipulation).
 - **P4 (optional):** ICLR 2029 or CVPR 2029 (sem. 7). Consolidated study.
 

@@ -1,21 +1,21 @@
 # §12 Inne / Other comments (max 1 page)
 
-**Planned outputs by year.** All papers target 200-point conferences assigned to the discipline (ministerial
-list of 5.01.2024; points to be re-checked against the new list expected in early 2027).
+**Planned outputs by year.** All papers target 200-point conferences assigned to the discipline (list of
+5.01.2024; re-checked against the new list).
 
 | Year | Papers (planned submission, 200 points each) | Data and code | Grants | Mobility, events |
 |---|---|---|---|---|
 | 1 (2025/26) | — | — | — | — |
-| 2 (2026/27) | P1 (RQ1, paired-frame benchmark and gap localization): NeurIPS 2027, May 2027 (§11) | Benchmark v1 | SzD Minigrant; NCN PRELUDIUM | Summer school poster |
-| 3 (2027/28) | P2 (RQ2, forecasting transfer and failure): CVPR or ICLR 2028; P3 (RQ3–RQ4, budget allocation, manipulation): NeurIPS or ECCV 2028 | Policy zoo | NAWA Bekker | Mid-term; 3-month visit (sem. 6) |
+| 2 (2026/27) | P1 (RQ1, paired-frame benchmark and gap localization): NeurIPS 2027, May 2027 (§11) | Benchmark v1 | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
+| 3 (2027/28) | P2 (RQ2, forecasting transfer and failure): CVPR or ICLR 2028; P3 (RQ3–RQ4, budget allocation, manipulation): NeurIPS 2028 | Policy zoo | — | Mid-term; 3-month visit (sem. 6) |
 | 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Full release | — | Dissertation |
 
 P1–P3 are the thematically linked core of the dissertation; P4 is optional.
 
 **Foreign research visit (candidate hosts, not yet contacted).** (1) Z. Kira's group, Georgia Tech:
 EmbodiedSplat [4]. (2) Multi-robot Systems Lab, Stanford University (M. Schwager): Gaussian-splatting scene
-models and navigation. A European host (Erasmus+ route) and a foreign co-author for P2 are sought with the
-supervisor in sem. 4.
+models and navigation. A European host (Erasmus+ route) from the weight-space learning community (authors
+of [25–27]) and a foreign co-author for P2 are sought with the supervisor in sem. 4.
 
 **Collaboration at PWr.** Real-robot validation is planned with the *Denali* Autonomous Robots Laboratory
 (K29, W12N; Pioneer 3-DX, Jaguar 4x4, ROS 2); a written agreement is task T3.2 (Nov 2026).
@@ -25,19 +25,25 @@ supervisor in sem. 4.
   the sem. 3 pilot fixes the size; WCSS and PLGrid grants.
 - *Twin–real pairs unavailable* (3): licence or quality limits on the chosen dataset. Other public datasets
   with real captures and reference scans, and own captures at PWr.
-- *Scooping* (3–6): related lines (failure detection, policy interpretability) move fast. Early preprints and
-  benchmark release, monthly literature monitoring; the zoo and weight-space angle differentiate the work.
+- *Scooping* (3–6): failure detection and policy interpretability move fast. Early preprints, benchmark
+  release, monthly literature monitoring; the zoo and weight-space angle differentiate the work.
 - *Predictor learns only twin fidelity* (5): ablations with fixed fidelity; a negative result still answers RQ2.
 - *Proxy reality differs from reality* (5–7): tier C campaigns check agreement; they can move by a semester.
 - *Rejection at a top venue* (4–7): every paper has a resubmission path inside the 200-point set, 2–4
-  months later (e.g. NeurIPS → CVPR → ICML → ECCV/ICCV). The degree requirement does not depend on one
-  decision. *Changing venue points* (3–4): venues are re-checked when the new list appears.
+  months later (e.g. NeurIPS → CVPR → ICML → ECCV/ICCV), so the degree requirement does not depend on one
+  decision.
 
 **Prior work (background only).** A pre-PhD NLP paper (ACL 2025 SRW) forecasts from hidden states with a
 graph neural network over layers; Stage II adapts the method, but the paper is not part of the dissertation.
 
 **Ethics and data.** Own captures anonymize personal data (GDPR); public datasets are used under their licences.
 
+<!--
+Review-2 (issue #24), 2026-09-26: R2-F15 Bekker application is T4.3 (sem. 4 = year 2), so it moved to the
+year-2 grants cell. R2-F4 P3 = NeurIPS 2028 only (§3 T6.3). R2-F11 the European host search now names the
+community closest to RQ2 (weight-space learning, §6 [25]-[27]); no person or lab is named because none is
+contacted.
+-->
 <!--
 Wave 9 (issue #23), 2026-09-26: rewritten for the pivot (research/pivot-decision.md). Outputs table follows
 the pivot's paper plan (P1 NeurIPS 2027 RQ1; P2 ICLR/CVPR 2028 RQ2; P3 NeurIPS/ECCV 2028 RQ3+RQ4; P4

@@ -6,10 +6,14 @@ Paper **P1** submitted for review to the **Conference on Neural Information Proc
 2027)**, main track or Datasets & Benchmarks track. NeurIPS is peer-reviewed international conference
 proceedings worth **200 points** on the ministerial list (conference Lp. 87), assigned to the discipline
 *informatyka techniczna i telekomunikacja*. P1 reports Stage I (RQ1): a benchmark of paired real and
-twin-rendered frames and the localization of the twin-vs-real gap inside frozen encoders and twin-trained
-policies (task T4.2). If it is rejected, the revised paper goes to **CVPR 2028** (expected deadline
+twin-rendered frames, the localization of the twin-vs-real gap inside frozen encoders, and a first test of
+whether encoder robustness predicts the transfer of twin-trained policies (task T4.2). If it is rejected, the revised paper goes to **CVPR 2028** (expected deadline
 November 2027, also 200 points), and then to the next 200-point conference (§12).
 
+<!--
+Review-2 (issue #24), 2026-09-26, R2-F3: P1 scope matched to what sem. 3 - Apr 2027 can deliver (H1(a-c) +
+first H1(d)); the full policy zoo and H1 completion stay at Sep 2027 (§3 T4.1).
+-->
 <!--
 Wave 9 (issue #23), 2026-09-26: P1 content changed to the pivot's RQ1 paper (research/pivot-decision.md:
 "P1: NeurIPS 2027 (May 2027, §11) ... Datasets & Benchmarks or main track; alternative CVPR 2028"). The ICML

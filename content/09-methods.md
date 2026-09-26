@@ -10,7 +10,8 @@ that have real captures and a reference laser scan, e.g. ScanNet++ [17]. The ref
 GPU simulator (Habitat [1] or an Isaac-based 3DGS renderer such as GaussGym [6], chosen in T3.1), is the
 "real" target domain. The twin is a 3DGS reconstruction built from a subsample of the scene's real capture.
 The **capture budget** (≥ 4 levels of capture minutes or views) is set by subsampling. Some scenes are held
-out. *Tier B (real outcomes):* public real-world navigation datasets for representation metrics and
+out. Frame-level measures use the real images; closed-loop outcomes use the rendered scan, and the gap
+between scan renders and real images is measured with the same tools, so the proxy's own error is known. *Tier B (real outcomes):* public real-world navigation datasets for representation metrics and
 published paired sim/real evaluations of manipulation policies (SIMPLER [12]). *Tier C (validation only):*
 ≥ 2 PWr environments with a mobile robot (planned cooperation with the K29 "Denali" Autonomous Robots
 Laboratory; agreement in T3.2), RGB-D camera and wheel odometry. *Compute:* WCSS Lem (NVIDIA H100) and PLGrid
@@ -37,30 +38,34 @@ allocations (to be applied for) <!-- UNVERIFIED: K46 GPU servers; RGB-D availabi
   label: the twin→real SR gap. Small policies and shared frozen encoders keep the zoo within academic compute
   (a pilot in sem. 3 fixes the final size).
 - *Predictors:* (i) a graph neural network over per-layer hidden-state statistics on a fixed probe set of
-  twin frames (the student's prior method for forecasting from hidden states); (ii) weight-space
+  twin frames and, where available, unlabelled real frames of the capture (no real rollouts; the student's
+  prior method for forecasting from hidden states); (ii) weight-space
   metanetworks [26, 27]. *Baselines:* twin SR alone, image fidelity (PSNR/LPIPS), and simulator-level
-  predictivity (SRCC-style rollout estimates [10]). Splits are by held-out scene. Ablations keep fidelity
+  predictivity: real SR predicted from twin SR by the sim-to-real mapping fitted on training scenes [10]. Splits are by held-out scene. Ablations keep fidelity
   fixed and vary the policy, so that the predictor cannot rely only on twin quality.
 - *Failure monitors:* hidden-state failure scores (in the style of [29, 30]) with thresholds set by split
-  conformal prediction [28] at 90% coverage in the twin; coverage is measured on tier A and tier B.
+  conformal prediction [28] at 90% coverage in the twin; coverage is measured on tier A closed-loop
+  rollouts (tier C reports agreement).
 - *Success criterion (H2):* ≥ 20% lower MAE than the best baseline (lower 95% bound of the reduction > 0),
   and real coverage ≥ 85% (ε = 5 pp).
 
-**Stage III – budget-allocation experiments (RQ3, H3; sem. 6).**
+**Stage III – budget-allocation experiments (RQ3, H3; sem. 5–6).**
 - *Levers:* (a) weighting of twin training data by representation distance to a small real set; (b)
   capture selection, i.e. which scenes or regions to (re)capture, guided by the localized gap from Stage I;
   (c) rollout selection, i.e. which real rollouts to collect, guided by the Stage II forecasts and their
   uncertainty. Real SR is estimated from few rollouts with prediction-powered inference [33, 34].
 - *Baselines:* uniform and random allocation of the same budget. Analysis: attribution of real successes
   and failures to twin data [31, 32].
-- *Success criterion (H3):* budget–performance curves (real data = capture minutes + real rollouts) fitted
-  per method; guided allocation reaches the target SR τ with ≤ 0.7 of the uniform budget (upper 95% bound of
+- *Success criterion (H3):* budget–performance curves (real data = capture minutes + real rollouts in one
+  operator-time cost) fitted per method; guided allocation reaches the target SR τ with ≤ 0.7 of the uniform budget (upper 95% bound of
   the ratio < 1).
 
-**Stage IV – cross-task and cross-simulator generalization (RQ4, H4; sem. 6–7).**
-- *Manipulation zoo:* pick-and-place policies trained in twins of tabletop scenes in ManiSkill3 [9]; labels
-  from SIMPLER [12] environments and their published paired sim/real evaluations (tier B).
-- *Method:* the navigation-trained predictor is applied without retraining. *Comparators:* SRCC of a generic
+**Stage IV – cross-task and cross-simulator generalization (RQ4, H4; sem. 6).**
+- *Manipulation set:* public manipulation policies evaluated in the SIMPLER [12] replicas of real set-ups,
+  with their published paired sim/real results as labels (tier B; ≥ 12 policy–task pairs). These policies are
+  trained on real data, so the test asks whether performance in a simulated replica holds in reality.
+- *Method:* the navigation-trained hidden-state predictor, which does not depend on the architecture, is
+  applied without retraining. *Comparators:* SRCC of a generic
   simulator [10] and a frozen learned world model used as a policy evaluator (in the style of [35]); world
   models are not trained.
 - *Success criterion (H4):* Spearman ρ ≥ 0.5 on manipulation, and a higher rank correlation with real
@@ -94,6 +99,12 @@ capture budgets, 90% conformal level with >= 85% real coverage, 0.7 budget ratio
 - ScanNet++ licence terms for releasing derived reconstructions: UNVERIFIED (see §12 risk).
 - SIMPLER checkpoints and the exact paired numbers must be re-read from the paper before Stage IV
   (novelty-options.md §3). ManiSkill assets are CC BY-NC 4.0 (fine for research).
+- Review-2 (issue #24), 2026-09-26: R2-F2 manipulation labels exist only for published checkpoints in SIMPLER
+  (paired sim/real), not for an own ManiSkill3 zoo, so H4(a) uses those; the hidden-state predictor (i) takes
+  per-layer statistics and so is architecture-agnostic, unlike the weight-space metanetwork. R2-F5 H2(b) on
+  tier A (offline real datasets give no closed-loop failure labels). R2-F6 "simulator-level predictivity"
+  made a per-policy predictor (the SRCC idea [10] as a fitted mapping). R2-F7 proxy-reality check. R2-F8 one
+  cost unit. R2-F4/F10 Stage III starts late sem. 5, Stage IV in sem. 6 (same as §3).
 - Removed from the old plan: twin-vs-generic non-inferiority test, domain-randomization baseline as a
   hypothesis, representation alignment objective, SimOpt-style correction (crowded or out of scope after the
   pivot); twin-vs-generic can still be reported as a sanity check.

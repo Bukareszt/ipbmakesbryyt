@@ -1,48 +1,45 @@
 # §12 Inne / Other comments (max 1 page)
 
-**Planned outputs by year** (points: ministerial list of 5.01.2024; the list signed in 2027 will apply
-and will be re-checked).
+**Planned outputs by year** (points: ministerial list of 5.01.2024; re-checked against the 2027 list).
 
 | Year | Papers (venue, points) | Grants | Mobility, events |
 |---|---|---|---|
 | 1 (2025/26) | — | — | — |
-| 2 (2026/27) | Stage I article, IEEE RA-L (200), Feb 2027, IROS 2027 option; fallback IROS (140) | SzD PWr Minigrant (next call); NCN Preludium (sem. 4) | International summer/winter school with a poster |
-| 3 (2027/28) | Journal article, Robotics and Autonomous Systems (140) or RA-L (200); conference paper, RSS or CVPR/ICCV/ECCV (200) | NAWA Bekker (for the visit) | Mid-term evaluation; 1–3-month foreign research visit (sem. 6) |
-| 4 (2028/29) | Summary journal article (IEEE T-RO or RA-L, 200) | — | Release of code, scenes and evaluation data; dissertation |
+| 2 (2026/27) | Stage I: IEEE RA-L (200), Feb 2027 (§11) | SzD Minigrant; NCN Preludium | Summer/winter school poster |
+| 3 (2027/28) | Stage II: RSS 2028 (200) or RA-L (200); Stage III: IROS 2028 (140) or RA-L (200) | NAWA Bekker | Mid-term; 3-month visit (sem. 6) |
+| 4 (2028/29) | Summary: Robotics and Autonomous Systems (140) or RA-L (200) | — | Code and data release; dissertation |
 
-**Foreign research visit (candidate hosts, not yet contacted).** (1) *Multi-robot Systems Lab*, Stanford
-University (M. Schwager), which works on Gaussian-splatting scene models, sim-to-real and navigation.
-(2) *Zsolt Kira's group*, Georgia Tech, co-authors of EmbodiedSplat (ICCV 2025), a real-to-sim-to-real
-indoor-navigation method using Gaussian splats. The host is chosen in sem. 4 with the supervisor.
+**Foreign research visit (candidate hosts, not yet contacted).** (1) Multi-robot Systems Lab, Stanford
+University (M. Schwager): Gaussian-splatting scene models and navigation. (2) Z. Kira's group, Georgia Tech:
+EmbodiedSplat [30]. A European host, which also opens the Erasmus+ short-term route (5–30 days), is sought
+with the supervisor in sem. 4, together with a foreign co-author for the Stage II article.
 
-**Collaboration at PWr.** K46 has no mobile-robot laboratory, so the real-robot experiments are planned in
-cooperation with the *Denali* Autonomous Robots Laboratory of the Department of Cybernetics and Robotics
-(K29, W12N): Pioneer 3-DX robots on ROS 2 and a Jaguar 4x4 platform. The terms are to be agreed in sem. 3.
-Consultations on 3D scene reconstruction with K46's genwro.AI group (generative models, 3D; head
-M. Zięba) are possible.
+**Collaboration at PWr.** K46 has no mobile-robot laboratory, so real-robot experiments are planned with the
+*Denali* Autonomous Robots Laboratory (K29, W12N; Pioneer 3-DX, Jaguar 4x4, ROS 2); a written agreement is
+task T3.2a (Nov 2026). Consultations on 3D reconstruction with K46's genwro.AI group are possible.
 
 **Risks and mitigation** (semester affected).
-- *Delayed hardware or lab access* (3–4): early work on public real-world navigation datasets and
-  simulation; a Minigrant or Preludium budget for our own sensors or a small platform.
-- *Dependence on an external lab or partner* (3–6): a written agreement with K29 by sem. 3; the pipeline
-  is kept platform-agnostic (ROS 2) so it can move to another robot; the foreign visit has two candidate
-  hosts.
-- *Sim-to-real validation fails* (4–5): a pre-specified protocol (paired sim/real rollouts, SRCC);
-  if the gap is not closed, the budget–performance study is reported as a negative result, which is
-  still publishable and keeps the core contribution (RQ2).
-- *Poor reconstruction in low-texture or large scenes* (3–4): depth/LiDAR priors, scene segmentation,
-  fallback to mesh rendering.
+- *No robot access or sensor* (3–4): decision point end of Jan 2027 (§3); public real-world datasets and
+  simulation meanwhile; Minigrant/Preludium funds for a sensor; the ROS 2 pipeline can move to another robot.
+- *Robot time exceeds lab access* (4–5): ~35 robot-hours in Stage II (§9); scripted resets, H1 core
+  comparisons first, fewer policy variants.
+- *Sim-to-real validation fails* (4–5): pre-specified SRCC protocol; a negative result still answers RQ2.
+- *Poor reconstruction of low-texture or large scenes* (3–4): depth priors, scene splitting, mesh rendering.
 - *Changing venue points* (3): re-check the 2027 list; keep a 140/200-point alternative.
 
-**Prior work (background only).** Before the programme, the candidate co-authored an NLP paper on learning
-from internal representations of large language models (ACL 2025 Student Research Workshop). It gives
-methodological experience (representation learning, graph neural networks) but is not part of the
-dissertation.
+**Prior work (background only).** A pre-PhD NLP paper (ACL 2025 Student Research Workshop) gives
+experience in representation learning; it is not part of the dissertation.
 
-**Ethics and data.** Real-world captures in public spaces will avoid personal data or be anonymized
-(blurred faces) in line with GDPR and PWr rules.
+**Ethics and data.** Captures avoid or anonymize personal data (GDPR, PWr rules).
 
 <!--
+Revision for issue #9 (research/review-1.md F3, F7, F9, F12, F13, F16), 2026-09-26: table aligned with §3
+exactly (T-RO and CVPR/ICCV/ECCV removed, IROS 2028 added in year 3, RAS moved to year 4); visit = 3 months
+(Bekker 2026 call: stays 3–24 months, resources.md §5); Erasmus+ short-term 5–30 days, continuous
+recruitment (resources.md §5); no European host or co-author is named because none is identified
+(coordinator decision: summer school + seek a foreign co-author before the mid-term). Next Bekker call:
+UNVERIFIED. Host descriptions, ethics and prior work shortened for the 1-page limit. The source lines below
+still list T-RO/CVPR points only as checked values, not as planned venues.
 Revision for issue #6 (research/benchmarks.md edits 12, 13, 14, 15, 20; research/resources.md).
 Sources:
 - Points: Komunikat MNiSW 5.01.2024 (benchmarks.md M1, resources.md §3): RA-L 200, T-RO 200, RSS 200,
@@ -51,8 +48,8 @@ Sources:
 - Minigranty SzD: https://szd.pwr.edu.pl/doktoranci/minigranty (up to 20k PLN, years 2–4; next edition
   ~Jan 2027 UNVERIFIED).
 - Preludium 26 timing (~Mar–Jun 2027) is inferred from previous calls, UNVERIFIED (resources.md §4).
-- NAWA Bekker: open to doctoral-school students; next call UNVERIFIED (resources.md §5). Erasmus+ is not
-  listed for the visit because both candidate hosts are in the USA.
+- NAWA Bekker: open to doctoral-school students; next call UNVERIFIED (resources.md §5). (Issue #6 text said
+  Erasmus+ was excluded because both hosts are in the USA; superseded by issue #9: a European host is sought.)
 - Host 1: https://msl.stanford.edu/ (checked 2026-09-26: Multi-robot Systems Lab, Stanford Aero/Astro,
   directed by Mac Schwager; projects Splat-Nav, GRaD-Nav++, SAFER-Splat, Phys2Real).
 - Host 2: https://arxiv.org/abs/2509.17430 (EmbodiedSplat, ICCV 2025; G. Chhablani, X. Ye,
@@ -66,5 +63,5 @@ Sources:
   reconstruction consultations are possible". The 2023-cohort 3DGS doctoral topic (benchmarks.md R5
   p. 20–21) is NOT named because its group/supervisor attribution is UNVERIFIED.
 - ACL SRW paper: doi:10.18653/v1/2025.acl-srw.61; pre-PhD, so it is background only (edit 15, S9).
-Word count ≈ 480 incl. table; check at 11 pt / spacing 1 after transfer to ipb.docx.
+Word count ≈ 365 visible incl. table (issue #9); check at 11 pt / spacing 1 after transfer to ipb.docx.
 -->

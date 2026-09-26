@@ -2,8 +2,9 @@
 
 **February 2027 / luty 2027**
 
-Article submitted for review to **IEEE Robotics and Automation Letters (RA-L)**, ISSN 2377-3766, with the
-option to present it at IEEE/RSJ IROS 2027. RA-L is worth **200 points** on the ministerial list and is
+Article submitted for review to **IEEE Robotics and Automation Letters (RA-L)**, ISSN 2377-3766, with a
+planned presentation at IEEE/RSJ IROS 2027 (if the RA-L–IROS window is offered). It reports the Stage I
+pipeline and its validation (T3.3); the real-robot pilot is included if available but is not required. RA-L is worth **200 points** on the ministerial list and is
 assigned to the discipline *informatyka techniczna i telekomunikacja*.
 
 <!--
@@ -15,7 +16,10 @@ Rationale and sources (details in research/resources.md §3):
   1 Mar 2027 (Florence, 26 Sep – 1 Oct 2027):
   https://www.ieee-ras.org/event/call-for-papers-paper-submission-deadline-iros-2027-ieee-rsj-international-conference-on-intelligent-robots-and-systems-iros-27403-0/
   RA-L is rolling, and accepted papers can go to a RAS conference within 270 days: https://www.ieee-ras.org/publications/ra-l/
-- The decision should come before the mid-term evaluation (Oct 2027).
+- The decision should come before the mid-term evaluation (November 2027; autoreferat ~mid-Oct 2027).
+- Issue #9 (review-1 F6, F22): the coordinator (doctoral student) decided on 2026-09-26 to keep RA-L,
+  Feb 2027, with IROS 2027 as fallback, and to descope sem. 3 (option (a) of F6): the paper no longer
+  depends on the real robot. F22: "option to present" → "planned presentation … if offered".
 - Why RA-L and not the alternatives:
   - A journal gives more points than IROS (200 vs 140).
   - The ICRA 2027 deadline (Sep 2026) has already passed.

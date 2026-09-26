@@ -14,7 +14,7 @@
 ## Derived dates
 - IPB deadline (start + 12 months): **30.09.2026**
 - Dissertation submission (§4, recommended): **30.09.2029**
-- Mid-term evaluation: start of semester 5 (~October 2027)
+- Mid-term evaluation: semester 5, November 2027 (regular cohorts; autoreferat due ~mid-October 2027)
 
 ## Notes
 - ORCID: **not found / unconfirmed.** Checked on 2026-09-26:

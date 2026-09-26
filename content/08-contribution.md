@@ -34,10 +34,13 @@ robotics. Replacing most of it with cheap scene captures and simulation lowers t
 deploying learned systems in new environments. The evaluation methodology (item 4) is reusable for other
 simulators and embodied-AI tasks.
 
-**Dissemination.** Results are planned for venues assigned to ITiT on the ministerial list, e.g. IEEE
-RA-L (200 pts) and IEEE/RSJ IROS (140 pts) (list of 5.01.2024), in line with §3 and §11.
+**Dissemination.** Results are planned for venues assigned to ITiT on the ministerial list (5.01.2024):
+IEEE RA-L (200 pts), RSS (200 pts), IEEE/RSJ IROS (140 pts) and Robotics and Autonomous Systems (140 pts),
+as in §3, §9, §11 and §12.
 
 <!-- Follows research/benchmarks.md edits 8 (mark core, "The key original contribution is …") and 16
 (ITiT framing, prefer venues listed for ITiT; M1). "To our knowledge" is backed by the gap statement in §6
-(none of [24]–[31] measures performance vs. amount of real data). Point values: 5.01.2024 list; a new
+(after issue #9 / review-1 F11: none of the navigation systems [24]–[30], incl. EmbodiedSplat [30], varies
+the amount of real data; RialTo [23] does so only for manipulation, 0–15 demos; checked on full texts by
+keyword search, 2026-09-26). RSS/RAS added to Dissemination so §3, §8, §9, §12 name the same venues (F3). Point values: 5.01.2024 list; a new
 list is expected in early 2027, recheck then. -->

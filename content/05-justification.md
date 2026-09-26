@@ -11,7 +11,7 @@ Splatting, Neural Radiance Fields) turns a short real capture into a photorealis
 and appearance of a scene, and system identification estimates its physical and dynamic parameters (masses,
 friction, actuation) from a few real interactions. This gives a **real-to-sim-to-real loop**: collect real
 data, build a twin, learn in the twin, check and correct with a little more real data, deploy. Building
-twins has quickly become routine, with dozens of papers a year and more than ten open-source twin
+twins has become routine, with dozens of papers a year and more than ten open-source twin
 simulators. What remains open is the **real data** the loop consumes. Each step spends it: the capture that
 builds the twin, the real data used to make learning robust to what the twin got wrong, and the real-world
 trials or interactions used to check and correct the result. Today these amounts are chosen by habit: data
@@ -19,14 +19,16 @@ is collected uniformly, learning uses generic randomization, and real trials are
 hand. How much real data a twin actually saves has, to our knowledge, not been measured systematically
 across tasks.
 
-**What the dissertation proposes.** The real data needed by the loop can be reduced by **allocating it
-actively**: collect only the data the task needs to build the twin, learn so that the result is robust to
-the twin's errors, and collect only the few real-world data or interactions that close the remaining gap.
-Two signals, both computed from data the loop already collects, guide these choices: the **uncertainty of
-the twin** (where its reconstruction or its identified parameters are unreliable) and the **learned
-model's own internal representations** (where twin and real inputs look different to it). The result is
-measured as a budget–performance curve: how much real data the loop needs to reach a given real task
-performance, compared with uniform allocation and with learning from real data only.
+**Goal of the dissertation.** The goal is to develop **a method** for learning in the real-to-sim-to-real
+loop that reaches a given real-world performance with **significantly less real data** than existing
+approaches. The method is one pipeline with three components, one per loop step: (C1) task-aware capture
+of the data that builds the twin, (C2) learning that is robust to the twin's errors, and (C3) active
+selection of the few real-world data or interactions that correct the twin and the model. Two signals,
+both computed from data the loop already collects, guide all three: the **uncertainty of the twin** (where
+it is unreliable) and the **learned model's own
+representations** (where twin and real inputs look different to it). The thesis is that the method needs
+at most a tenth of the real data of learning from real data only, and at least two times less than the
+strongest existing real-to-sim-to-real pipeline, measured as budget–performance curves in both testbeds.
 
 **Why this topic, and why in this discipline.** The object is a general, task- and domain-agnostic
 data-efficient learning methodology (active learning, learning under distribution shift, uncertainty
@@ -46,7 +48,15 @@ model trained on reconstructed or simulated data and used on real sensor data (i
 perception for autonomous systems), where real data must be collected on a budget.
 
 <!--
-Wave 13 (issue #28), 2026-09-26: generalized after pivot decision v3 (research/pivot-decision.md, top):
+Wave 14 (issue #30), 2026-09-26: pivot decision v4 (research/pivot-decision.md, top; framing only, v3
+scope unchanged). "What the dissertation proposes" became "Goal of the dissertation" (cel pracy): one
+method with components C1-C3 (v4 wording), guided by the same two signals; the thesis sentence = §7 H4:
+(a) <= 10% of real-only data, (b) >= 2x less than the strongest existing real-to-sim-to-real pipeline
+(uniform capture + domain randomization + random real-data selection, RialTo-style; §7, §9 Stage IV).
+(b) is new in v4 and marked there for supervisor confirmation.
+-->
+<!--
+(history) Wave 13 (issue #28), 2026-09-26: generalized after pivot decision v3 (research/pivot-decision.md, top):
 domain-agnostic methodology; "policy" -> "policy or model"; "real rollouts/trials" -> "real-world data /
 interactions / trials"; the twin covers geometry and appearance (neural reconstruction) AND physical and
 dynamic parameters identified from real data (system identification; cf. §6 [22, 23, 27]: dynamics

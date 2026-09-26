@@ -5,11 +5,11 @@
 | Year | Papers (planned submission, 200 points each) | Code | Grants | Mobility, events |
 |---|---|---|---|---|
 | 1 (2025/26) | — | — | — | — |
-| 2 (2026/27) | P1 (RQ1–RQ2, task-aware capture, first H2 results): NeurIPS 2027, May 2027 (§11) | Loop on tier A | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
-| 3 (2027/28) | P2 (RQ3, few real data, twin correction): ICML or CVPR 2028; P3 (RQ4, budget of the full loop in both testbeds): NeurIPS 2028 | Trial selection | — | Mid-term; 3-month visit (sem. 6) |
-| 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Full release | — | Dissertation |
+| 2 (2026/27) | P1 (method components C1 and first C2 results, RQ1–RQ2): NeurIPS 2027, May 2027 (§11) | Loop on tier A | SzD Minigrant; NCN PRELUDIUM; NAWA Bekker | Summer school poster |
+| 3 (2027/28) | P2 (component C3, few real data, RQ3): ICML or CVPR 2028; P3 (the whole method in both testbeds, RQ4): NeurIPS 2028 | C3 code | — | Mid-term; 3-month visit (sem. 6) |
+| 4 (2028/29) | Optional P4, consolidated study: ICLR 2029 or CVPR 2029 | Method release | — | Dissertation |
 
-P1–P3 are the linked core of the dissertation; P4 is optional.
+P1–P3 present one method, component by component and then as a whole; P4 is optional.
 
 **Foreign research visit (candidate hosts, not yet contacted).** (1) Z. Kira's group, Georgia Tech:
 EmbodiedSplat [5]. (2) Multi-robot Systems Lab, Stanford University (M. Schwager): Gaussian-splatting scene
@@ -20,8 +20,7 @@ transfer, and a foreign co-author for P2, are sought with the supervisor in sem.
 Jaguar 4x4, ROS 2) and, if available, a PWr manipulator; a written agreement is task T3.2 (Nov 2026).
 
 **Risks and mitigation** (semester affected).
-- *Task-aware capture gives no gain* (3–4): the measured capture–P curves still answer RQ1, and Stages
-  II–III have their own baselines (§7).
+- *One component gives no gain* (3–5): its budget curve still answers its RQ, and H4 is still tested (§7).
 - *Twin uncertainty is poorly calibrated* (3–4): two estimators and an ensemble fallback, checked
   against the reference.
 - *Proxy reality is easier than reality* (4–7): separate sources for twin and reference; tiers B and C
@@ -40,7 +39,13 @@ part of the dissertation.
 **Ethics and data.** Own captures are anonymized (GDPR); public datasets are used under their licences.
 
 <!--
-Wave 13 (issue #29), 2026-09-26: pivot decision v3 (general, domain-agnostic real-to-sim-to-real; equal
+Wave 14 (issue #30), 2026-09-26: pivot decision v4 (framing only). Outputs table: P1-P3 described by method
+component (P1 = C1 + first C2, P2 = C3, P3 = the whole method in both testbeds, H4); venues unchanged; code column "C3 code" / "Method release". "P1-P3 are the linked
+core" -> "present one method". Risk "task-aware capture gives no gain" generalized to any component
+(a failed ablation leaves the other components and H4 testable).
+-->
+<!--
+(history) Wave 13 (issue #29), 2026-09-26: pivot decision v3 (general, domain-agnostic real-to-sim-to-real; equal
 testbeds). Outputs table: P1-P3 venues unchanged; P2 "few real data", P3 "both testbeds"; "Rollout
 selection" -> "Trial selection". Host 2 no longer described as navigation work (only "Gaussian-splatting
 scene models", as verified at https://msl.stanford.edu/). PWr manipulator for tier C only "if available"

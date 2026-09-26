@@ -51,12 +51,13 @@ of manipulation policies. GaussTwin [35] corrects a 3DGS twin from photometric e
 demonstrations, tasks or trials, not the real data that should correct a twin and its policy.
 
 **Research gap.** Real-to-sim-to-real works, but its real-data cost is set by hand and spent uniformly,
-and each study measures it in one domain. Missing are (i) task-aware, uncertainty-guided capture of both
-appearance and physical parameters, judged by downstream success rather than reconstruction or parameter
+and measured in one domain per study. Missing is one method that allocates it actively at every step:
+(i) task-aware, uncertainty-guided capture of both
+appearance and physical parameters, judged by task success, not reconstruction or parameter
 accuracy (RQ1), (ii) learning driven by the twin's uncertainty and by representation distance to a small
-real set (RQ2), (iii) active selection of the few real data that correct the twin and the policy (RQ3),
-and (iv) a total real-data budget curve of the full loop against real-only learning, measured the same way
-in manipulation and navigation (RQ4).
+real set (RQ2), (iii) active selection of the few real data that correct twin and policy (RQ3),
+and (iv) evidence that it needs less real data than real-only learning and uniform
+pipelines, measured the same way in manipulation and navigation (RQ4).
 
 ### References
 [1] M. Savva et al., "Habitat," ICCV, 2019.
@@ -95,6 +96,11 @@ in manipulation and navigation (RQ4).
 [34] X. Li et al., "Evaluating Real-World Robot Manipulation Policies…," CoRL, 2024.
 [35] Y. Cai et al., "GaussTwin," arXiv:2603.05108, 2026.
 
+<!-- Wave 14 (issue #30), 2026-09-26: pivot decision v4 (framing only). Research gap reworded: what is
+missing is ONE method that allocates the real data actively at every step, (i)-(iii) = its components
+C1-C3 (RQ1-RQ3), (iv) = evidence that it needs less real data than real-only learning and uniform pipelines
+(RQ4/H4 (a),(b); the "strongest existing pipeline" of §7/§9 is uniform capture + domain randomization +
+random real-data selection, RialTo-style). No references added or renumbered. Trimmed to keep 2 pages. -->
 <!--
 Wave 13 (issue #29), 2026-09-26: generalized for pivot decision v3 (research/pivot-decision.md: general,
 task- and domain-agnostic real-to-sim-to-real; manipulation and navigation equal testbeds; the twin covers

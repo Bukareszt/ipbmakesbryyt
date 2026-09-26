@@ -5,13 +5,18 @@
 Paper **P1** submitted for review to the main track of the **Conference on Neural Information Processing
 Systems (NeurIPS 2027)**. NeurIPS is peer-reviewed international conference proceedings worth
 **200 points** on the ministerial list (conference Lp. 87), assigned to the discipline *informatyka
-techniczna i telekomunikacja*. P1 reports Stage I and the first Stage II results (RQ1–RQ2): task-aware,
-uncertainty-guided capture of real data for digital twins (H1) and uncertainty-aware learning in imperfect
-twins (first H2 results), evaluated in manipulation and navigation by the real data they save (task T4.2). If it is rejected, the revised paper goes to **CVPR 2028** (expected deadline
+techniczna i telekomunikacja*. P1 reports the first two components of the method
+(Stage I and the first Stage II results, RQ1–RQ2): C1, task-aware, uncertainty-guided capture of real data
+for digital twins (H1), and C2, uncertainty-aware learning in imperfect twins (first H2 results),
+evaluated in manipulation and navigation by the real data they save (task T4.2). If it is rejected, the revised paper goes to **CVPR 2028** (expected deadline
 November 2027, also 200 points), and then to the next 200-point conference (§12).
 
 <!--
-Wave 13 (issue #29), 2026-09-26: pivot decision v3 (general real-to-sim-to-real). Date, venue, points and
+Wave 14 (issue #30), 2026-09-26: pivot decision v4 (framing only). P1 is described as the first two
+components C1-C2 of the one method (v4); date, venue, points, content (H1 + first H2) and fallback unchanged.
+-->
+<!--
+(history) Wave 13 (issue #29), 2026-09-26: pivot decision v3 (general real-to-sim-to-real). Date, venue, points and
 fallback unchanged; P1 content worded domain-agnostically ("capture of real data", "learning in imperfect
 twins") with both testbeds, matching §3 T4.2 and §7.
 -->

@@ -1,12 +1,27 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-**PL:** Aktywna alokacja ograniczonych danych rzeczywistych w pętli rzeczywistość–symulacja–rzeczywistość:
-budowa cyfrowych bliźniaków, uczenie w nich i przenoszenie wyników do rzeczywistości
+**PL:** Metoda uczenia w pętli rzeczywistość–symulacja–rzeczywistość wymagająca mniej danych rzeczywistych:
+ukierunkowane na zadanie zbieranie danych do budowy cyfrowych bliźniaków, uczenie w nich z uwzględnieniem
+niepewności i aktywny wybór nielicznych danych rzeczywistych
 
-**EN:** Active allocation of limited real data in the real-to-sim-to-real loop: building digital twins,
-learning in them and transferring the results back to reality
+**EN:** A method for learning in the real-to-sim-to-real loop that needs less real data: task-aware capture
+for building digital twins, uncertainty-aware learning in them and active selection of few real-world data
 
-<!-- Wave 13 (issue #28), 2026-09-26: rewritten after pivot decision v3 (research/pivot-decision.md, top
+<!-- Wave 14 (issue #30), 2026-09-26: rewritten after pivot decision v4 (research/pivot-decision.md, top;
+overrides v3 on framing, v3 scope unchanged). v4: "Title ... must say plainly that the dissertation develops
+a method that needs less real data." The title now names the product (one method), its property (needs
+less real data), the setting (the real-to-sim-to-real loop) and its three components C1-C3 (task-aware
+capture, uncertainty-aware learning in the imperfect twin, active selection of few real-world data), one
+per loop step. The previous title ("Active allocation of limited real data in the real-to-sim-to-real
+loop: building digital twins, learning in them and transferring the results back to reality") named the
+allocation idea but not the method as the deliverable. Testbeds (manipulation and navigation, equal
+status) stay in §5/§7. The topic does not have to be the final title (SPEC §2).
+Shorter alternative for the supervisor:
+- EN "A real-data-efficient method for real-to-sim-to-real learning with digital twins" / PL "Metoda
+  uczenia w pętli rzeczywistość–symulacja–rzeczywistość z cyfrowymi bliźniakami oszczędzająca dane
+  rzeczywiste" -->
+
+<!-- (history) Wave 13 (issue #28), 2026-09-26: rewritten after pivot decision v3 (research/pivot-decision.md, top
 section, overrides v2 on scope): a GENERAL, task- and domain-agnostic real-to-sim-to-real methodology, not
 centred on navigation, autonomy or robot rollouts. The title names the object (the real-to-sim-to-real
 loop), the thesis (active allocation of limited real data) and the three steps of the loop (RQ1 build the

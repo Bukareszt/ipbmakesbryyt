@@ -11,20 +11,21 @@ poruszają. Powstaje w ten sposób pętla: zbieramy dane w rzeczywistości, budu
 system, sprawdzamy go w rzeczywistości, poprawiamy i dopiero wtedy wdrażamy. Każdy z tych kroków wymaga
 jednak prawdziwych danych, a ich zbieranie jest kosztowne.
 
-Celem rozprawy jest sprawdzenie, jak przejść przez tę pętlę z jak najmniejszą ilością prawdziwych danych,
-niezależnie od zadania. Zamiast zbierać wszystko po równo, będziemy zbierać przede wszystkim te dane, które
+Celem rozprawy jest opracowanie metody, która przejdzie przez tę pętlę z dużo mniejszą ilością
+prawdziwych danych niż dotychczasowe podejścia, niezależnie od zadania. Metoda ma trzy części, po jednej na
+każdy krok pętli. Zamiast zbierać wszystko po równo, będziemy zbierać przede wszystkim te dane, które
 są ważne dla zadania i o których kopia wie jeszcze za mało. Ponieważ kopia nigdy nie jest idealna, nauczymy
 system tak, aby nie polegał na jej niepewnych fragmentach i radził sobie z jej błędami. Na koniec wybierzemy
 tylko te nieliczne próby w rzeczywistości, które najwięcej mówią o tym, gdzie system jeszcze zawodzi, i
 wykorzystamy je do poprawienia zarówno kopii, jak i systemu. Wskazówek dostarczy sama kopia, która wie,
-gdzie jest niepewna, oraz sposób, w jaki uczony system opisuje to, co widzi. Te same metody sprawdzimy na
+gdzie jest niepewna, oraz sposób, w jaki uczony system opisuje to, co widzi. Tę samą metodę sprawdzimy na
 dwóch różnych zadaniach: chwytaniu przedmiotów ramieniem robota i poruszaniu się robota po budynkach.
 Badania będą prowadzone przede wszystkim na publicznie dostępnych danych, a wybrane wyniki zostaną
 potwierdzone na prawdziwym robocie.
 
-Spodziewanym efektem są metody, które pozwolą zbierać mniej danych, uczyć skuteczniej i wykonywać mniej
-kosztownych prób w rzeczywistości, oraz pomiar, ile prawdziwych danych potrzeba, gdy system uczy się w
-cyfrowej kopii. Może to przyspieszyć i potanić wdrażanie uczących się systemów w fabrykach, magazynach,
+Spodziewanym efektem jest jedna metoda, która pozwoli zbierać mniej danych, uczyć skuteczniej i wykonywać
+mniej kosztownych prób w rzeczywistości, oraz pomiar, ile prawdziwych danych oszczędza w porównaniu z
+uczeniem wyłącznie na prawdziwych danych i z dotychczasowymi podejściami. Może to przyspieszyć i potanić wdrażanie uczących się systemów w fabrykach, magazynach,
 szpitalach i biurach. Opracowane oprogramowanie zostanie udostępnione publicznie.
 
 ## Abstract for general public
@@ -37,24 +38,33 @@ measurements, including how things look, their shape and how they move. This cre
 data in reality, build the copy, train the system in it, check it in reality, correct it and only then
 deploy it. Each of these steps, however, needs real data, and collecting it is costly.
 
-The goal of this dissertation is to find out how to go through this loop with as little real data as
-possible, whatever the task. Instead of collecting everything evenly, we will collect mainly the data that
+The goal of this dissertation is to develop a method that goes through this loop with much less real
+data than existing approaches, whatever the task. The method has three parts, one for each step of the
+loop. Instead of collecting everything evenly, we will collect mainly the data that
 matters for the task and about which the copy still knows too little. Because the copy is never perfect,
 we will train the system so that it does not rely on the uncertain parts of the copy and copes with its
 errors. Finally, we will choose only the few trials in reality that tell the most about where the system
 still fails, and use them to correct both the copy and the system. Guidance will come from the copy
 itself, which knows where it is uncertain, and from the way the learning system describes what it sees.
-We will test the same methods on two different tasks: grasping objects with a robot arm and a robot moving
+We will test the same method on two different tasks: grasping objects with a robot arm and a robot moving
 around buildings. The research will be carried out mainly on publicly available data, and selected results
 will be confirmed on a real robot.
 
-The expected result is methods that make it possible to collect less data, train more effectively and
-carry out fewer costly trials in reality, and a measurement of how much real data is needed when a system
-learns in a digital copy. This may make deploying learning systems in factories, warehouses, hospitals
+The expected result is one method that makes it possible to collect less data, train more effectively and
+carry out fewer costly trials in reality, and a measurement of how much real data it saves compared with
+learning from real data only and with existing approaches. This may make deploying learning systems in factories, warehouses, hospitals
 and offices faster and cheaper. The software developed will be made publicly available.
 
 <!--
-Wave 13 (issue #28), 2026-09-26: generalized in both languages in parallel after pivot decision v3
+Wave 14 (issue #30), 2026-09-26: pivot decision v4 (research/pivot-decision.md, top; framing only). Both
+languages changed in parallel: the goal is now to DEVELOP A METHOD that needs much less real data than
+existing approaches (v4 "cel pracy"); a new sentence says it has three parts, one per loop step (C1-C3);
+the expected result is "one method" plus how much real data it saves versus real-only learning and existing
+approaches (H4 (a) and (b)). PL and EN checked sentence by sentence: 3 paragraphs each, 5 / 8 / 3
+sentences, same content.
+-->
+<!--
+(history) Wave 13 (issue #28), 2026-09-26: generalized in both languages in parallel after pivot decision v3
 (research/pivot-decision.md, top): "robot" -> "system" where the claim is general; the twin includes "how
 things move" (physical parameters, system identification); "whatever the task" = task-agnostic; the two
 testbeds (grasping = manipulation, moving around buildings = navigation) have equal status, no "main

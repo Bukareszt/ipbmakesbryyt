@@ -4,40 +4,36 @@ The dissertation is carried out in **information and communication technology** 
 telekomunikacja*), in the area of machine learning. Its object is the **real-to-sim-to-real learning
 loop** in general, task- and domain-agnostic: building a digital twin (appearance, geometry and, where
 relevant, physical parameters) from limited real data, learning a policy or model in it and transferring
-the result back to reality, and how to make this loop work with **less real data**. Building twins,
+the result back to reality; it develops a method that makes this loop work with **less real data**. Building twins,
 simulators or benchmarks, control design and mechanical engineering are not the object of the research;
 the student uses existing tools and public data.
 
-**Key original contribution.** To our knowledge, the first treatment of the real data in the whole
-real-to-sim-to-real loop as **one budget to be allocated actively**, with a method for each step of the
-loop and real-data budget curves measured with the same methods in two domains, robotic manipulation and
-visual navigation.
+**Key original contribution: the method.** To our knowledge, the first method for real-to-sim-to-real
+learning that treats the real data of the whole loop as **one budget allocated actively at every step**,
+so that it reaches a given real-world performance with significantly less real data: at most a tenth of
+the data of learning from real data only and at least two times less than the strongest existing
+real-to-sim-to-real pipeline (RQ4, H4), with the same components and settings in two domains, robotic
+manipulation and visual navigation. Its three components are parts of this one method, not separate
+contributions; each is tested as an ablation at its own step:
 
-Contributions to machine learning methodology:
+1. **C1, capture less (RQ1, H1).** Task-aware capture that chooses which real data to collect for a twin
+   (views for its appearance and geometry, interactions for its physical parameters) from the twin's
+   uncertainty in the parts that matter for the task, not reconstruction quality alone; compared with
+   uniform and task-blind selection.
+2. **C2, learn robustly in an imperfect twin (RQ2, H2).** Uncertainty-aware training that turns the twin's
+   per-region and per-parameter uncertainty and the representation distance to a few real samples into
+   augmentation and sample weights; compared with uniform domain randomization at an equal capture budget.
+3. **C3, transfer with few real data (RQ3, H3).** Active selection of real-world trials or interactions by
+   the predicted twin-to-real gap and its uncertainty, used to correct both the twin and the learned
+   model; compared with random selection.
 
-1. **Capture less (RQ1, H1).** A task-aware capture method that chooses which real data to collect for a
-   twin (views for its appearance and geometry, interactions for its physical parameters) from the twin's
-   uncertainty in the parts that matter for the task, instead of for reconstruction quality alone, and a
-   test of how much capture it saves against uniform and task-blind selection.
-2. **Learn robustly in an imperfect twin (RQ2, H2).** An uncertainty-aware training method that turns the
-   twin's per-region and per-parameter uncertainty and the representation distance to a small set of real
-   samples into augmentation and sample weights, compared with uniform domain randomization at an equal
-   capture budget.
-3. **Transfer with few real data (RQ3, H3).** An active selection method for real-world trials or
-   interactions, driven by the predicted twin-to-real gap and its uncertainty, and a procedure
-   that uses them to correct both the twin and the learned model, compared with random selection.
-4. **Budget curves for the loop (RQ4, H4).** Budget–performance curves of the full loop that give the
-   "exchange rate" between twin and real data (how much real data the loop needs, relative to learning from
-   real data only, to reach a given real task performance), and a test of whether the methods hold
-   unchanged in both domains.
-
-Contributions in engineering terms (ITiT):
-
-5. **Evaluation protocol and software (supports all RQs).** A proxy-reality protocol on public data that
-   counts real data exactly without a robot (a reference from a separate, higher-fidelity source as
-   "reality", a low-budget twin from a separate capture as the simulator), applied in each domain, and
-   open-source code for the three methods and the budget curves, built on existing twin pipelines and
-   simulators. It tells practitioners roughly how much real data to collect for a new task or site.
+**How the method is evaluated and released** (supporting the method, not contributions in their own
+right). Budget–performance curves of the method against real-only learning and the existing pipeline,
+which give the "exchange rate" between twin and real data and tell practitioners roughly how much real
+data to collect for a new task or site; a proxy-reality protocol on public data that counts real data
+exactly without a robot (a reference from a separate, higher-fidelity source as "reality", a low-budget
+twin from a separate capture as the simulator), applied in each domain; and open-source code of the
+method, built on existing twin pipelines and simulators.
 
 **Significance for the discipline.** Real target-domain data is the main cost of deploying learned
 systems. Methods that decide where it is worth spending, and a measured estimate of how much of it a twin
@@ -46,12 +42,22 @@ estimation in general, beyond robotics.
 
 **Dissemination.** Results are planned for peer-reviewed conferences worth 200 points and assigned to ITiT
 on the ministerial list of 5.01.2024: NeurIPS, ICML and ICLR (machine learning) and CVPR (computer vision),
-with ICCV and ECCV for resubmissions. P1 (RQ1–RQ2, task-aware capture and first
-uncertainty-aware training results) targets NeurIPS 2027; P2 (RQ3, active selection of real data and twin
-correction) ICML 2028 or CVPR 2028; P3 (RQ4, budget curves in both domains) NeurIPS 2028, with ICLR 2029 as
-the fallback.
+with ICCV and ECCV for resubmissions. P1 (C1 and first C2 results, RQ1–RQ2) targets
+NeurIPS 2027; P2 (C3, RQ3) ICML 2028 or CVPR 2028; P3 (the whole method against real-only learning and the
+existing pipeline in both domains, RQ4) NeurIPS 2028, with ICLR 2029 as the fallback.
 
-<!-- Wave 13 (issue #28), 2026-09-26: generalized after pivot decision v3 (research/pivot-decision.md,
+<!-- Wave 14 (issue #30), 2026-09-26: reframed after pivot decision v4 (research/pivot-decision.md, top;
+framing only, v3 scope unchanged). v4: "The key original contribution in §8 is the method"; "Budget curves,
+the proxy-reality protocol and the code are how the method is evaluated and released. They are not
+contributions in their own right"; C1-C3 "are parts of the method. They are not separate contributions."
+So: key contribution = one method (C1-C3) + its claim (§7 H4 (a) <= 10% of real-only, (b) >= 2x less than
+the strongest existing pipeline, uniform capture + DR + random real-data selection, RialTo-style; (b) new
+in v4, CONFIRM supervisor); old items 1-3 became components C1-C3 (still RQ1-RQ3 / H1-H3, now ablations);
+old item 4 (budget curves) and item 5 (protocol and code) merged into the supporting paragraph. The
+"Contributions to ML methodology / in engineering terms (ITiT)" headings were dropped; the ITiT placement
+stays in the first paragraph. Dissemination: paper-to-venue mapping unchanged; P1-P3 described by
+component. "To our knowledge" kept (review-3 R3-F11). -->
+<!-- (history) Wave 13 (issue #28), 2026-09-26: generalized after pivot decision v3 (research/pivot-decision.md,
 top): object = the real-to-sim-to-real loop in general (task- and domain-agnostic); twin includes physical
 parameters (system identification); "real rollouts" -> "real-world trials or interactions"; "policy" ->
 "policy or model"; key contribution no longer "budget curves for navigation, where none have been

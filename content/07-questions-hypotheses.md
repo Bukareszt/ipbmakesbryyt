@@ -1,57 +1,59 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
-The research carried out in the proposed doctoral dissertation is aimed at studying the following research
-questions, each on two physical AI tasks: robot navigation and robotic manipulation.
+The research in the proposed doctoral dissertation addresses the following research questions, each on two
+physical AI tasks: robot navigation and robotic manipulation.
 
 1. **Which reconstruction errors of a digital twin, varying across a scene, determine how well navigation
    and manipulation models trained in it generalize?**
-   Domain adaptation theory, used here as motivation, bounds the real-world error of a model by its error in
-   simulation, the discrepancy between the simulated and real distributions, and a joint error term. A
-   digital twin of a room or a tabletop reproduces appearance, geometry and lighting only approximately,
-   and its errors differ between regions of a scene.
-   *Hypothesis:* The harm caused by a reconstruction error is predicted better by the change it induces in
-   the representation of a fixed reference model on held-out paired views than by its magnitude in the
-   image or geometry. Separately, randomizing each region in proportion to its reconstruction uncertainty and
-   task relevance yields better generalization than uniform randomization.
-   To test this, the research will replace components of the twin with a more accurate reference and measure
-   the effect. If harm follows error magnitude, this attribution will itself be reported, and the third
-   question will rely on reconstruction uncertainty and action sensitivity only.
+   Twin errors in appearance, geometry and lighting differ across a scene.
+   *Hypothesis:* The performance drop caused by each type of reconstruction error in a region is predicted
+   better by the feature distance of a fixed pretrained visual encoder between held-out views rendered with
+   and without the error than by the error size in image or geometry, e.g., PSNR, LPIPS or depth
+   error. Separately, randomizing the appearance and geometry of each region with a strength growing with
+   its estimated reconstruction error and task relevance generalizes better than uniform randomization of
+   equal total strength.
+   To test this, one error type at a time will be corrected in selected regions, e.g., geometry from a
+   laser scan, or injected into a high-fidelity reference. If harm follows error size, this will be
+   reported and the third question will rely on reconstruction uncertainty and action sensitivity, although
+   uncertainty misses consistently reproduced errors.
 
-2. **Where inside a model trained in simulation does the simulation-to-reality gap arise, and can aligning
-   representations at that stage reduce it?**
-   Models trained in simulation can rely on features absent in reality, such as reconstruction artifacts.
-   Even in models that transfer well, simulated and real inputs remain distinguishable, so the gap is better
-   localized by the task information the model loses on real inputs.
-   *Hypothesis:* In both tasks, there is a first stage of the model at which task information that can be
-   decoded from simulated inputs can no longer be decoded from real ones. Aligning simulated and real
-   representations at that stage, from a few paired views, yields better generalization than aligning them
-   at the input, at the final features or everywhere.
-   Probing of hidden states will locate this stage before any intervention.
+2. **At which stage of a model trained or fine-tuned in a twin do real inputs first lose task information
+   available for simulated inputs, and does aligning representations at that stage reduce the
+   simulation-to-reality gap?**
+   *Hypothesis:* In both tasks, there is an identifiable earliest stage, or a narrow range of stages, at which
+   a linear probe trained on simulated hidden states loses accuracy on paired real ones well beyond a
+   control-task baseline, and the lost information influences the actions. Fine-tuning the layers up to that
+   stage with a loss matching real to paired simulated representations from a few views reduces the gap more
+   than the same loss at the input, the final features, all stages or layers chosen by existing criteria,
+   under equal data and effort.
+   Probes with control tasks will locate this stage, and patching the probed subspace from simulated into
+   real inputs will test whether the model uses this information.
 
-3. **Which real data, chosen under a limited budget, most efficiently correct both the simulation and the
-   model?**
-   Real data are expensive, and existing methods use them to correct either the model or the simulation.
-   Invariance does not reduce the joint error term, which shrinks only as the simulation gets closer to
-   reality.
-   *Hypothesis:* Correcting both the digital twin and the model from the same selected real data reduces the
-   gap more than correcting either one alone. The data should be selected where the twin is predicted to
-   disagree with reality in task-relevant ways, as estimated from the reconstruction uncertainty, the
-   representation distance between simulated and real views and the sensitivity of the predicted action.
-   Such selection is expected to beat random and failure-driven selection.
-   Selection rules will be compared at equal budgets in both tasks, with unlabelled real images counted as
-   real data.
+3. **Which real data, chosen under a fixed budget, most reduce the simulation-to-reality gap when used to
+   correct both the digital twin and the model?**
+   Existing methods correct either the model or the simulation, or both with different, unselected real
+   data. Enforcing invariance does not target the joint error term of the domain adaptation bound and can
+   increase it when simulated and real data require different actions, whereas bringing the simulation
+   closer to reality can reduce it directly.
+   *Hypothesis:* At an equal budget, using the same selected real data to correct both the twin and the model
+   reduces the gap more than correcting either one alone. Candidate views are scored by the reconstruction
+   uncertainty at their pose, by how much the predicted action changes when the twin is perturbed within
+   it and, if an unlabelled real image is available, by the representation distance between the rendered and
+   the real view.
+   The selection will be compared with random and failure-driven selection over a range of budgets
+   counted in real images for navigation and in real episodes or frames for manipulation, including
+   unlabelled images.
 
-4. **Do the improvements generalize to unseen environments and from one task to the other, and which
-   properties of the shift explain when they do?**
-   A useful method should work beyond a single scene or task. The developed methods shall therefore be
-   applied with unchanged settings to many held-out scenes of both tasks, and an improvement found in one
-   task shall be tested in the other.
-   *Hypothesis:* The attribution of the gap from the first question and its localization from the second
-   can be measured in a new scene or task before a method is applied. These measurements predict whether
-   the improvement transfers, also between the tasks, better than simple indicators such as the raw size of
-   the gap or the image-level discrepancy.
-   This prediction will be tested across many held-out scenes of navigation and manipulation.
+4. **Do the methods, applied with unchanged settings, improve generalization in unseen scenes and in the
+   other task, and can properties of the shift measured beforehand predict when they do?**
+   *Hypothesis:* The attribution of the gap from the first question and its localization from the second,
+   measured in a new scene or task from a reference reconstruction and a few paired views without applying
+   the method, are more strongly rank-correlated across held-out scenes with the gap reduction a method
+   achieves than simple indicators are, such as the base model's gap or the image-level discrepancy.
+   This will be tested on many held-out navigation scenes with tests for dependent correlations
+   and, exploratively, on the manipulation scenes and between the tasks.
 
+<!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §7 rewritten to fit 1 page with the report's K/P rows: RQ1 hypothesis = counterfactual feature distance of a fixed pretrained visual encoder (views rendered with and without the error) vs error size (PSNR, LPIPS, depth error); randomization of appearance and geometry growing with estimated reconstruction error and task relevance at equal total strength; test = per-region correction (laser scan) or injection into a high-fidelity reference; uncertainty misses consistently reproduced errors. RQ2 title = stage where real inputs first lose task information; hypothesis = linear probe beyond a control-task baseline, information influences actions; paired alignment loss vs input, final features, all stages, existing layer-selection criteria at equal data and effort; activation patching of the probed subspace. RQ3 title fixed budget; RialTo-type correction of both with different unselected data acknowledged; joint-error sentence corrected (invariance does not target it and can increase it when actions differ; bringing the simulation closer can reduce it directly), bound sentence moved here from RQ1 as 'joint error term of the domain adaptation bound'; equal budget; candidate scoring by uncertainty at the pose, action change under perturbation within it, representation distance when an unlabelled real image exists; baselines random and failure-driven over a range of budgets. RQ4 title = methods with unchanged settings, properties measured beforehand; hypothesis = rank correlation with gap reduction across held-out scenes vs base-model gap and image-level discrepancy; about a hundred navigation scenes with tests for dependent correlations, manipulation and cross-task exploratory. RQ2 context sentence on domain distinguishability dropped for space (kept in §6 [9]). -->
 <!-- Wave 24: humanized (2026-09-27, humanizer skill, voice of the accepted Binkowski and ipb4 §7). Visible §7 only: intro, bold RQs, *Hypothesis:* labels and the plan-B sentence kept; RQ2 not-X-but-Y ("..., not by whether the domains can be told apart") restated positively; RQ3 "cannot be reduced by invariance, only by ..." restated; "valuable" -> "useful"; repeated "The research will ..." openings varied; RQ3/RQ4 hypothesis sentences merged. No claim, term or hypothesis changed; length slightly shorter. -->
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §7: intro states both tasks for every RQ; RQ1 title names navigation and manipulation models, twin "of a room or a tabletop"; RQ2 hypothesis "in both tasks"; RQ3 comparison "in both tasks"; RQ4 = generalization to unseen environments AND from one task to the other (an improvement found in one task tested in the other), still against raw gap size and image-level discrepancy, across many held-out scenes of both tasks. Sim-to-sim confirmation wording removed. Structure, narrowing and hypotheses otherwise unchanged. -->
 <!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §7 (fixes 3-7, 9): RQ1 narrowed to reconstruction errors varying across a scene; predictor = change in the representation of a fixed reference model on held-out paired views; components replaced with the reference; per-region randomization a separate claim; fallback (harm follows magnitude -> reported; RQ3 uses uncertainty and action sensitivity only). RQ2 = first stage where task information decodable in simulation is no longer decodable from real inputs (not domain separability, cf. Lei 2026, §6 [9]); compared with input, final features, everywhere. RQ3 central claim = correcting both from the same data; random and failure-driven selection as baselines; unlabelled real images count in the budget; hypothesis split. RQ4 must beat raw gap size and image-level discrepancy, many held-out scenes, manipulation = sim-to-sim confirmation; hypothesis split. Bound = motivation; joint-error term motivates RQ3. -->

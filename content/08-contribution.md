@@ -11,8 +11,9 @@ robotic manipulation.
 
 First, the research is intended to provide a better understanding of which reconstruction errors of a
 digital twin harm generalization, together with a method that varies the twin accordingly rather than
-uniformly. Second, it aims to develop a way of finding where inside a deep model the simulation-to-reality gap
-arises and of reducing it at that stage. Third, it aims to propose a rule for selecting a small amount of
+uniformly. Second, it aims to develop a way of locating the stage of a deep model at which task information available
+for simulated inputs is lost for real ones, using probes with control tasks and causal interventions, and of
+reducing the gap by aligning simulated and real representations at that stage. Third, it aims to propose a rule for selecting a small amount of
 real data that corrects both the digital twin and the model. Finally, it will examine when such
 improvements carry over to unseen environments and between tasks. This knowledge could complement the
 currently dominant randomization heuristics with more principled and interpretable approaches.
@@ -24,6 +25,7 @@ reduce the cost of deploying learning-based robots in new environments, e.g., in
 inspection robotics. The source code is planned to be released, which could facilitate further research
 in the field.
 
+<!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §8: second contribution = locating the stage where task information is lost on real inputs (probes with control tasks, causal interventions) and aligning representations there. -->
 <!-- Wave 24: humanized -->
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §8: methods examined on two equal tasks (navigation and manipulation) instead of "mainly navigation, manipulation as a controlled confirmation test"; RQ4 contribution "across environments and from one task to another". -->
 <!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §8: terms (digital twin, sim-to-real gap); central claim and contribution list aligned with the narrowed RQ1-RQ4 (errors varying across a scene, task-information localization, correcting both from the same data, prediction beyond simple indicators); manipulation = controlled confirmation test (fix 1). -->

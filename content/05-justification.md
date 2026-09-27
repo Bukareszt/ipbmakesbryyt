@@ -24,16 +24,16 @@ is not known which properties of the digital twin and of the learned representat
 model generalizes to reality.
 
 Therefore, the dissertation aims to improve the generalization of deep learning models in
-real-to-simulation-to-real transfer with representation learning methods, at the points of the loop where the simulation-to-reality gap arises. The research shall
-focus on understanding which reconstruction errors of a digital twin are harmful to generalization, on
-localizing where inside a model the gap arises and reducing it there, and on choosing the small amount of
-real data that corrects both the digital twin and the model most efficiently. It shall also verify whether
-the obtained improvements carry over to unseen environments and from one physical task to another, and
-which properties of the shift explain when they do. The methods shall not be tied to a particular task;
-robot navigation and robotic manipulation are planned as two equal testbeds. For navigation, public
-recordings of real scenes, in which a second, independent capture measures the reconstruction-fidelity
-gap, shall be complemented by a real robot, which provides the main evidence for differences in actuation
-and sensors. For manipulation, digital twins of real tabletop scenes shall be built from images of public
+real-to-simulation-to-real transfer with methods that analyse and align the models' learned representations,
+applied at the points of the loop where the simulation-to-reality gap arises. The research shall focus on
+understanding which reconstruction errors of a digital twin are harmful to generalization, on localizing the
+stage of a model at which task information is lost on real inputs and reducing the gap there, and on
+choosing, under a fixed budget, the small amount of real data that best corrects both the digital twin and
+the model. It shall also verify whether the obtained improvements carry over to unseen environments and from
+one physical task to another, and whether properties of the shift measured beforehand predict when they do. The methods shall not be tied to a particular task;
+robot navigation and robotic manipulation are planned as two equal testbeds. For navigation, a second,
+independent capture in public recordings of real scenes shall measure the reconstruction-fidelity gap, and,
+if access allows, a real robot shall check the direction of the results and the validity of this proxy. For manipulation, digital twins of real tabletop scenes shall be built from images of public
 robot datasets and compared with published real-robot results of the same policies. Apart from more
 reliable models, the research could help explain why models trained on synthetic data succeed or fail on
 real data, which is relevant to machine learning in general.
@@ -43,6 +43,7 @@ in a digital copy of a new warehouse, hospital or home and then operate there re
 real-world adaptation. They also concern other domains in which models are trained on simulated or
 reconstructed data and deployed on real sensor data, such as autonomous driving or inspection robots.
 
+<!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §5: aim names the representation methods (analyse and align learned representations); RQ2 = stage where task information is lost on real inputs; RQ3 = fixed budget; RQ4 = properties measured beforehand; robot = optional check of the direction of results and of the proxy's validity, if access allows (consistent with §9). -->
 <!-- Wave 24: humanized -->
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §5: navigation and manipulation are two equal testbeds for task-agnostic methods; RQ4 wording "from one physical task to another"; proxy honesty kept for navigation (independent capture = reconstruction-fidelity gap, robot = actuation and sensors); manipulation = twins of real tabletop scenes from public robot dataset images, compared with published real-robot results of the same policies. No model/checkpoint names. -->
 <!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §5: terms defined once here ('digital twins, i.e., simulations built from real data'; 'the sim-to-real gap' = the drop in performance) and used consistently in §5-§9 (fix 9); navigation = main task, manipulation = controlled simulated confirmation test (fix 1); one proxy-honesty sentence: the independent capture measures the reconstruction-fidelity gap, the robot is the main evidence for actuation and sensor differences (fix 2); 'chosen at random, by hand or by simple heuristics such as observed failures' shortened. -->

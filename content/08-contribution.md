@@ -1,43 +1,28 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
-The proposed PhD dissertation aims to introduce several contributions to the development of the
-scientific discipline. The central scientific problem addressed is explaining and reducing the sim-to-real
-gap caused by the distribution shift between a digital twin and reality; poor generalization of models
-trained in simulation remains one of the main obstacles to applying machine learning in physical AI. The
-central claim of the dissertation is that this gap is concentrated in a small set of task-relevant
-discrepancies, which can be identified among the reconstruction errors of the digital twin, localized at
-the stage of the model where task information is lost, and reduced by correcting both the digital twin and
-the model from the same small set of real data. Addressing them there is expected to yield better
-generalization than uniform randomization, alignment at a fixed location of the model, or real data chosen
-at random or at the model's failures. Research questions 1-3 test the three parts of this claim, and
-question 4 tests whether it holds across environments and tasks; the methods derived from it are intended
-to be general, i.e., not tied to a particular robot, scene or task, and will be examined on two equal
-physical AI tasks, robot navigation and robotic manipulation.
+The proposed PhD dissertation aims to contribute to the development of the scientific discipline by
+addressing the generalization of deep learning models trained in simulations built from real data, which
+remains one of the main obstacles to applying machine learning in physical AI. The working assumption of
+the dissertation is that the sim-to-real gap is caused mainly by a limited set of task-relevant
+discrepancies, which may be identified among the reconstruction errors of a digital twin, localized inside
+the model, and reduced with a small amount of well-chosen real data. The methods are intended to be
+general, i.e., not tied to a particular robot, scene or task, and are planned to be examined on robot
+navigation and robotic manipulation.
 
-Furthermore, the research is expected to deliver new methods and findings that do not exist at present:
-an attribution of the sim-to-real gap to reconstruction errors that vary across a scene, with a principle
-for randomizing each region of a digital twin according to its reconstruction uncertainty and task
-relevance; a method for localizing the gap as the first stage of a deep model at which task information is
-lost on real inputs, and for aligning representations only there; a rule for selecting real data that
-corrects the digital twin and the model at the same time; and an empirical account of whether properties
-of the shift, measured before a method is applied, predict better than simple indicators when these
-improvements carry over across environments and from one task to another. Such knowledge could complement the currently
-dominant randomization heuristics with more principled and interpretable approaches, and could introduce
-new perspectives for the design of simulations and of training procedures.
+First, the research is intended to provide a better understanding of which reconstruction errors of a
+digital twin harm generalization, and a method for varying the twin accordingly instead of uniformly.
+Second, it aims to develop a way of finding where inside a deep model the sim-to-real gap arises and of
+reducing it at that stage. Third, it aims to propose a rule for selecting a small amount of real data that
+corrects both the digital twin and the model. Finally, it will examine when such improvements carry over
+to unseen environments and between tasks. Such knowledge could complement the currently dominant
+randomization heuristics with more principled and interpretable approaches.
 
 Since transfer from simulation to reality is an instance of learning under distribution shift, the
-findings are also expected to be relevant to machine learning in general. The analysis of which errors in
-the training distribution are harmful concerns domain adaptation; the localization of the sim-to-real gap
-inside a model extends probing methods developed for language and vision models and contributes to
-representation learning; and the selection of informative data under a budget concerns active learning
-and the adaptation of pretrained foundation models to new domains from a few examples.
-
-Finally, the developed methods could reduce the amount of real data, and thus the cost, needed to deploy
-learning-based robots in new environments. The source code and the experimental setups are planned to be
-released, which could facilitate further research in the field and attract other researchers. Apart from
-purely scientific results, the methods could be used in real-world applications such as service,
-logistics and inspection robotics, as well as in other domains where models are trained in simulation,
-e.g., autonomous driving.
+findings may also be relevant to machine learning in general, in particular to domain adaptation,
+representation learning and active learning. Apart from purely scientific results, the methods could
+reduce the cost of deploying learning-based robots in new environments, e.g., in service, logistics and
+inspection robotics. The source code is planned to be released, which could facilitate further research
+in the field.
 
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §8: methods examined on two equal tasks (navigation and manipulation) instead of "mainly navigation, manipulation as a controlled confirmation test"; RQ4 contribution "across environments and from one task to another". -->
 <!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §8: terms (digital twin, sim-to-real gap); central claim and contribution list aligned with the narrowed RQ1-RQ4 (errors varying across a scene, task-information localization, correcting both from the same data, prediction beyond simple indicators); manipulation = controlled confirmation test (fix 1). -->

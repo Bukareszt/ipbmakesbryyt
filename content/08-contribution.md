@@ -1,34 +1,36 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
 The proposed PhD dissertation aims to introduce several contributions to the development of the
-scientific discipline. The central scientific problem addressed is explaining and reducing the
-generalization gap caused by the distribution shift between a simulation built from real data and
-reality; poor generalization of models trained in simulation remains one of the main obstacles to
-applying machine learning in physical AI. The central claim of the dissertation is that this gap is
-concentrated in a small set of task-relevant discrepancies, which can be identified in the simulation,
-localized inside the model and targeted with little real data, and that addressing them there yields
-better generalization than uniform randomization, invariance of the whole representation or randomly
-chosen real data. Research questions 1-3 test the three parts of this claim, and question 4 tests whether
-it holds across environments and tasks; the methods derived from it are intended to be general, i.e., not
-tied to a particular robot, scene or task, and will be examined on robot navigation and robotic
-manipulation.
+scientific discipline. The central scientific problem addressed is explaining and reducing the sim-to-real
+gap caused by the distribution shift between a digital twin and reality; poor generalization of models
+trained in simulation remains one of the main obstacles to applying machine learning in physical AI. The
+central claim of the dissertation is that this gap is concentrated in a small set of task-relevant
+discrepancies, which can be identified among the reconstruction errors of the digital twin, localized at
+the stage of the model where task information is lost, and reduced by correcting both the digital twin and
+the model from the same small set of real data. Addressing them there is expected to yield better
+generalization than uniform randomization, alignment at a fixed location of the model, or real data chosen
+at random or at the model's failures. Research questions 1-3 test the three parts of this claim, and
+question 4 tests whether it holds across environments and tasks; the methods derived from it are intended
+to be general, i.e., not tied to a particular robot, scene or task, and will be examined mainly on robot
+navigation, with robotic manipulation as a controlled confirmation test.
 
 Furthermore, the research is expected to deliver new methods and findings that do not exist at present:
-a principle for shaping the training distribution of a simulation built from real data by the
-reconstruction uncertainty and task relevance of each region; a method for localizing the
-simulation-to-reality gap inside a deep model and for enforcing task-relevant invariance only there; a rule
-for selecting real data that corrects the simulation and the model at the same time; and an empirical
-account of which properties of the shift determine whether these improvements carry over across
-environments and tasks. Such knowledge could complement the currently dominant randomization heuristics with
-more principled and interpretable approaches, and could introduce new perspectives for the design of
-simulations and of training procedures.
+an attribution of the sim-to-real gap to reconstruction errors that vary across a scene, with a principle
+for randomizing each region of a digital twin according to its reconstruction uncertainty and task
+relevance; a method for localizing the gap as the first stage of a deep model at which task information is
+lost on real inputs, and for aligning representations only there; a rule for selecting real data that
+corrects the digital twin and the model at the same time; and an empirical account of whether properties
+of the shift, measured before a method is applied, predict better than simple indicators when these
+improvements carry over across environments and tasks. Such knowledge could complement the currently
+dominant randomization heuristics with more principled and interpretable approaches, and could introduce
+new perspectives for the design of simulations and of training procedures.
 
 Since transfer from simulation to reality is an instance of learning under distribution shift, the
 findings are also expected to be relevant to machine learning in general. The analysis of which errors in
-the training distribution are harmful concerns domain adaptation; the localization of the
-simulation-to-reality gap inside a model extends probing methods developed for language and vision models
-and contributes to representation learning; and the selection of informative data under a budget concerns
-active learning and the adaptation of pretrained foundation models to new domains from a few examples.
+the training distribution are harmful concerns domain adaptation; the localization of the sim-to-real gap
+inside a model extends probing methods developed for language and vision models and contributes to
+representation learning; and the selection of informative data under a budget concerns active learning
+and the adaptation of pretrained foundation models to new domains from a few examples.
 
 Finally, the developed methods could reduce the amount of real data, and thus the cost, needed to deploy
 learning-based robots in new environments. The source code and the experimental setups are planned to be
@@ -37,6 +39,7 @@ purely scientific results, the methods could be used in real-world applications 
 logistics and inspection robotics, as well as in other domains where models are trained in simulation,
 e.g., autonomous driving.
 
+<!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §8: terms (digital twin, sim-to-real gap); central claim and contribution list aligned with the narrowed RQ1-RQ4 (errors varying across a scene, task-information localization, correcting both from the same data, prediction beyond simple indicators); manipulation = controlled confirmation test (fix 1). -->
 <!-- Review-6 (2026-09-27): central scientific problem and single central claim added to paragraph 1, RQs presented as parts of it; "dominant", "a few", "logistics", "PhD". -->
 <!-- Wave 20 (ultracode), 2026-09-27: visible text rewritten from scratch in the Binkowski §8 register; contributions mapped to the final RQ1-RQ4 (components of the discrepancy, localization of the gap and task-relevant invariance, budgeted real-data selection correcting model and simulation, generality across environments and tasks); relevance to distribution shift, representation learning, active learning and foundation-model adaptation; code release; applications. No numbers, no model names. -->
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):

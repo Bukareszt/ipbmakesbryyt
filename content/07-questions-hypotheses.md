@@ -3,60 +3,55 @@
 The research carried out in the proposed doctoral dissertation is aimed at studying the following research
 questions.
 
-1. **Which components of the discrepancy between a simulation built from real data and reality determine
-   how well models trained in it generalize?**
-   Domain adaptation theory bounds the real-world error of a model by its error in simulation and by the
-   discrepancy between the simulated and the real distributions. A simulation built from real data
-   reproduces appearance, geometry, lighting and physics only approximately, and its errors differ between
-   regions of a scene.
-   *Hypothesis:* The harm caused by a simulation error is predicted better
-   by the change it induces in the task-relevant representations of the model than by its magnitude in
-   the image or geometry, so that errors of similar size differ strongly in their effect on
-   generalization.
-   Hence, training variation should follow the reconstruction uncertainty and task
-   relevance of each region rather than be spread uniformly. The research will attribute the gap to types
-   of simulation error and derive a principled way to shape the training distribution accordingly.
+1. **Which reconstruction errors of a digital twin, varying across a scene, determine how well models
+   trained in it generalize?**
+   Domain adaptation theory, used here as motivation, bounds the real-world error of a model by its error in
+   simulation, the discrepancy between the simulated and real distributions, and a joint error term. A
+   digital twin reproduces appearance, geometry and lighting only approximately, and its errors differ
+   between regions of a scene.
+   *Hypothesis:* The harm caused by a reconstruction error is predicted better by the change it induces in
+   the representation of a fixed reference model on held-out paired views than by its magnitude in the
+   image or geometry. Separately, randomizing each region in proportion to its reconstruction uncertainty and
+   task relevance yields better generalization than uniform randomization.
+   The research will replace components of the twin with a more accurate reference and measure the effect.
+   If harm follows error magnitude, this attribution will itself be reported, and the third question will
+   rely on reconstruction uncertainty and action sensitivity only.
 
-2. **Where inside a model trained in simulation does the simulation-to-reality gap arise, and can
-   task-relevant invariance at that location reduce it?**
+2. **Where inside a model trained in simulation does the sim-to-real gap arise, and can aligning
+   representations at that stage reduce it?**
    Models trained in simulation can rely on features absent in reality, such as reconstruction artifacts.
-   Invariant representations reduce the discrepancy between domains, yet full invariance does not
-   guarantee transfer and may remove information needed for the task. Moreover, it is not known at which
-   stage of such a model, from early visual features to the action output, the shift turns into errors.
-   *Hypothesis:* The gap arises in a limited part of the model, and enforcing invariance
-   there, only for task-relevant features and from a few paired simulated and real observations, yields
-   better generalization than invariance at the input or at the final features.
-   The research will use
-   probing of hidden states to localize the gap before intervening.
+   Simulated and real inputs remain distinguishable even in models that transfer well, so the gap should be
+   localized by what the model loses about the task, not by whether the domains can be told apart.
+   *Hypothesis:* There is a first stage of the model at which task information that can be decoded from
+   simulated inputs can no longer be decoded from real ones. Aligning simulated and real representations at
+   that stage, from a few paired views, yields better generalization than aligning them at the input, at
+   the final features or everywhere.
+   The research will use probing of hidden states to find this stage before intervening.
 
 3. **Which real data, chosen under a limited budget, most efficiently correct both the simulation and the
-   model, and thereby reduce the generalization gap?**
-   Real interaction data, such as robot trials or demonstrations, are expensive to collect. Existing
-   robotic methods correct either the model or the simulation and choose real data at random, by hand,
-   where the model fails, or by their informativeness about physical parameters; selection by domain
-   discrepancy has so far been studied only for labelling images.
-   *Hypothesis:* The most
-   informative real data are those where the simulation is predicted to disagree with reality in
-   task-relevant ways, as estimated from its reconstruction uncertainty, the distance between the
-   task-relevant representations of simulated and cheaply captured real observations, and the sensitivity
-   of the predicted action.
-   Using the selected data to correct both the simulation and the model is
-   expected to reduce the gap with less real data than random or failure-driven selection. The research
-   will develop such a selection rule and study it under different budgets.
+   model?**
+   Real data are expensive, and existing methods use them to correct either the model or the simulation.
+   However, the joint error term cannot be reduced by invariance, only by making the simulation closer to
+   reality.
+   *Hypothesis:* Correcting both the digital twin and the model from the same selected real data reduces the
+   gap more than correcting either one alone. The data should be selected where the twin is predicted to
+   disagree with reality in task-relevant ways. This disagreement can be estimated from the reconstruction
+   uncertainty, the representation distance between simulated and real views, and the sensitivity of the
+   predicted action. Such selection is expected to beat random and failure-driven selection.
+   The research will compare selection rules at equal budgets, counting unlabelled real images as real data.
 
 4. **Do the improvements generalize to unseen environments and to another physical task, and which
    properties of the shift explain when they do?**
-   A valuable method should not be tied to a single scene or task, and no single visual representation is
-   known to be best for both navigation and manipulation. Therefore, the developed methods shall be
-   examined, with unchanged settings, on environments held out from training and on two physical tasks:
-   robot navigation and, as a controlled second task, robotic manipulation.
-   *Hypothesis:* The
-   attribution of the gap from the first question and its localization from the second, measured in the
-   new setting before a method is applied, predict whether its improvement transfers.
-   The research will
-   decompose the gap into factors of variation and relate the measured attribution and localization to
-   the observed transfer across held-out scenes and tasks.
+   A valuable method should not be tied to a single scene or task. Therefore, the developed methods shall be
+   applied with unchanged settings to many navigation scenes held out from training, and to robotic
+   manipulation as a confirmation test in a controlled sim-to-sim setting with hidden physical parameters.
+   *Hypothesis:* The attribution of the gap from the first question and its localization from the second
+   can be measured in a new setting before a method is applied. These measurements predict whether the
+   improvement transfers. They predict it better than simple indicators, such as the raw size of the gap or
+   the image-level discrepancy.
+   The research will test this prediction across held-out scenes and confirm it on manipulation.
 
+<!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §7 (fixes 3-7, 9): RQ1 narrowed to reconstruction errors varying across a scene; predictor = change in the representation of a fixed reference model on held-out paired views; components replaced with the reference; per-region randomization a separate claim; fallback (harm follows magnitude -> reported; RQ3 uses uncertainty and action sensitivity only). RQ2 = first stage where task information decodable in simulation is no longer decodable from real inputs (not domain separability, cf. Lei 2026, §6 [9]); compared with input, final features, everywhere. RQ3 central claim = correcting both from the same data; random and failure-driven selection as baselines; unlabelled real images count in the budget; hypothesis split. RQ4 must beat raw gap size and image-level discrepancy, many held-out scenes, manipulation = sim-to-sim confirmation; hypothesis split. Bound = motivation; joint-error term motivates RQ3. -->
 <!-- Review-6 (2026-09-27): RQ1 "Domain adaptation theory"; RQ2 novelty scoped to models trained in simulations built from real data (surgical fine-tuning, §6 [20]), "a few", "yields better generalization", baseline "final features", probing provenance kept only in §8; RQ3 title = correct both simulation and model; circularity removed (cheap unlabelled real observations vs. expensive interaction data); RQ4 manipulation = controlled second task. -->
 <!-- Wave 20 (ultracode): final core. Judge synthesis of 3 independent drafts (A theory: RQs = terms of the
 Ben-David et al. 2010 bound; B robot-loop: real->sim, learning in sim, sim->real, generalization; C

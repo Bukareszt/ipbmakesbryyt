@@ -8,10 +8,12 @@ questions.
    Domain adaptation theory bounds the real-world error of a model by its error in simulation and by the
    discrepancy between the simulated and the real distributions. A simulation built from real data
    reproduces appearance, geometry, lighting and physics only approximately, and its errors differ between
-   regions of a scene. It is hypothesized that the harm caused by a simulation error is predicted better
+   regions of a scene.
+   *Hypothesis:* The harm caused by a simulation error is predicted better
    by the change it induces in the task-relevant representations of the model than by its magnitude in
    the image or geometry, so that errors of similar size differ strongly in their effect on
-   generalization. Hence, training variation should follow the reconstruction uncertainty and task
+   generalization.
+   Hence, training variation should follow the reconstruction uncertainty and task
    relevance of each region rather than be spread uniformly. The research will attribute the gap to types
    of simulation error and derive a principled way to shape the training distribution accordingly.
 
@@ -21,9 +23,10 @@ questions.
    Invariant representations reduce the discrepancy between domains, yet full invariance does not
    guarantee transfer and may remove information needed for the task. Moreover, it is not known at which
    stage of such a model, from early visual features to the action output, the shift turns into errors.
-   It is hypothesized that the gap arises in a limited part of the model, and that enforcing invariance
+   *Hypothesis:* The gap arises in a limited part of the model, and enforcing invariance
    there, only for task-relevant features and from a few paired simulated and real observations, yields
-   better generalization than invariance at the input or at the final features. The research will use
+   better generalization than invariance at the input or at the final features.
+   The research will use
    probing of hidden states to localize the gap before intervening.
 
 3. **Which real data, chosen under a limited budget, most efficiently correct both the simulation and the
@@ -31,11 +34,13 @@ questions.
    Real interaction data, such as robot trials or demonstrations, are expensive to collect. Existing
    robotic methods correct either the model or the simulation and choose real data at random, by hand,
    where the model fails, or by their informativeness about physical parameters; selection by domain
-   discrepancy has so far been studied only for labelling images. It is hypothesized that the most
+   discrepancy has so far been studied only for labelling images.
+   *Hypothesis:* The most
    informative real data are those where the simulation is predicted to disagree with reality in
    task-relevant ways, as estimated from its reconstruction uncertainty, the distance between the
    task-relevant representations of simulated and cheaply captured real observations, and the sensitivity
-   of the predicted action. Using the selected data to correct both the simulation and the model is
+   of the predicted action.
+   Using the selected data to correct both the simulation and the model is
    expected to reduce the gap with less real data than random or failure-driven selection. The research
    will develop such a selection rule and study it under different budgets.
 
@@ -44,9 +49,11 @@ questions.
    A valuable method should not be tied to a single scene or task, and no single visual representation is
    known to be best for both navigation and manipulation. Therefore, the developed methods shall be
    examined, with unchanged settings, on environments held out from training and on two physical tasks:
-   robot navigation and, as a controlled second task, robotic manipulation. It is hypothesized that the
+   robot navigation and, as a controlled second task, robotic manipulation.
+   *Hypothesis:* The
    attribution of the gap from the first question and its localization from the second, measured in the
-   new setting before a method is applied, predict whether its improvement transfers. The research will
+   new setting before a method is applied, predict whether its improvement transfers.
+   The research will
    decompose the gap into factors of variation and relate the measured attribution and localization to
    the observed transfer across held-out scenes and tasks.
 

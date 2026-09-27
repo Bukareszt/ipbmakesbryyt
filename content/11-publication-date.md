@@ -1,6 +1,6 @@
 # §11 Termin oddania do druku artykułu naukowego / Date of submission for publication
 
-May 2027
+May 2027 (planned submission to the NeurIPS 2027 conference, 200 points on the ministerial list).
 
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top): "P1: NeurIPS 2027.

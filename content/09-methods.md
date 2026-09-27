@@ -30,7 +30,7 @@ selecting a small amount of real data used to correct both the twin and the mode
 the methods will be applied to held-out scenes of both tasks to check whether the measured attribution and
 localization predict the improvement better than simple predictors.
 
-The evaluation will rely on standard metrics, such as success rate, and on the sim-to-real gap, measured on
+The evaluation will rely on standard metrics, such as success rate, and on the simulation-to-reality gap, measured on
 held-out scenes in both tasks and complemented where possible by open-loop measures on real frames. Methods
 will be compared with relevant baselines under comparable training effort and real data. Statistical methods
 will be used to provide reliable outcomes, including repeated runs over seeds and scenes and statistical tests

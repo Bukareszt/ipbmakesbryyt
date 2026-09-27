@@ -8,12 +8,12 @@ simulation. Recently, digital twins, i.e., simulations built from real data, hav
 alternative to hand-crafted simulators. Neural scene reconstruction methods, such as 3D Gaussian
 Splatting, turn a short recording of a real place into a photorealistic digital twin in which a model can
 be trained at scale. Real data are turned into a simulation, a model is trained there and then transferred
-back to reality, which forms a real-to-sim-to-real loop.
+back to reality, which forms a real-to-simulation-to-real loop.
 
 However, the value of this loop depends on how well the trained models generalize. A model that performs
 well in simulation often fails in reality, since no simulation reproduces the real world exactly:
 appearance, geometry, lighting and physics are only approximated, and reconstruction errors differ between
-regions of a scene. The resulting drop in performance is called the sim-to-real gap. It is caused by the
+regions of a scene. The resulting drop in performance is called the simulation-to-reality gap. It is caused by the
 shift between the distributions of simulated and real data, so it is a particular case of learning under
 distribution shift and one of the main obstacles to physical AI. The methods proposed so far have several
 limitations. Domain randomization, even when fitted to real data, varies a few global parameters
@@ -24,7 +24,7 @@ is not known which properties of the digital twin and of the learned representat
 model generalizes to reality.
 
 Therefore, the dissertation aims to improve the generalization of deep learning models in
-real-to-sim-to-real transfer at the points of the loop where the sim-to-real gap arises. The research shall
+real-to-simulation-to-real transfer at the points of the loop where the simulation-to-reality gap arises. The research shall
 focus on understanding which reconstruction errors of a digital twin are harmful to generalization, on
 localizing where inside a model the gap arises and reducing it there, and on choosing the small amount of
 real data that corrects both the digital twin and the model most efficiently. It shall also verify whether

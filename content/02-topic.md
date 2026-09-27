@@ -1,6 +1,6 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-Poprawa zdolności generalizacji modeli uczenia głębokiego w transferze rzeczywistość–symulacja–rzeczywistość dla fizycznej sztucznej inteligencji / Improving the generalization of deep learning models in real-to-sim-to-real transfer for physical AI
+Poprawa zdolności generalizacji modeli uczenia głębokiego w transferze rzeczywistość–symulacja–rzeczywistość dla fizycznej sztucznej inteligencji / Improving the generalization of deep learning models in real-to-simulation-to-real transfer for physical AI
 
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §2 checked: topic is general (real-to-sim-to-real for physical AI), unchanged. -->
 <!-- Review-6 (2026-09-27): PL topic now uses "uczenia głębokiego" (same term as §10). -->

@@ -17,7 +17,7 @@ questions, each on two physical AI tasks: robot navigation and robotic manipulat
    the effect. If harm follows error magnitude, this attribution will itself be reported, and the third
    question will rely on reconstruction uncertainty and action sensitivity only.
 
-2. **Where inside a model trained in simulation does the sim-to-real gap arise, and can aligning
+2. **Where inside a model trained in simulation does the simulation-to-reality gap arise, and can aligning
    representations at that stage reduce it?**
    Models trained in simulation can rely on features absent in reality, such as reconstruction artifacts.
    Even in models that transfer well, simulated and real inputs remain distinguishable, so the gap is better

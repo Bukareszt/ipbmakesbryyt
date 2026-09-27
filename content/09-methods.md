@@ -1,100 +1,99 @@
 # §9 Planowane metody badawcze / Planned research methods (max 2 pages)
 
-The research will follow the methods commonly adopted in machine learning and robot learning projects.
-Since no established theory guarantees generalization from simulation to reality, the research will be
-mainly empirical. Domain adaptation theory, which relates the error of a model in reality to its error in
-simulation, the discrepancy between the two distributions and a joint error term, will serve as
-motivation, and the properties of the proposed methods will be analysed theoretically whenever possible.
-Numbers in brackets refer to the references listed in Section 6.
+The research will follow the methods commonly adopted in machine learning and robot learning projects. Since
+no established theory guarantees generalization from simulation to reality, the research will be mainly
+empirical. Domain adaptation theory, which relates the error of a model in reality to its error in
+simulation, the discrepancy between the two distributions and a joint error term, will serve as motivation,
+and the properties of the proposed methods will be analysed theoretically whenever possible. Numbers in
+brackets refer to the references listed in Section 6.
 
-Digital twins will be built from real captures of indoor scenes, using structure-from-motion for camera
-poses and neural scene reconstruction, such as 3D Gaussian Splatting, for appearance and geometry, and then
-coupled with a navigation simulator, e.g., Habitat, with geometry for collisions and appearance rendered
-from the reconstruction. Reconstruction uncertainty will be estimated per region, e.g., from view coverage
-and the disagreement of an ensemble of reconstructions. Models for goal-directed indoor navigation (e.g.,
-point-goal or image-goal) will be trained with reinforcement and imitation learning, starting from
-pretrained models when possible.
+The methods will be task-agnostic and examined on two equal physical AI tasks, robot navigation and robotic
+manipulation, which share the reconstruction tools. Digital twins will be built from real images, using
+structure-from-motion for camera poses and neural scene reconstruction, such as 3D Gaussian Splatting, for
+appearance and geometry, with reconstruction uncertainty estimated per region, e.g., from view coverage and
+the disagreement of an ensemble of reconstructions. Twins of indoor scenes will be coupled with a navigation
+simulator, e.g., Habitat, to train models for goal-directed navigation (e.g., point-goal or image-goal), and
+twins of tabletop scenes with a manipulation simulator, e.g., ManiSkill3, to train or fine-tune models that
+map camera images and instructions to arm actions, with reinforcement and imitation learning from pretrained
+models when possible.
 
-Experiments will be conducted mainly on public datasets of real scenes, such as ScanNet++ and MuSHRoom,
-which contain separate captures of the same scenes made with different devices. This allows building the
-digital twin from one capture and using another, independent capture as a reference. Real frames of the
-independent capture will serve for open-loop evaluation, in which the model does not act, measuring the
-discrepancy between representations of paired simulated and real views, the agreement of predicted
-actions, and probing accuracy. A reference simulation built from the independent, higher-fidelity capture
-(e.g., the laser scan and DSLR images in ScanNet++) will serve for closed-loop evaluation, in which the
-model's actions determine what it observes next. The difference between the two simulations measures the
-reconstruction-fidelity gap on many scenes without a robot, but not differences in actuation and sensors.
+For navigation, experiments will use public datasets of real scenes, such as ScanNet++ and MuSHRoom, which
+contain separate captures of the same scenes made with different devices. The twin will be built from one
+capture, and real frames of the other, independent capture will serve for open-loop evaluation, in which the
+model does not act, measuring the discrepancy between representations of paired simulated and real views,
+the agreement of predicted actions, and probing accuracy. A reference simulation built from the higher-
+fidelity capture (e.g., the laser scan and DSLR images in ScanNet++) will serve for closed-loop evaluation,
+in which the model's actions determine what it observes next. The difference between the two simulations
+measures the reconstruction-fidelity gap on many scenes, but not differences in actuation and sensors.
 
-For the first question, variants of the digital twin will be built in which one component of a region,
-i.e., its appearance, geometry or lighting, is replaced by its counterpart from the reference
-reconstruction, and the resulting change of the gap will attribute it to types of reconstruction error.
-The harm of each error will be related to two predictors: its magnitude in the image or geometry, and the
-change it induces in the representation of a fixed reference model, e.g., a pretrained visual encoder, on
-held-out paired views. If harm follows error magnitude, this attribution will be reported as a result, and
-the third question will then use only reconstruction uncertainty and action sensitivity. As a separate
-claim, the training distribution will be shaped by randomizing appearance (colour and opacity of
-Gaussians), geometry and, where the representation allows relighting, lighting per region in proportion to
-its reconstruction uncertainty and task relevance, the latter estimated from the sensitivity of the
-model's actions to the region, e.g., by occluding it. This will be compared with uniform randomization,
-randomization fitted to real rollouts [4] and entropy-maximizing randomization [5].
+For manipulation, twins will be built from real camera frames of public robot datasets, such as BridgeData
+V2 and Open X-Embodiment, and from own phone captures of tabletop scenes, following the visual matching of
+SIMPLER [14], in which real backgrounds are combined with simulated objects whose textures are matched to
+real images. SIMPLER reports paired simulated and real-robot evaluations of the same policies on the Google
+Robot and WidowX (BridgeData V2) setups. These published real results will serve as the real reference for
+the gap of those policies, and real frames of the datasets for open-loop evaluation, as in navigation. Since
+published real results cover only released policies, models trained in this research will also be evaluated
+closed-loop in a simulation whose visual and physical parameters are hidden from the learner, which also
+allows controlled studies of physical parameters.
 
-For the second question, probes, i.e., simple classifiers, will be trained at each layer on simulated
-hidden states to decode task variables, such as the direction and distance to the goal or the presence of
-obstacles, and tested on the paired real views. The first stage at which task information decodable in
-simulation can no longer be decoded from real inputs will localize the gap. Unlike the separability of the
-two domains, which can remain high even in models that transfer well [9], this criterion refers to the
-task. An alignment loss (e.g., distribution-discrepancy or contrastive) will then be applied at that stage
-to a few paired simulated and real views at the same camera poses, and compared with alignment at the
-input, domain-adversarial alignment of the final features [6], alignment at all layers and full
-fine-tuning.
+For the first question, variants of the digital twin will be built in which one component of a region, i.e.,
+its appearance, geometry or lighting, is replaced by its counterpart from a more accurate reference (the
+independent capture in navigation, the real images in manipulation), and the resulting change of the gap
+will attribute it to types of reconstruction error. The harm of each error will be related to two
+predictors: its magnitude in the image or geometry, and the change it induces in the representation of a
+fixed reference model on held-out paired views. If harm follows error magnitude, this attribution will be
+reported as a result, and the third question will then use only reconstruction uncertainty and action
+sensitivity. As a separate claim, the training distribution will be shaped by randomizing appearance,
+geometry and, where possible, lighting per region in proportion to its reconstruction uncertainty and task
+relevance, the latter estimated from the sensitivity of the model's actions to the region, e.g., by
+occluding it. This will be compared with uniform randomization, randomization fitted to real rollouts [4]
+and entropy-maximizing randomization [5].
 
-For the third question, the budget will count all real data: unlabelled real images as well as
-interaction data, such as robot trials or demonstrations. On the dataset-based proxy, a unit of
-interaction data will be an expert or policy episode executed in the reference simulation, paired with
-the real frames at the visited poses; on the physical robot, a real trial or demonstration. Real data will
-be selected by scores combining reconstruction uncertainty, the distance between representations of
-simulated and real views, and the sensitivity of the predicted action. The same selected data will be used
-to refine the digital twin, by re-optimizing the reconstruction in uncertain regions, and to adapt the
-model, by fine-tuning or co-training on simulated and real data. This will be compared with random and
-failure-driven selection [22], with the same score without task relevance, and with correcting only the
-model or only the digital twin, at equal real-data budgets. Data used for final evaluation will be disjoint
-from those available for selection.
+For the second question, probes, i.e., simple classifiers, will be trained at each layer on simulated hidden
+states to decode task variables, such as the direction and distance to the goal in navigation or the
+position of the target object in manipulation, and tested on the paired real views. The first stage at which
+task information decodable in simulation can no longer be decoded from real inputs will localize the gap.
+Unlike domain separability, which can remain high even in models that transfer well [9], this criterion
+refers to the task. An alignment loss (e.g., distribution-discrepancy or contrastive) will then be applied
+at that stage to a few paired simulated and real views, and compared with alignment at the input, domain-
+adversarial alignment of the final features [6], alignment at all layers and fine-tuning.
 
-For the fourth question, the methods will be applied with unchanged settings to many held-out navigation
-scenes. The attribution and localization measured in each scene before a method is applied will be related
-to the size of the improvement there, e.g., by rank correlation, and compared with simple predictors: the
-raw size of the gap and the image-level discrepancy between simulated and real views. The relation will
-then be confirmed on tabletop manipulation in a controlled sim-to-sim setting, e.g., in ManiSkill3, in
-which a simulation whose visual and physical parameters are hidden from the learner stands in for reality.
+For the third question, the budget will count all real data: unlabelled real images as well as interaction
+data. A unit of interaction data will be, on the navigation proxy, an episode executed in the reference
+simulation, paired with the real frames at the visited poses; in manipulation, a recorded real
+demonstration; on a physical robot, a real trial. Real data will be selected by scores combining
+reconstruction uncertainty, sim-real representation distance and action sensitivity. The same data will be
+used to refine the digital twin, by re-optimizing the reconstruction in uncertain regions, and to adapt the
+model, by fine-tuning or co-training. This will be compared with random and failure-driven selection [13],
+with the same score without task relevance, and with correcting only the model or only the twin, at equal
+real-data budgets.
 
-The quantitative evaluation will rely on standard metrics for embodied tasks, such as success rate and
-success weighted by path length (SPL), and on the sim-to-real gap, defined at two levels: on the
-dataset-based proxy, as the difference between the performance in the digital twin and in the reference
-simulation, complemented by the open-loop measures on real frames; and on the physical robot, as the
-difference between the closed-loop performance in simulation and in reality. The agreement between the two
-levels will be reported as a result, e.g., by the rank correlation of model scores. All methods will be
-compared with baselines under equal training effort and an equal amount of real data. Statistical methods
-will be leveraged to provide reliable outcomes, including repeated experiments with different random seeds
-and scenes, confidence intervals, and statistical tests for comparisons with baseline methods. According
-to accepted standards, the data used for training, model selection and final evaluation will be kept
-separate.
+For the fourth question, the methods will be applied with unchanged settings to many held-out scenes of both
+tasks, and each improvement found in one task will be applied to the other. The attribution and localization
+measured before a method is applied will be related to the size of the improvement, e.g., by rank
+correlation across the scenes of both tasks, and compared with simple predictors: the raw size of the gap
+and the image-level discrepancy between simulated and real views.
 
-The navigation results will be validated in one block in semesters 6-7 on a wheeled mobile robot with an
-RGB-D camera, in cooperation with a robotics laboratory of the university. The validation will measure
-closed-loop success rate and SPL in reality and provide the main evidence for differences in actuation and
-sensors. Should robot access be limited, the conclusions will rest on the dataset-based proxy and a
-reduced set of real trials.
+The evaluation will use success rate, in navigation also weighted by path length (SPL), and the sim-to-real
+gap: on the navigation proxy, the difference between the performance in the twin and in the reference
+simulation; in manipulation, between the twin and the published real results of the same policies, or the
+hidden-parameter simulation for new models; and on a physical robot, between simulation and reality, all
+complemented by open-loop measures on real frames; their agreement will be reported as a result. Methods
+will be compared with baselines under equal training effort and real data, over repeated seeds and scenes,
+with confidence intervals and statistical tests. Data for training, model selection, real-data selection and
+final evaluation will be kept separate.
 
-Experiments will be implemented mainly in Python with the PyTorch deep learning library. Code, datasets,
-configurations and results will be versioned with Git and experiment tracking tools for reproducibility. Scene reconstruction and policy
-training will run on GPU clusters of the Department and on the Polish computing infrastructure (WCSS and
-PLGrid). Code and data will be made publicly available whenever possible, following open science
-standards and respecting the licences of the datasets used.
+The results will be validated in one block in semesters 6-7 on a wheeled mobile robot with an RGB-D camera
+and, if access allows, on a robot arm, in cooperation with a robotics laboratory of the university. This
+will provide the main evidence for differences in actuation and sensors. Should robot access be limited, the
+conclusions will rest on the proxies, the published real results and fewer real trials.
 
-The findings will be published at leading international machine learning, computer vision and robotics
-conferences, such as NeurIPS, ICML, ICLR, CVPR and RSS, and in journals from the ministerial list. Results
-will also be presented at smaller conferences and workshops, such as MLinPL, and at summer schools.
+Experiments will be implemented in Python with PyTorch, tracked with Git and experiment tracking tools, and
+run on GPU clusters of the Department, WCSS and PLGrid. Code and data will be released whenever the dataset
+licences allow. The findings will be published at conferences such as NeurIPS, ICML, ICLR, CVPR and RSS, in
+journals from the ministerial list, and presented at workshops such as MLinPL.
 
+<!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §9: task-agnostic methods on two equal tasks sharing reconstruction tools; navigation pipeline (Habitat, ScanNet++/MuSHRoom proxy = reconstruction-fidelity gap) kept; new manipulation pipeline: twins from real frames of public robot datasets (BridgeData V2, Open X-Embodiment; described only as far as their arXiv abstracts, verified today: 2308.12952, 2310.08864) and own phone captures, SIMPLER visual matching [14], published paired real results of the same policies (Google Robot and WidowX/BridgeData V2 setups, checked in arXiv:2405.05941) as the real reference; honest limitation: published results cover only released policies, so new models are also evaluated closed-loop in a hidden-parameter simulator (e.g. ManiSkill3, arXiv:2410.00425 verified), which also serves controlled physics studies. RQ1 reference per task; RQ2 task variables per task; RQ3 interaction unit per task; RQ4 across held-out scenes of both tasks and between tasks; gap levels per task; validation on the mobile robot and optionally an arm (sem. 6-7). Trimmed for the 2-page limit: metrics/statistics, tooling and dissemination paragraphs merged; per-Gaussian randomization detail removed. TwinRL citation [22] -> [13]. -->
 <!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §9 (fixes 1-7): bound = motivation; navigation pipeline only (Habitat); manipulation only in the RQ4 paragraph as a sim-to-sim confirmation in ManiSkill3 with hidden visual/physical parameters; reference simulation measures the reconstruction-fidelity gap, robot = main evidence for actuation/sensor differences, proxy-robot agreement reported as a result; open-loop and closed-loop glossed; RQ1 component replacement, reference-model predictor, fallback, per-region randomization as a separate claim; RQ2 task-decodability probes (task variables), alignment compared with input, final features [6], all layers, full fine-tuning; RQ3 budget counts unlabelled images, same data corrects twin and model, baselines random and failure-driven [22], model-only/twin-only; ASID removed from §9 (manipulation no longer in RQ3); RQ4 vs raw gap size and image-level discrepancy; robot validation one block sem. 6-7. Citations renumbered to the new §6 list ([4], [5], [6], [9], [22]). Trims for the 2-page limit: cooperation-with-PhD-students sentence, representation-similarity sentence, promotion sentence shortened, tooling/compute sentences merged. -->
 <!-- Final check (2026-09-27): added the note that bracketed numbers in §9 refer to the §6 reference list; Kachaev et al. AAMAS 2026 venue verified on OpenAlex (doi:10.65109/pper9186). -->
 <!-- Review-6 (2026-09-27): two evaluation levels (dataset proxy: open-loop on real frames + reference simulation from the independent higher-fidelity capture; closed-loop on the real mobile robot), gap defined per level; per-region reconstruction uncertainty (view coverage, ensemble disagreement); RQ3 procedure (budget = interaction data, selection scores, dual correction, comparisons at equal real data); manipulation = controlled proxy (hidden visual and physical parameters), no real-arm promise; wording fixes; international dissemination and foreign co-authorship. -->

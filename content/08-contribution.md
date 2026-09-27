@@ -11,8 +11,8 @@ the model from the same small set of real data. Addressing them there is expecte
 generalization than uniform randomization, alignment at a fixed location of the model, or real data chosen
 at random or at the model's failures. Research questions 1-3 test the three parts of this claim, and
 question 4 tests whether it holds across environments and tasks; the methods derived from it are intended
-to be general, i.e., not tied to a particular robot, scene or task, and will be examined mainly on robot
-navigation, with robotic manipulation as a controlled confirmation test.
+to be general, i.e., not tied to a particular robot, scene or task, and will be examined on two equal
+physical AI tasks, robot navigation and robotic manipulation.
 
 Furthermore, the research is expected to deliver new methods and findings that do not exist at present:
 an attribution of the sim-to-real gap to reconstruction errors that vary across a scene, with a principle
@@ -21,7 +21,7 @@ relevance; a method for localizing the gap as the first stage of a deep model at
 lost on real inputs, and for aligning representations only there; a rule for selecting real data that
 corrects the digital twin and the model at the same time; and an empirical account of whether properties
 of the shift, measured before a method is applied, predict better than simple indicators when these
-improvements carry over across environments and tasks. Such knowledge could complement the currently
+improvements carry over across environments and from one task to another. Such knowledge could complement the currently
 dominant randomization heuristics with more principled and interpretable approaches, and could introduce
 new perspectives for the design of simulations and of training procedures.
 
@@ -39,6 +39,7 @@ purely scientific results, the methods could be used in real-world applications 
 logistics and inspection robotics, as well as in other domains where models are trained in simulation,
 e.g., autonomous driving.
 
+<!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §8: methods examined on two equal tasks (navigation and manipulation) instead of "mainly navigation, manipulation as a controlled confirmation test"; RQ4 contribution "across environments and from one task to another". -->
 <!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §8: terms (digital twin, sim-to-real gap); central claim and contribution list aligned with the narrowed RQ1-RQ4 (errors varying across a scene, task-information localization, correcting both from the same data, prediction beyond simple indicators); manipulation = controlled confirmation test (fix 1). -->
 <!-- Review-6 (2026-09-27): central scientific problem and single central claim added to paragraph 1, RQs presented as parts of it; "dominant", "a few", "logistics", "PhD". -->
 <!-- Wave 20 (ultracode), 2026-09-27: visible text rewritten from scratch in the Binkowski §8 register; contributions mapped to the final RQ1-RQ4 (components of the discrepancy, localization of the gap and task-relevant invariance, budgeted real-data selection correcting model and simulation, generality across environments and tasks); relevance to distribution shift, representation learning, active learning and foundation-model adaptation; code release; applications. No numbers, no model names. -->

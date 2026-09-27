@@ -28,19 +28,22 @@ real-to-sim-to-real transfer at the points of the loop where the sim-to-real gap
 focus on understanding which reconstruction errors of a digital twin are harmful to generalization, on
 localizing where inside a model the gap arises and reducing it there, on choosing the small amount of real
 data that corrects both the digital twin and the model most efficiently, and on verifying whether the
-obtained improvements carry over to unseen environments and to another physical task, and which
-properties of the shift explain when they do. Robot navigation shall serve as the main task, and robotic
-manipulation, in a controlled simulated setting, as a confirmation test. Most experiments shall use public
-recordings of real scenes, in which a second, independent capture measures the reconstruction-fidelity
-gap, while a real robot shall provide the main evidence for differences in actuation and sensors. Beyond
-more reliable models, the research could help explain why models trained on synthetic data succeed or
-fail on real data, which is relevant to machine learning in general.
+obtained improvements carry over to unseen environments and from one physical task to another, and which
+properties of the shift explain when they do. The methods shall not be tied to a particular task, and robot
+navigation and robotic manipulation shall serve as two equal testbeds. For navigation, public recordings
+of real scenes, in which a second, independent capture measures the reconstruction-fidelity gap, shall be
+complemented by a real robot, which provides the main evidence for differences in actuation and sensors.
+For manipulation, digital twins of real tabletop scenes shall be built from images of public robot
+datasets and compared with published real-robot results of the same policies. Beyond more reliable
+models, the research could help explain why models trained on synthetic data succeed or fail on real
+data, which is relevant to machine learning in general.
 
 The results have potential applications in service, logistics and assistive robotics, where a robot could
 be trained in a digital copy of a new warehouse, hospital or home and operate there reliably after little
 real-world adaptation. More broadly, they concern any domain in which models are trained on simulated or
 reconstructed data and deployed on real sensor data, such as autonomous driving or inspection robots.
 
+<!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §5: navigation and manipulation are two equal testbeds for task-agnostic methods; RQ4 wording "from one physical task to another"; proxy honesty kept for navigation (independent capture = reconstruction-fidelity gap, robot = actuation and sensors); manipulation = twins of real tabletop scenes from public robot dataset images, compared with published real-robot results of the same policies. No model/checkpoint names. -->
 <!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §5: terms defined once here ('digital twins, i.e., simulations built from real data'; 'the sim-to-real gap' = the drop in performance) and used consistently in §5-§9 (fix 9); navigation = main task, manipulation = controlled simulated confirmation test (fix 1); one proxy-honesty sentence: the independent capture measures the reconstruction-fidelity gap, the robot is the main evidence for actuation and sensor differences (fix 2); 'chosen at random, by hand or by simple heuristics such as observed failures' shortened. -->
 <!-- Review-6 (2026-09-27): grammar (data plural, "such models", present perfect, "aims to improve", "small amount of real data", "logistics"); Physical AI = AI in robots...; DR limitation aligned with §6 ("even when fitted to real data, varies a few global parameters"); run-on sentence split. -->
 <!--

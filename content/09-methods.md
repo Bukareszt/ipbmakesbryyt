@@ -2,33 +2,33 @@
 
 The research will follow the methods commonly adopted in machine learning and robot learning projects. Since
 no established theory guarantees generalization from simulation to reality, the dominant part of the work
-will be empirical. Domain adaptation theory, which relates the error of a model in reality to its error in
-simulation and to the discrepancy between the two, will serve as motivation, and the properties of the
+will be empirical. Domain adaptation theory relates the error of a model in reality to its error in
+simulation and to the discrepancy between the two. It is used as motivation, and the properties of the
 proposed methods will be analysed theoretically whenever possible.
 
 The methods will be examined on two physical AI tasks, robot navigation and robotic manipulation, which share
 the reconstruction tools. Digital twins will be built from real images with neural scene reconstruction, e.g.,
 3D Gaussian Splatting, and coupled with simulators for navigation (e.g., Habitat) and manipulation (e.g.,
-ManiSkill3), in which models mapping camera images to actions will be trained or fine-tuned, where possible
-starting from pretrained models.
+ManiSkill3). Models that map camera images to actions will be trained or fine-tuned in these simulators,
+starting from pretrained models where possible.
 
-Since the research does not rely on an own robot, the evaluation will use public data. For navigation, public
-datasets of real indoor scenes with independent captures of the same scenes (e.g., ScanNet++) will be used:
-the twin will be built from one capture, and the other will provide real frames and a dataset-based reference
-simulation. This reference measures the gap caused by reconstruction fidelity, not differences in actuation
-and sensors. For manipulation, twins of real tabletop scenes will be built from images of public robot
-datasets, following the visual matching of SIMPLER [14], and compared with published real-robot results of
-the same policies; new models will additionally be evaluated in simulations whose parameters are hidden from
-the learner.
+The research does not rely on a robot of its own, so the evaluation will use public data. For navigation, it
+will use public datasets of real indoor scenes with independent captures of the same scenes (e.g., ScanNet++).
+The twin will be built from one capture, and the other will provide real frames and a dataset-based reference
+simulation. This reference isolates the gap caused by reconstruction fidelity and leaves out differences in
+actuation and sensors. For manipulation, twins of real tabletop scenes will be built from images of public
+robot datasets, following the visual matching of SIMPLER [14], and compared with published real-robot results
+of the same policies. New models will also be evaluated in simulations whose parameters are hidden from the
+learner.
 
-For the first research question, variants of the twin in which one type of reconstruction error is corrected
-will be examined to attribute the gap to types of error, and randomization guided by reconstruction
-uncertainty and task relevance will be studied. For the second question, simple probes on the hidden states
-of models will be used to examine at which stage task information decodable in simulation is lost on real
-inputs, and alignment at that stage will be compared with alternatives. For the third question, ways of
-selecting a small amount of real data used to correct both the twin and the model will be examined. For the
-fourth question, the methods will be applied to held-out scenes of both tasks, and it will be examined whether
-the measured attribution and localization predict the improvement better than simple predictors.
+For the first research question, the research will examine variants of the twin in which one type of
+reconstruction error is corrected, to attribute the gap to types of error, and will study randomization
+guided by reconstruction uncertainty and task relevance. For the second question, simple probes on the
+hidden states of models will show at which stage task information decodable in simulation is lost on real
+inputs, and alignment at that stage will be compared with alternatives. The third question concerns ways of
+selecting a small amount of real data used to correct both the twin and the model. For the fourth question,
+the methods will be applied to held-out scenes of both tasks to check whether the measured attribution and
+localization predict the improvement better than simple predictors.
 
 The evaluation will rely on standard metrics, such as success rate, and on the sim-to-real gap, measured on
 held-out scenes in both tasks and complemented where possible by open-loop measures on real frames. Methods
@@ -43,6 +43,7 @@ clusters of the Department, WCSS and PLGrid. Code and data will be released when
 following open science standards. The findings will be published at leading conferences from the ministerial
 list, such as NeurIPS, ICML, ICLR, CVPR and RSS, and presented at smaller venues such as MLinPL.
 
+<!-- Wave 24: humanized (2026-09-27, humanizer skill, voice of the accepted Binkowski and ipb4 §9). Visible §9 only: "will serve as motivation" -> "is used as motivation" (bound sentence split); long passive chain on training in the simulators split and made active; "Since the research does not rely on an own robot" -> "does not rely on a robot of its own, so"; not-X-but-Y "reconstruction fidelity, not differences in actuation and sensors" -> "isolates ... and leaves out ..."; RQ paragraph passive chains given the research as actor. No claim, term or citation changed. -->
 <!-- Wave 23: trimmed to reference length (2026-09-27, student decision: avoid over-promising; register of the accepted Binkowski and ipb4 §9, ~370-450 words). Visible §9 cut from ~1275 to ~600 words: general empirical ML methodology with theory where possible; twins from real data with neural reconstruction in navigation and manipulation simulators (Habitat, ManiSkill3 as e.g. only); evaluation without an own robot (navigation: independent captures of public datasets, dataset-based reference = reconstruction-fidelity gap; manipulation: SIMPLER-style twins of real tabletop scenes vs published real-robot results [14]); one sentence per RQ; metrics, statistics, ablations; real-robot validation only "if access allows" (semester and robot type dropped); tools, compute, open code; dissemination. Removed: per-RQ baselines and citations [4], [5], [6], [9], [13], real-data units, SPL, BridgeData V2 / Open X-Embodiment / MuSHRoom names, phone captures, uncertainty-estimation detail, rank correlation, the "numbers in brackets" note. -->
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §9: task-agnostic methods on two equal tasks sharing reconstruction tools; navigation pipeline (Habitat, ScanNet++/MuSHRoom proxy = reconstruction-fidelity gap) kept; new manipulation pipeline: twins from real frames of public robot datasets (BridgeData V2, Open X-Embodiment; described only as far as their arXiv abstracts, verified today: 2308.12952, 2310.08864) and own phone captures, SIMPLER visual matching [14], published paired real results of the same policies (Google Robot and WidowX/BridgeData V2 setups, checked in arXiv:2405.05941) as the real reference; honest limitation: published results cover only released policies, so new models are also evaluated closed-loop in a hidden-parameter simulator (e.g. ManiSkill3, arXiv:2410.00425 verified), which also serves controlled physics studies. RQ1 reference per task; RQ2 task variables per task; RQ3 interaction unit per task; RQ4 across held-out scenes of both tasks and between tasks; gap levels per task; validation on the mobile robot and optionally an arm (sem. 6-7). Trimmed for the 2-page limit: metrics/statistics, tooling and dissemination paragraphs merged; per-Gaussian randomization detail removed. TwinRL citation [22] -> [13]. -->
 <!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §9 (fixes 1-7): bound = motivation; navigation pipeline only (Habitat); manipulation only in the RQ4 paragraph as a sim-to-sim confirmation in ManiSkill3 with hidden visual/physical parameters; reference simulation measures the reconstruction-fidelity gap, robot = main evidence for actuation/sensor differences, proxy-robot agreement reported as a result; open-loop and closed-loop glossed; RQ1 component replacement, reference-model predictor, fallback, per-region randomization as a separate claim; RQ2 task-decodability probes (task variables), alignment compared with input, final features [6], all layers, full fine-tuning; RQ3 budget counts unlabelled images, same data corrects twin and model, baselines random and failure-driven [22], model-only/twin-only; ASID removed from §9 (manipulation no longer in RQ3); RQ4 vs raw gap size and image-level discrepancy; robot validation one block sem. 6-7. Citations renumbered to the new §6 list ([4], [5], [6], [9], [22]). Trims for the 2-page limit: cooperation-with-PhD-students sentence, representation-similarity sentence, promotion sentence shortened, tooling/compute sentences merged. -->

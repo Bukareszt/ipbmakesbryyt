@@ -4,18 +4,18 @@ The proposed PhD dissertation aims to contribute to the development of the scien
 addressing the generalization of deep learning models trained in simulations built from real data, which
 remains one of the main obstacles to applying machine learning in physical AI. The working assumption of
 the dissertation is that the sim-to-real gap is caused mainly by a limited set of task-relevant
-discrepancies, which may be identified among the reconstruction errors of a digital twin, localized inside
+discrepancies. These may be identified among the reconstruction errors of a digital twin, localized inside
 the model, and reduced with a small amount of well-chosen real data. The methods are intended to be
-general, i.e., not tied to a particular robot, scene or task, and are planned to be examined on robot
-navigation and robotic manipulation.
+general, i.e., not tied to a particular robot, scene or task, and will be examined on robot navigation and
+robotic manipulation.
 
 First, the research is intended to provide a better understanding of which reconstruction errors of a
-digital twin harm generalization, and a method for varying the twin accordingly instead of uniformly.
-Second, it aims to develop a way of finding where inside a deep model the sim-to-real gap arises and of
-reducing it at that stage. Third, it aims to propose a rule for selecting a small amount of real data that
-corrects both the digital twin and the model. Finally, it will examine when such improvements carry over
-to unseen environments and between tasks. Such knowledge could complement the currently dominant
-randomization heuristics with more principled and interpretable approaches.
+digital twin harm generalization, together with a method that varies the twin accordingly rather than
+uniformly. Second, it aims to develop a way of finding where inside a deep model the sim-to-real gap
+arises and of reducing it at that stage. Third, it aims to propose a rule for selecting a small amount of
+real data that corrects both the digital twin and the model. Finally, it will examine when such
+improvements carry over to unseen environments and between tasks. This knowledge could complement the
+currently dominant randomization heuristics with more principled and interpretable approaches.
 
 Since transfer from simulation to reality is an instance of learning under distribution shift, the
 findings may also be relevant to machine learning in general, in particular to domain adaptation,
@@ -24,6 +24,7 @@ reduce the cost of deploying learning-based robots in new environments, e.g., in
 inspection robotics. The source code is planned to be released, which could facilitate further research
 in the field.
 
+<!-- Wave 24: humanized -->
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §8: methods examined on two equal tasks (navigation and manipulation) instead of "mainly navigation, manipulation as a controlled confirmation test"; RQ4 contribution "across environments and from one task to another". -->
 <!-- Wave 21: validation fixes (2026-09-27, research/validation-v8.md, approved by the student). §8: terms (digital twin, sim-to-real gap); central claim and contribution list aligned with the narrowed RQ1-RQ4 (errors varying across a scene, task-information localization, correcting both from the same data, prediction beyond simple indicators); manipulation = controlled confirmation test (fix 1). -->
 <!-- Review-6 (2026-09-27): central scientific problem and single central claim added to paragraph 1, RQs presented as parts of it; "dominant", "a few", "logistics", "PhD". -->

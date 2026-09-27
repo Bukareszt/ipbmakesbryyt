@@ -1,79 +1,62 @@
 # §6 Zarys aktualnego stanu badań / State of the art (max 2 pages)
 
-Deep reinforcement and imitation learning made it possible to train robots for complex tasks such as
-visual navigation and manipulation. Since such methods require very large amounts of experience,
-simulation became the standard training environment. Platforms such as Habitat [1] and ManiSkill3 [2]
-allow training at the scale of billions of steps, and in simulation point-goal navigation has been
-practically solved [3]. However, the performance of models in simulation does not always predict their
-performance in the real world [4], and the transfer of models from simulation to reality, known as the
-sim-to-real problem, remains one of the central challenges of robot learning [5, 6].
+Deep learning models for navigation and manipulation need more experience than real robots can provide, so they are usually trained in simulation. However, performance in simulation can be an unreliable predictor of real-world performance unless the simulator is carefully tuned [1], and higher fidelity alone does not ensure better transfer [2]. This is an instance of learning under distribution shift: domain adaptation theory bounds the error of a model on the target domain by its error on the source domain and the discrepancy between the two distributions [3]. This suggests two levers: a training distribution that covers reality, and a model insensitive to the remaining discrepancy.
 
-The most common approach to the sim-to-real problem is domain randomization, which varies the appearance
-[7] or the dynamics [8] of the simulation so that reality appears as one more variation. Other works adapt
-the parameters of the simulator to a few real-world rollouts [9]. Interestingly, the fidelity of the
-simulator alone does not guarantee better transfer, as lower-fidelity simulation can transfer better in
-navigation [10]. From the machine learning perspective, the sim-to-real problem is an instance of learning
-under distribution shift. Domain adaptation theory bounds the error on the target domain by the error on
-the source domain and a discrepancy between the two domains [11], and domain-adversarial training learns
-representations that are invariant across domains [12]. Nevertheless, such principled approaches are
-rarely applied to models trained in simulation for physical tasks, where randomization heuristics dominate.
+The first lever is exploited by domain randomization, which varies simulator parameters such as textures so that reality appears as one more variation [4]. Since overly wide randomization leads to conservative behaviour, later works shape its distribution: they fit it to a few real rollouts [5], infer a posterior over simulator parameters [6], or maximize its entropy while preserving task success [7]. Yet they act on a few global parameters of a synthetic simulator, not on errors that vary across a scene.
 
-A major recent development is the construction of simulations directly from real data. Neural Radiance
-Fields [13] and 3D Gaussian Splatting [14] reconstruct photorealistic 3D scenes from ordinary images, and
-datasets such as ScanNet++ [15] provide real indoor scenes captured both with high-end and consumer
-devices. Such digital twins have been used to train navigation models from a phone capture of a room [16]
-or from monocular videos of urban scenes [17], and robotic manipulation policies from a scan of the target
-scene [18], showing that real-to-sim-to-real learning improves real-world performance in comparison with
-generic simulators. The physical parameters of a digital twin can be estimated from a small amount of
-real data [19]. However, these works treat the digital twin mostly as a fixed, as-accurate-as-possible copy
-of reality. It is not known which properties of a twin (appearance, geometry, lighting or physics) actually
-determine the generalization of the trained models, and the twins are randomized uniformly rather than
-according to where they are uncertain or where it matters for the task. Moreover, the evaluation is
-usually limited to a handful of scenes and a single task.
+The second lever is invariance. Domain-adversarial training aligns features across domains [8]. In robotics, randomized and real images were mapped to a canonical image [9], and aligning the joint distributions of observations and actions in simulated and real data improved co-trained policies in reality [10]. However, invariance with low source error does not guarantee transfer [11], and full invariance may discard task information. Moreover, it is usually enforced at a fixed location, the input or final features.
 
-In parallel, pretrained foundation models changed how robot policies are built. General navigation models
-trained on data from many robots [20, 21] and vision-language-action models [22] transfer to new robots
-and environments, and self-supervised visual encoders [23] provide representations that are robust to
-many appearance changes. Learned world models predict future observations and can be used for planning
-in navigation [24]. These models are a promising basis for generalization, but it has not been studied
-how their representations behave under the specific shift between a digital twin and reality, and how
-they should be trained in a twin so that this shift does not harm their performance. Finally, adapting
-a model trained in simulation to reality usually relies on real data collected at random or by hand, and
-on co-training with simulated data [25], without selecting the real data that is most informative about
-the remaining gap.
+A recent development is building simulations from real data. 3D Gaussian Splatting [12] reconstructs photorealistic scenes from ordinary images, and digital twins built from real data have been used to train manipulation policies from a scan of the target scene [13] and navigation policies from a phone capture of a room [14]. In twins, uncertainty has so far been modelled mainly for physical parameters [15]; beyond this, a twin is typically treated as a fixed copy of reality. It is unknown which of its errors, in appearance, geometry, lighting or physics, harm generalization, and existing training variation ignores how uncertain the reconstruction is in each region.
 
-In summary, the literature shows that real-to-sim-to-real learning is effective, but the generalization
-of the trained models to reality, to unseen scenes and to other tasks is still limited and poorly
-understood. The proposed dissertation addresses this gap by studying the generalization of deep learning
-models at each stage of the real-to-sim-to-real loop.
+It is also unclear where inside a model the gap arises. Self-supervised features are robust to many appearance changes [16], yet no representation dominates across navigation, manipulation and locomotion [17], and manipulation encoders degrade under lighting and texture shifts [18]. Probing showed that action fine-tuning degrades the visual representations of robot policies [19], and the best layers to adapt depend on the type of shift [20], but neither localizes the gap in models trained in reconstructed simulations.
+
+The remaining gap is usually reduced with little real data. Co-training with a small real set yields large gains [21], and active system identification collects the real trajectories most informative about physics [22]. In vision, selecting images to label by domain discrepancy and uncertainty beats random selection [23]. The closest work uses a twin to find failure-prone configurations for real rollouts [24]. However, robotic methods correct either the model or the simulation and choose real data at random, by hand, at the model's failures, or by their informativeness about physical parameters; to the best of our knowledge, none uses the reconstruction uncertainty of a simulation built from real data, or the same data to correct both.
+
+Finally, generalization to unseen scenes depends on training-scene diversity [25], and the gap can be decomposed into factors of variation whose difficulty ordering is largely consistent between simulation and reality [26]. However, it is rarely studied whether a sim-to-real method keeps its benefit when the scene or the task changes.
+
+In summary, it is open which simulation errors govern generalization, where inside a model the gap arises, which real data best correct model and simulation, and when improvements hold in new environments and tasks; these gaps motivate the questions in Section 7.
 
 ### References
-[1] Savva, M., Kadian, A., Maksymets, O., et al. (2019). Habitat: A platform for embodied AI research. ICCV.
-[2] Tao, S., et al. (2025). ManiSkill3: GPU parallelized robotics simulation and rendering for generalizable embodied AI. RSS.
-[3] Wijmans, E., et al. (2020). DD-PPO: Learning near-perfect PointGoal navigators from 2.5 billion frames. ICLR.
-[4] Kadian, A., et al. (2020). Sim2Real predictivity: Does evaluation in simulation predict real-world performance? IEEE Robotics and Automation Letters, 5(4).
-[5] Zhao, W., Queralta, J. P., & Westerlund, T. (2020). Sim-to-real transfer in deep reinforcement learning for robotics: a survey. IEEE SSCI.
-[6] Höfer, S., et al. (2021). Sim2Real in robotics and automation: Applications and challenges. IEEE Transactions on Automation Science and Engineering, 18(2).
-[7] Tobin, J., et al. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. IROS.
-[8] Peng, X. B., Andrychowicz, M., Zaremba, W., & Abbeel, P. (2018). Sim-to-real transfer of robotic control with dynamics randomization. ICRA.
-[9] Chebotar, Y., et al. (2019). Closing the sim-to-real loop: Adapting simulation randomization with real world experience. ICRA.
-[10] Truong, J., et al. (2022). Rethinking sim2real: Lower fidelity simulation leads to higher sim2real transfer in navigation. CoRL.
-[11] Ben-David, S., et al. (2010). A theory of learning from different domains. Machine Learning, 79.
-[12] Ganin, Y., et al. (2016). Domain-adversarial training of neural networks. Journal of Machine Learning Research, 17.
-[13] Mildenhall, B., et al. (2020). NeRF: Representing scenes as neural radiance fields for view synthesis. ECCV.
-[14] Kerbl, B., Kopanas, G., Leimkühler, T., & Drettakis, G. (2023). 3D Gaussian splatting for real-time radiance field rendering. ACM Transactions on Graphics, 42(4).
-[15] Yeshwanth, C., Liu, Y.-C., Nießner, M., & Dai, A. (2023). ScanNet++: A high-fidelity dataset of 3D indoor scenes. ICCV.
-[16] Chhablani, G., et al. (2025). EmbodiedSplat. ICCV. arXiv:2509.17430.
-[17] Xie, Z., et al. (2025). Vid2Sim: Realistic and interactive simulation from video for urban navigation. CVPR.
-[18] Torne, M., et al. (2024). Reconciling reality through simulation: A real-to-sim-to-real approach for robust manipulation. RSS.
-[19] Ramos, F., Possas, R., & Fox, D. (2019). BayesSim: Adaptive domain randomization via probabilistic inference for robotics simulators. RSS.
-[20] Shah, D., et al. (2023). GNM: A general navigation model to drive any robot. ICRA.
-[21] Shah, D., et al. (2023). ViNT: A foundation model for visual navigation. CoRL.
-[22] Kim, M. J., et al. (2024). OpenVLA: An open-source vision-language-action model. CoRL.
-[23] Oquab, M., et al. (2024). DINOv2: Learning robust visual features without supervision. TMLR.
-[24] Bar, A., et al. (2025). Navigation world models. CVPR.
-[25] Maddukuri, A., et al. (2025). Sim-and-real co-training: A simple recipe for vision-based robotic manipulation. RSS.
+[1] Kadian, A., et al. (2020). Sim2Real predictivity: Does evaluation in simulation predict real-world performance? RA-L.
+[2] Truong, J., et al. (2022). Rethinking sim2real: Lower fidelity simulation leads to higher sim2real transfer in navigation. CoRL.
+[3] Ben-David, S., et al. (2010). A theory of learning from different domains. Machine Learning.
+[4] Tobin, J., et al. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. IROS.
+[5] Chebotar, Y., et al. (2019). Closing the sim-to-real loop: Adapting simulation randomization with real world experience. ICRA.
+[6] Ramos, F., et al. (2019). BayesSim: Adaptive domain randomization via probabilistic inference for robotics simulators. RSS.
+[7] Tiboni, G., et al. (2024). Domain randomization via entropy maximization. ICLR.
+[8] Ganin, Y., et al. (2016). Domain-adversarial training of neural networks. JMLR.
+[9] James, S., et al. (2019). Sim-to-real via sim-to-sim: Data-efficient robotic grasping via randomized-to-canonical adaptation networks. CVPR.
+[10] Cheng, S., et al. (2025). Generalizable domain adaptation for sim-and-real policy co-training. NeurIPS.
+[11] Zhao, H., et al. (2019). On learning invariant representations for domain adaptation. ICML.
+[12] Kerbl, B., et al. (2023). 3D Gaussian splatting for real-time radiance field rendering. ACM TOG.
+[13] Torne, M., et al. (2024). Reconciling reality through simulation: A real-to-sim-to-real approach for robust manipulation. RSS.
+[14] Chhablani, G., et al. (2025). EmbodiedSplat: Personalized real-to-sim-to-real navigation with Gaussian splats from a mobile device. ICCV.
+[15] Wang, M., et al. (2026). Phys2Real: Fusing VLM priors with interactive online adaptation for uncertainty-aware sim-to-real manipulation. ICRA.
+[16] Oquab, M., et al. (2024). DINOv2: Learning robust visual features without supervision. TMLR.
+[17] Majumdar, A., et al. (2023). Where are we in the search for an artificial visual cortex for embodied intelligence? NeurIPS.
+[18] Burns, K., et al. (2024). What makes pre-trained visual representations successful for robust manipulation? CoRL.
+[19] Kachaev, N., et al. (2026). Don't blind your VLA: Aligning visual representations for OOD generalization. AAMAS.
+[20] Lee, Y., et al. (2023). Surgical fine-tuning improves adaptation to distribution shifts. ICLR.
+[21] Maddukuri, A., et al. (2025). Sim-and-real co-training: A simple recipe for vision-based robotic manipulation. RSS.
+[22] Memmel, M., et al. (2024). ASID: Active exploration for system identification in robotic manipulation. ICLR.
+[23] Su, J.-C., et al. (2020). Active adversarial domain adaptation. WACV.
+[24] Xu, Q., et al. (2026). TwinRL: Digital twin-driven reinforcement learning for real-world robotic manipulation. arXiv:2602.09023.
+[25] Deitke, M., et al. (2022). ProcTHOR: Large-scale embodied AI using procedural generation. NeurIPS.
+[26] Xie, A., et al. (2024). Decomposing the generalization gap in imitation learning for visual robotic manipulation. ICRA.
 
+<!-- Review-6 (2026-09-27): [11] Zhao et al. ICML 2019 (PMLR 97:7523-7532, title plural, verified on proceedings.mlr.press/v97); [18] Burns et al. CoRL 2024 (PMLR 270:4525-4545, verified on proceedings.mlr.press/v270); new [20] Lee, Chen, Tajwar et al., Surgical fine-tuning improves adaptation to distribution shifts, ICLR 2023 (verified on OpenReview, ICLR 2023 poster; arXiv:2210.11466); old [20]-[25] renumbered [21]-[26]. RQ labels removed from summary; RQ3 wording aligned ("correcting both the model and the simulation"); small-real-data paragraph notes ASID-style selection and that robotic evidence is manipulation-only (research/litreview-rq3.md); wording fixes (overly wide, fixed location, outperforms). -->
+<!-- Wave 20 (ultracode), 2026-09-27: visible text rewritten from scratch in the narrative style of the
+Binkowski IPB §6, organized to lead to the final RQ1-RQ4 (content/07). 25 refs, all from
+research/litreview-rq1..rq4 and the earlier §6 lists; no model/checkpoint names in the prose. Re-checked
+today on the arXiv API: first authors and titles of Cheng 2509.18631 (NeurIPS 2025 per comment),
+EmbodiedSplat 2509.17430 (ICCV 2025), Phys2Real 2510.11689 (comment "Accepted to ... ICRA 2026"),
+Kachaev 2510.25616, Su 1904.07848 (WACV 2020 per comment), TwinRL 2602.09023, Tiboni 2311.01885 (ICLR
+2024), Xie 2307.03659, ProcTHOR 2206.06994. Zhao 2019 and Burns 2023: no venue confirmed by an API
+today, so cited as arXiv. Cut for the 2-page limit: Peng (dynamics DR), Active DR, Chen et al. 2022 (DR
+theory), SIMPLER, Alain & Bengio probes (arXiv:1610.01644, verified today). Dropped from the previous
+(v8) list: Habitat, ManiSkill3, DD-PPO, Zhao survey, Höfer, NeRF, ScanNet++, Vid2Sim, GNM, ViNT,
+OpenVLA, NWM.
+-->
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top)
 and the deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md). General
 real-to-sim-to-real (navigation main testbed, manipulation generalization test); the gap now says

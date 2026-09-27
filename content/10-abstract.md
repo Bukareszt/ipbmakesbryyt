@@ -2,35 +2,21 @@
 
 ## Streszczenie popularnonaukowe
 
-Sztuczna inteligencja coraz częściej wychodzi poza ekrany komputerów i trafia do robotów, które poruszają
-się po budynkach albo przenoszą przedmioty. Aby się tego nauczyć, roboty potrzebują ogromnej liczby
-przykładów, których zebranie w prawdziwym świecie jest powolne i kosztowne. Dlatego coraz częściej uczą się
-w symulacji, a w szczególności w cyfrowych bliźniakach, czyli wiernych wirtualnych kopiach prawdziwych
-miejsc, które można odtworzyć z krótkiego nagrania. Taka kopia nigdy nie jest jednak idealna i model, który
-w symulacji działa bardzo dobrze, w prawdziwym świecie często popełnia błędy, zwłaszcza w miejscach, których
-wcześniej nie widział. Celem rozprawy jest opracowanie metod, dzięki którym modele uczone w cyfrowych
-bliźniakach będą lepiej działać w rzeczywistości. Badania obejmą sprawdzenie, które cechy wirtualnej kopii
-są naprawdę ważne, nauczenie modeli pomijania różnic między kopią a rzeczywistością oraz dostosowanie
-modeli do rzeczywistości przy użyciu niewielu prawdziwych przykładów. Metody zostaną sprawdzone na
-nawigacji robotów mobilnych i na robotach przenoszących przedmioty. Oczekuje się, że pozwolą one w
-przyszłości szybciej i taniej uczyć roboty pracy w nowych miejscach, takich jak magazyny, szpitale czy
-biura.
+Sztuczna inteligencja coraz częściej wychodzi poza ekrany komputerów i trafia do systemów fizycznych, takich jak roboty poruszające się po budynkach lub przenoszące przedmioty. Modele uczenia głębokiego sterujące takimi robotami potrzebują ogromnej liczby przykładów, których zebranie w prawdziwym świecie jest powolne, kosztowne, a czasem niebezpieczne. Dlatego modele te uczy się zwykle w symulacji, a coraz częściej w cyfrowych bliźniakach, czyli wirtualnych kopiach rzeczywistych miejsc odtworzonych na podstawie ich nagrań. Taka kopia nigdy nie jest jednak idealna, a model, który dobrze działa w symulacji, w rzeczywistości często zawodzi, zwłaszcza w miejscach, których wcześniej nie widział, co pozostaje jedną z głównych przeszkód na drodze do szerszego zastosowania fizycznej sztucznej inteligencji. Celem rozprawy jest poprawa zdolności generalizacji modeli uczenia głębokiego trenowanych w symulacjach zbudowanych na podstawie danych rzeczywistych, czyli umiejętności poprawnego działania w warunkach innych niż te, w których je trenowano, a zwłaszcza w rzeczywistości. Badania w pierwszej kolejności pozwolą ustalić, które różnice między symulacją a rzeczywistością faktycznie szkodzą modelowi i na którym etapie przetwarzania w modelu przekształcają się one w błędy. Na tej podstawie zostaną opracowane metody, które nauczą model pomijać nieistotne różnice i więcej ćwiczyć tam, gdzie wirtualna kopia jest najmniej dokładna, a także metody wyboru nielicznych rzeczywistych przykładów, które najlepiej poprawiają zarówno model, jak i symulację. Metody zostaną sprawdzone w zadaniach nawigacji robotów i manipulacji robotycznej, w środowiskach, które nie były wykorzystywane podczas uczenia, a nawigacja zostanie zweryfikowana na prawdziwym robocie mobilnym. Oczekuje się, że rozprawa przyniesie lepsze zrozumienie przyczyn, dla których modele uczone w symulacji zawodzą w rzeczywistości, a także metody, dzięki którym roboty będą mogły szybciej, taniej i bezpieczniej uczyć się pracy w nowych miejscach i przy różnych zadaniach.
 
 ## Abstract for general public
 
-Artificial intelligence is increasingly moving beyond computer screens into robots that move around
-buildings or handle objects. To learn this, robots need a huge number of examples, which are slow and
-costly to collect in the real world. That is why they increasingly learn in simulation, and in particular
-in digital twins, that is, faithful virtual copies of real places that can be rebuilt from a short
-recording. Such a copy is never perfect, however, and a model that works very well in simulation often
-makes mistakes in the real world, especially in places it has not seen before. The goal of the
-dissertation is to develop methods that make models trained in digital twins work better in reality. The
-research will cover finding out which features of the virtual copy really matter, teaching models to
-ignore the differences between the copy and reality, and adapting models to reality using only a few real
-examples. The methods will be tested on the navigation of mobile robots and on robots that handle objects.
-They are expected to make it faster and cheaper in the future to teach robots to work in new places, such
-as warehouses, hospitals or offices.
+Artificial intelligence is increasingly moving beyond computer screens into physical systems, such as robots that move around buildings or carry objects. Deep learning models that control such robots need a huge number of examples, which are slow, costly and sometimes unsafe to collect in the real world. Therefore, such models are usually trained in simulation, and increasingly in digital twins, that is, virtual copies of real places rebuilt from recordings of those places. Such a copy is never perfect, however, and a model that works well in simulation often fails in reality, especially in places it has not seen before, which remains one of the main obstacles to the wider use of physical artificial intelligence. The goal of the dissertation is to improve the generalization of deep learning models trained in simulations built from real data, i.e., their ability to work correctly in conditions different from those they were trained in, and in particular in reality. The research will first establish which differences between simulation and reality actually harm the model, and at which stage of processing inside the model they turn into errors. On this basis, methods will be developed that teach the model to ignore irrelevant differences and to practise more where the virtual copy is least accurate, together with methods that choose the few real examples that best correct both the model and the simulation. The methods will be examined on robot navigation and robotic manipulation tasks, in environments that were not used during training, and navigation will be verified on a real mobile robot. The dissertation is expected to bring a better understanding of why models trained in simulation fail in reality, as well as methods that allow robots to learn to work in new places and on different tasks faster, more cheaply and more safely.
 
+<!-- Review-6 (2026-09-27): "generalizacja" explained in both languages; RQ1 outcome added ("więcej ćwiczyć tam, gdzie wirtualna kopia jest najmniej dokładna"); ending softened to "przy różnych zadaniach" / "on different tasks"; "modele te uczy się zwykle" / "such models are usually trained"; "uczonych"; EN "carry objects" to match PL. -->
+<!--
+Wave 20 (ultracode), 2026-09-27: rewritten from scratch in the style of Binkowski §10 (one paragraph per
+language: goal, planned research, why this topic, expected effects). Aligned with the final core: topic =
+generalization of DL models in real-to-sim-to-real transfer for physical AI; research = which differences
+harm (RQ1), where in the model (RQ2), invariance + choice of few real examples correcting model and
+simulation (RQ2/RQ3), held-out environments on navigation and manipulation (RQ4). No numbers, no model
+names. PL and EN checked sentence by sentence: 9 / 9 sentences, same content.
+-->
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top). Both languages
 rewritten in parallel: the goal is a method that REDUCES real data (three reduction mechanisms, one per

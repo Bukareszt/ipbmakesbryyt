@@ -1,35 +1,51 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Deep learning has led to impressive results in computer vision and natural language processing, and it is
-now increasingly applied to physical AI: robots and other embodied systems that perceive and act in the
-real world, such as mobile robots navigating buildings or robotic arms manipulating objects. Unlike models
-trained on images or text, such models need very large amounts of interaction data, which is slow,
-expensive and sometimes unsafe to collect in the real world. Therefore, they are commonly trained in
-simulation. Recently, digital twins built from real data became a promising alternative to hand-made
-simulators: neural scene reconstruction methods, such as Neural Radiance Fields and 3D Gaussian Splatting,
-turn a short video of a real place into a photorealistic 3D model in which a robot can be trained at
-scale. This gives the real-to-sim-to-real loop: real data is transferred into a simulation, a model is
-trained there, and the model is transferred back to the real world.
+Deep learning has brought remarkable progress in computer vision and natural language processing, largely
+thanks to vast amounts of data collected from the web. Physical AI, i.e., AI in robots and other embodied
+systems that perceive and act in the real world, cannot rely on such data. Its models need interaction
+data, which are slow, expensive and sometimes unsafe to collect with real robots. Therefore, such models
+are commonly trained in simulation. Recently, simulations built from real data have become a promising
+alternative to hand-crafted simulators: neural scene reconstruction methods, such as 3D Gaussian
+Splatting, turn a short recording of a real place into a photorealistic digital twin in which a model can
+be trained at scale. This forms a real-to-sim-to-real loop, in which real data are turned into a
+simulation, a model is trained there, and the model is transferred back to reality.
 
-However, the usefulness of this loop depends entirely on how well the trained models generalize. A model
-that performs very well in simulation often fails in reality, because a digital twin never reproduces the
-real world exactly: appearance, lighting, geometry and physical properties differ. Moreover, models often
-fail again in places or tasks that were not seen during training. This sim-to-real generalization gap
-remains one of the main obstacles for physical AI. The methods proposed so far, such as domain
-randomization, rely largely on hand-tuned heuristics, are typically evaluated on a single task and a few
-scenes, and do not explain which properties of the simulation and of the learned representations
-actually determine generalization to reality. Therefore, the dissertation aims at developing methods that
-improve the generalization of deep learning models trained in real-to-sim-to-real loops, with a particular
-focus on the digital twin itself, the representations learned in it, and the adaptation of models to
-reality with little real data.
+However, the value of this loop depends on how well the trained models generalize. A model that performs
+well in simulation often fails in reality, since no simulation reproduces the real world
+exactly: appearance, geometry, lighting and physics are only approximated, and reconstruction errors
+differ between regions of a scene. This simulation-to-reality generalization gap is caused by the shift
+between the distributions of simulated and real data, which makes it a particular case of learning under
+distribution shift and a central obstacle to physical AI. The methods
+proposed so far have several limitations. Domain randomization, even when fitted to real data, varies a
+few global parameters regardless of where the simulation is inaccurate, and invariant representations may
+discard information needed for the task. Moreover, the real data used for adaptation are usually chosen at
+random, by hand or by simple heuristics such as observed failures, and serve to correct either the model or the simulation, but not both. Finally, most
+methods are evaluated on a single task and a few scenes, and it is not known which properties of the
+simulation and of the learned representations determine whether a model generalizes to reality.
 
-The research is relevant to machine learning in general, as it concerns learning under distribution shift
-and the generalization of representations, and it could help to understand why models trained on
-synthetic data succeed or fail on real data. The results have potential applications in service and
-logistic robotics, where robots could be trained in a digital copy of a new warehouse, hospital or office
-and work there reliably, as well as in autonomous systems and any other domain where models are trained on
-simulated or reconstructed data and used on real sensor data.
+Therefore, the dissertation aims to improve the generalization of deep learning models in
+real-to-sim-to-real transfer at the points of the loop where the gap arises. The research shall focus on
+understanding which errors of a simulation built from real data are harmful to generalization, on
+localizing where inside a model the gap arises and reducing it there, on choosing the small amount of real
+data that corrects both the simulation and the model most efficiently, and on verifying whether the
+obtained improvements carry over to unseen environments and to another physical task, and which
+properties of the shift explain when they do. Robot navigation
+shall serve as the main testbed and robotic manipulation as the second task. Beyond more reliable models,
+the research could help explain why models trained on synthetic data succeed or fail on real data, which is
+relevant to machine learning in general.
 
+The results have potential applications in service, logistics and assistive robotics, where a robot could
+be trained in a digital copy of a new warehouse, hospital or home and operate there reliably after little
+real-world adaptation. More broadly, they concern any domain in which models are trained on simulated or
+reconstructed data and deployed on real sensor data, such as autonomous driving or inspection robots.
+
+<!-- Review-6 (2026-09-27): grammar (data plural, "such models", present perfect, "aims to improve", "small amount of real data", "logistics"); Physical AI = AI in robots...; DR limitation aligned with §6 ("even when fitted to real data, varies a few global parameters"); run-on sentence split. -->
+<!--
+Wave 20 (ultracode), 2026-09-27: visible text rewritten from scratch in the narrative register of the
+accepted Binkowski IPB §5 (need for data -> simulation/digital twins -> sim-to-real gap -> limitations ->
+aim -> applications). Aim paragraph mirrors RQ1-RQ4 of content/07 without numbers, model names or
+benchmark goals. Earlier wave notes below are kept as history.
+-->
 <!--
 Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):
 the goal is a method that REDUCES real data (three reduction mechanisms, one per loop step); budget

@@ -1,43 +1,97 @@
 # §9 Planowane metody badawcze / Planned research methods (max 2 pages)
 
 The research will follow the methods commonly adopted in machine learning and robot learning projects.
-Since there is no mathematically proven practice for achieving generalization from simulation to reality,
-the dominant part of the research will be based on empirical methods. The proposed methods will be
-described theoretically, and their properties or bounds will be analysed whenever possible, in particular
-with the use of domain adaptation theory.
+Since no established theory guarantees generalization from simulation to reality, the research will be mainly empirical. The proposed methods will be
+described theoretically, and their properties or bounds will be analysed whenever possible, in particular using domain adaptation theory, which relates the error of a model in reality to its error in
+simulation and to the discrepancy between the two distributions. Numbers in brackets refer to the references listed in Section 6.
 
-Digital twins will be built from real captures of indoor scenes using neural scene reconstruction methods
-(3D Gaussian Splatting and related methods) and structure-from-motion tools, and imported into robot
-simulators (e.g. Habitat for navigation and ManiSkill3 for manipulation). Experiments will be conducted
-mainly on public datasets of real scenes, such as ScanNet++ and MuSHRoom, which contain captures of the
-same scenes made with different devices. This allows building the twin from one capture and using a
-separate, higher-fidelity capture as a reference for "reality", so that the sim-to-real gap can be
-studied in a controlled way on many scenes without an own robot. Navigation and manipulation models will
-be trained with reinforcement and imitation learning, starting from pretrained foundation models whenever
-possible. The results will be validated on a real mobile robot in rooms at the university, in cooperation
-with the robotics laboratories of Wrocław University of Science and Technology.
+Simulations will be built from real captures of indoor scenes, using structure-from-motion for camera poses and neural scene reconstruction, such as 3D Gaussian
+Splatting, for appearance and geometry, and then coupled with robot simulators, e.g., Habitat for
+navigation and ManiSkill3 for manipulation, with geometry for collisions and physics and appearance
+rendered from the reconstruction or from a mesh extracted from it. Reconstruction uncertainty will be estimated per region, e.g., from view coverage and the disagreement of an ensemble of reconstructions. Models for
+goal-directed indoor navigation (e.g., point-goal or image-goal) and tabletop pick-and-place manipulation
+will be trained with reinforcement and imitation learning, starting from pretrained models when possible.
+
+Experiments will be conducted mainly on public datasets of real scenes, such as ScanNet++ and MuSHRoom,
+which contain separate captures of the same scenes made with different devices. This allows building the
+simulation from one capture and using another, independent capture as a proxy for reality. Real frames of the independent capture will serve for open-loop evaluation, which measures the
+discrepancy between representations of paired simulated and real views, the agreement of predicted
+actions, and probing accuracy. A reference simulation built from the independent, higher-fidelity capture
+(e.g., the laser scan and DSLR images in ScanNet++) will serve as a proxy for closed-loop evaluation. Thus, the gap can be studied on many scenes without a robot. For manipulation, where real data with known physical properties
+are scarce, a simulation whose visual and physical parameters are hidden from the learner will serve as a controlled proxy.
+
+For the first question, controlled variants of a simulation, in which components such as
+appearance, geometry or lighting are degraded or replaced, will be used to attribute the gap to types of
+simulation error; physical components will be studied in manipulation, where they can be
+controlled. The task relevance of a region will be estimated from the sensitivity of the model's actions
+to it, e.g., with gradient-based attribution or by occluding the region. The training distribution will
+then be shaped by randomizing appearance (colour and opacity of Gaussians), geometry and, where the
+representation allows relighting, lighting per region in proportion to its
+reconstruction uncertainty and task relevance, and compared with uniform randomization, randomization
+fitted to real rollouts [5] and entropy-maximizing randomization [7]. For the second question, probing of
+hidden states will be adapted to find at which layers simulated and real observations become
+distinguishable and where task-relevant information is lost. An alignment loss (e.g., distribution-discrepancy or contrastive) will then be applied at the identified layers to a few
+paired simulated and real views at the same camera poses, restricted to the features on which the
+predicted action depends. It will be compared with alignment at the input, domain-adversarial alignment of
+the final features [8] and full fine-tuning.
+
+For the third question, the budget refers to real interaction data, such as robot trials or
+demonstrations, while unlabelled real images are assumed available. On the dataset-based proxy, a
+unit of interaction data will be an expert or policy episode executed in the reference simulation, paired
+with the real frames of the independent capture at the visited poses; in manipulation, an episode in the
+simulation with hidden parameters; and on the physical robot, a real trial or demonstration. Episodes (start and goal configurations), poses and scene regions used for final evaluation will be
+disjoint from those available for selection, and results will also be reported on held-out scenes whose
+independent capture is never used for correction. Real data will be selected by scores combining
+reconstruction uncertainty, the distance between the task-relevant representations of simulated and real observations, and the sensitivity of the predicted action. Each selected location will thus yield both
+real views, used to refine the simulation by re-optimizing the reconstruction in uncertain regions (and,
+in manipulation, by re-estimating physical parameters), and interaction data, used to adapt the model by
+fine-tuning or co-training on simulated and real data. This will be compared with random and
+failure-driven selection, in manipulation also with selection by informativeness about physics [22], with the same score without task relevance, and with correcting only the model or only
+the simulation, at equal amounts of real data across budgets. For the fourth question, the methods will be applied with unchanged
+settings to held-out scenes and to manipulation, the gap will be decomposed into factors of variation, and
+the attribution and localization measured in a new setting will be related, across many held-out scenes
+and both tasks, to the size of the improvement there, e.g., by rank correlation.
 
 The quantitative evaluation will rely on standard metrics for embodied tasks, such as success rate and
-success weighted by path length, and on the generalization gap, i.e., the difference between the
-performance in simulation and in reality. Particular attention will be paid to generalization, so the
-evaluation will separate the scenes used for training from unseen scenes, and will include a second
-physical task. Statistical methods will be leveraged to provide reliable outcomes, including repeated
-experiments with different random seeds and statistical tests for comparisons with baseline methods.
-Qualitative evaluation will focus on analysing the learned representations, e.g. by probing, visualizing
-the latent space and analysing failure cases.
+success weighted by path length (SPL), and on the generalization gap, defined at two levels: on the
+dataset-based proxy, as the difference between the performance in the training simulation and in the
+reference simulation, complemented by the open-loop measures on real frames; and on the physical robot, as
+the difference between the closed-loop performance in simulation and in reality. The agreement between the two levels will also be measured, e.g., by the rank correlation of model scores. All methods will
+be compared with baselines under equal training effort and an equal amount of real data. Statistical
+methods will be leveraged to provide reliable outcomes, including repeated experiments with different
+random seeds and scenes, confidence intervals, and statistical tests for comparisons with baseline
+methods. According to accepted standards, the data used for training, model selection and final
+evaluation will be kept separate. The analysis of the learned representations will combine quantitative
+and qualitative methods: representations of paired simulated and real observations will be compared with
+representation similarity measures, visualized in the latent space, and related to failure cases.
 
-The implementation of experiments will be done mainly in the Python programming language with the PyTorch
-deep learning library. Source code will be managed with the Git version control system, and experiments
-will be tracked to provide reproducible results. Due to the high computational demand, the experiments
-will run on GPU clusters provided by the Department and on the Polish computing infrastructure (WCSS,
-PLGrid). The work will be partly conducted in cooperation with other Ph.D. students and senior
-researchers. Code and data are supposed to be opened whenever possible, following open science standards
-and the licences of the datasets used.
+The navigation results will be validated on a wheeled mobile robot with an RGB-D camera, e.g., in the
+robotics laboratories of the university. The validation will measure closed-loop success rate and SPL in reality and check whether the
+conclusions drawn with the dataset-based proxy also hold on a physical robot. Should robot access be
+limited, the conclusions will rest on the dataset-based proxy and on a reduced set of real trials, and the
+agreement between the two levels will be reported for the trials performed.
 
-The findings will be published at leading machine learning, computer vision and robotics conferences from
-the ministerial list, such as NeurIPS, ICML, ICLR, CVPR and RSS. In order to further promote the work and
-establish new collaborations, it is planned to present results at smaller conferences and workshops, like
-MLinPL, and at summer schools.
+Experiments will be implemented mainly in Python with the PyTorch deep learning library. Source code will be managed with the Git version control system, and datasets,
+configurations and results will be versioned and tracked with experiment tracking tools to provide
+reproducible results. Due to the high computational demand of scene reconstruction and policy training, the
+experiments will run on GPU clusters provided by the Department and on the Polish computing
+infrastructure (WCSS and PLGrid). The work will be partly conducted in cooperation with other PhD students
+and senior researchers to increase the quality of the research. Code and data will be made publicly
+available whenever possible, following open science standards and respecting the licences of the datasets
+used.
+
+The findings will be published at leading
+international machine learning, computer vision and robotics conferences, such as NeurIPS, ICML, ICLR,
+CVPR and RSS, and in journals from the ministerial list. To promote the work and establish new collaborations, it is planned to present results at smaller conferences and workshops,
+such as MLinPL, and at summer schools, and to seek foreign co-authorship during the research internship.
+
+<!-- Final check (2026-09-27): added the note that bracketed numbers in §9 refer to the §6 reference list; Kachaev et al. AAMAS 2026 venue verified on OpenAlex (doi:10.65109/pper9186). -->
+<!-- Review-6 (2026-09-27): two evaluation levels (dataset proxy: open-loop on real frames + reference simulation from the independent higher-fidelity capture; closed-loop on the real mobile robot), gap defined per level; per-region reconstruction uncertainty (view coverage, ensemble disagreement); RQ3 procedure (budget = interaction data, selection scores, dual correction, comparisons at equal real data); manipulation = controlled proxy (hidden visual and physical parameters), no real-arm promise; wording fixes; international dissemination and foreign co-authorship. -->
+<!--
+Wave 20 (ultracode), 2026-09-27: visible §9 rewritten from scratch in the register of the Binkowski (2022) §9;
+aligned with the final RQ1-RQ4 (controlled simulation variants, probing, budget curves, held-out scenes,
+second task); no thresholds, no model names, no citations in §9.
+-->
 
 <!--
 Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top) and

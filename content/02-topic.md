@@ -1,7 +1,14 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-Improving generalization of deep learning models in real-to-sim-to-real transfer for physical AI.
+Improving the generalization of deep learning models in real-to-sim-to-real transfer for physical AI.
+(PL: Poprawa zdolności generalizacji modeli uczenia głębokiego w transferze rzeczywistość–symulacja–rzeczywistość dla fizycznej sztucznej inteligencji.)
 
+<!-- Review-6 (2026-09-27): PL topic now uses "uczenia głębokiego" (same term as §10). -->
+<!-- Wave 20 (ultracode): final core. Judge synthesis of 3 drafts (theory / robot-loop / supervisor-fit):
+short one-line topic in Binkowski's style; names the phenomenon (generalization), the setting
+(real-to-sim-to-real) and the domain (physical AI); no technology or model names. The longer variant
+"... under the simulation-to-reality distribution shift in real-to-sim-to-real learning for physical AI"
+was judged too long for the Binkowski style; the shift framing lives in §5/§7. -->
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):
 the dissertation is about HOW TO REDUCE the amount of real data (not about measuring it); the title is
 general and mentions navigation and manipulation as examples; navigation is the main testbed, manipulation

@@ -3,33 +3,67 @@
 The research carried out in the proposed doctoral dissertation is aimed at studying the following research
 questions.
 
-1. **Which properties of a digital twin built from real data determine the generalization of models
-   trained in it?**
-   A digital twin reproduces the appearance, geometry, lighting and physical properties of a real scene
-   only approximately, and the errors differ between regions of the scene. It is hypothesized that not
-   all of these errors are equally harmful, and that a model generalizes better to reality when the twin
-   is accurate and varied where it matters for the task and where the reconstruction is uncertain, rather
-   than randomized uniformly. The research should identify these properties and develop a method for
-   building and varying digital twins accordingly.
+1. **Which components of the discrepancy between a simulation built from real data and reality determine
+   how well models trained in it generalize?**
+   Domain adaptation theory bounds the real-world error of a model by its error in simulation and by the
+   discrepancy between the simulated and the real distributions. A simulation built from real data
+   reproduces appearance, geometry, lighting and physics only approximately, and its errors differ between
+   regions of a scene. It is hypothesized that the harm caused by a simulation error is predicted better
+   by the change it induces in the task-relevant representations of the model than by its magnitude in
+   the image or geometry, so that errors of similar size differ strongly in their effect on
+   generalization. Hence, training variation should follow the reconstruction uncertainty and task
+   relevance of each region rather than be spread uniformly. The research will attribute the gap to types
+   of simulation error and derive a principled way to shape the training distribution accordingly.
 
-2. **How to learn representations that are invariant to the difference between simulation and reality?**
-   Models trained in a digital twin tend to exploit features that do not exist in reality, such as
-   reconstruction artifacts. Pretrained foundation models and self-supervised encoders provide robust
-   representations, but it is not known how they behave under the shift between a twin and reality. It
-   is hypothesized that training objectives which enforce invariance between paired observations from
-   the twin and from reality, possibly supported by learned world models, reduce the generalization gap.
-   The research should also examine where in the model this gap arises.
+2. **Where inside a model trained in simulation does the simulation-to-reality gap arise, and can
+   task-relevant invariance at that location reduce it?**
+   Models trained in simulation can rely on features absent in reality, such as reconstruction artifacts.
+   Invariant representations reduce the discrepancy between domains, yet full invariance does not
+   guarantee transfer and may remove information needed for the task. Moreover, it is not known at which
+   stage of such a model, from early visual features to the action output, the shift turns into errors.
+   It is hypothesized that the gap arises in a limited part of the model, and that enforcing invariance
+   there, only for task-relevant features and from a few paired simulated and real observations, yields
+   better generalization than invariance at the input or at the final features. The research will use
+   probing of hidden states to localize the gap before intervening.
 
-3. **How to adapt a model trained in simulation to reality using a small amount of real data?**
-   Some difference between the twin and reality always remains. It is hypothesized that selecting the
-   real data where the twin and reality disagree the most allows the model, and the twin itself, to be
-   corrected with much less real data than random selection.
+3. **Which real data, chosen under a limited budget, most efficiently correct both the simulation and the
+   model, and thereby reduce the generalization gap?**
+   Real interaction data, such as robot trials or demonstrations, are expensive to collect. Existing
+   robotic methods correct either the model or the simulation and choose real data at random, by hand,
+   where the model fails, or by their informativeness about physical parameters; selection by domain
+   discrepancy has so far been studied only for labelling images. It is hypothesized that the most
+   informative real data are those where the simulation is predicted to disagree with reality in
+   task-relevant ways, as estimated from its reconstruction uncertainty, the distance between the
+   task-relevant representations of simulated and cheaply captured real observations, and the sensitivity
+   of the predicted action. Using the selected data to correct both the simulation and the model is
+   expected to reduce the gap with less real data than random or failure-driven selection. The research
+   will develop such a selection rule and study it under different budgets.
 
-4. **Do the improvements generalize to unseen environments and to other physical tasks?**
-   A valuable method should not be tied to a single scene or task. Therefore, the developed methods shall
-   be examined on environments not seen during training and on two different physical tasks, robot
-   navigation and robotic manipulation, to verify that the improvements in generalization are general.
+4. **Do the improvements generalize to unseen environments and to another physical task, and which
+   properties of the shift explain when they do?**
+   A valuable method should not be tied to a single scene or task, and no single visual representation is
+   known to be best for both navigation and manipulation. Therefore, the developed methods shall be
+   examined, with unchanged settings, on environments held out from training and on two physical tasks:
+   robot navigation and, as a controlled second task, robotic manipulation. It is hypothesized that the
+   attribution of the gap from the first question and its localization from the second, measured in the
+   new setting before a method is applied, predict whether its improvement transfers. The research will
+   decompose the gap into factors of variation and relate the measured attribution and localization to
+   the observed transfer across held-out scenes and tasks.
 
+<!-- Review-6 (2026-09-27): RQ1 "Domain adaptation theory"; RQ2 novelty scoped to models trained in simulations built from real data (surgical fine-tuning, §6 [20]), "a few", "yields better generalization", baseline "final features", probing provenance kept only in §8; RQ3 title = correct both simulation and model; circularity removed (cheap unlabelled real observations vs. expensive interaction data); RQ4 manipulation = controlled second task. -->
+<!-- Wave 20 (ultracode): final core. Judge synthesis of 3 independent drafts (A theory: RQs = terms of the
+Ben-David et al. 2010 bound; B robot-loop: real->sim, learning in sim, sim->real, generalization; C
+supervisor-fit: representation-centric, K46). Base = C (representation-centric, probing fits the student's
+background); grafted from A: the domain-adaptation-bound opening of RQ1 and "which components of the
+discrepancy", the "early features to action output" localization in RQ2, "dominant component" in RQ4;
+from B: "as a function of the budget" in RQ3 and "with unchanged settings" in RQ4. Order = data/simulation,
+representation, adaptation, evaluation. No numbers, budgets, pre-registration, VoI or model names.
+Openness per research/litreview-rq1..rq4: RQ1 closest Phys2Real (physics only) vs BayesSim/SimOpt/DORAEMON
+(global physics params); RQ2 invariance itself not open (DANN, RCAN, Cheng et al. 2025), open = localizing
+the sim-real gap by probing (Kachaev et al. 2025 not about sim vs real), Zhao et al. 2019 motivates
+task-relevant invariance; RQ3 precedents AADA (Su et al. 2020), ASID (Memmel et al. 2024), TwinRL (Xu et
+al. 2026, failure-driven, manipulation only) - novelty = predicted discrepancy + joint correction + budget
+comparison, navigation; RQ4 Majumdar et al. 2023, Kirk et al. 2023, Xie et al. 2024, Chen et al. 2022. -->
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top)
 and the deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md). Goal = v7 goal
 (reduce real data; three mechanisms = H1-H3; H4 = thesis); navigation decides H1-H4, manipulation =

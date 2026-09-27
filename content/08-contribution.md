@@ -1,26 +1,44 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
-The proposed Ph.D. dissertation aims to introduce several contributions to the development of the
-scientific discipline. First and foremost, the research is intended to provide new methods that improve
-the generalization of deep learning models trained in simulations built from real data, which is one of
-the main obstacles in applying machine learning to physical AI. The methods are intended to be general,
-i.e., not tied to a particular robot, scene or task, and are planned to be evaluated on robot navigation
-and robotic manipulation.
+The proposed PhD dissertation aims to introduce several contributions to the development of the
+scientific discipline. The central scientific problem addressed is explaining and reducing the
+generalization gap caused by the distribution shift between a simulation built from real data and
+reality; poor generalization of models trained in simulation remains one of the main obstacles to
+applying machine learning in physical AI. The central claim of the dissertation is that this gap is
+concentrated in a small set of task-relevant discrepancies, which can be identified in the simulation,
+localized inside the model and targeted with little real data, and that addressing them there yields
+better generalization than uniform randomization, invariance of the whole representation or randomly
+chosen real data. Research questions 1-3 test the three parts of this claim, and question 4 tests whether
+it holds across environments and tasks; the methods derived from it are intended to be general, i.e., not
+tied to a particular robot, scene or task, and will be examined on robot navigation and robotic
+manipulation.
 
-Furthermore, the research seeks to provide a better understanding of the sim-to-real generalization gap:
-which properties of a digital twin matter for the generalization of the trained model, and where in the
-model the gap arises. Such knowledge could introduce new perspectives for the design of simulations and of
-training procedures, and could help to build more principled and interpretable approaches than the
-currently dominating randomization heuristics. Since the sim-to-real problem is an instance of learning
-under distribution shift, the findings are also expected to be relevant to domain adaptation,
-representation learning and the adaptation of pretrained foundation models in general.
+Furthermore, the research is expected to deliver new methods and findings that do not exist at present:
+a principle for shaping the training distribution of a simulation built from real data by the
+reconstruction uncertainty and task relevance of each region; a method for localizing the
+simulation-to-reality gap inside a deep model and for enforcing task-relevant invariance only there; a rule
+for selecting real data that corrects the simulation and the model at the same time; and an empirical
+account of which properties of the shift determine whether these improvements carry over across
+environments and tasks. Such knowledge could complement the currently dominant randomization heuristics with
+more principled and interpretable approaches, and could introduce new perspectives for the design of
+simulations and of training procedures.
 
-Finally, the developed methods for adapting models to reality with a small amount of real data could
-reduce the cost of deploying learning-based robots in new environments. The source code and the
-experimental setups are planned to be released, which could facilitate further research in the field and
-attract other researchers. Apart from purely scientific results, the methods could be used in real-world
-applications such as service, logistic and inspection robotics.
+Since transfer from simulation to reality is an instance of learning under distribution shift, the
+findings are also expected to be relevant to machine learning in general. The analysis of which errors in
+the training distribution are harmful concerns domain adaptation; the localization of the
+simulation-to-reality gap inside a model extends probing methods developed for language and vision models
+and contributes to representation learning; and the selection of informative data under a budget concerns
+active learning and the adaptation of pretrained foundation models to new domains from a few examples.
 
+Finally, the developed methods could reduce the amount of real data, and thus the cost, needed to deploy
+learning-based robots in new environments. The source code and the experimental setups are planned to be
+released, which could facilitate further research in the field and attract other researchers. Apart from
+purely scientific results, the methods could be used in real-world applications such as service,
+logistics and inspection robotics, as well as in other domains where models are trained in simulation,
+e.g., autonomous driving.
+
+<!-- Review-6 (2026-09-27): central scientific problem and single central claim added to paragraph 1, RQs presented as parts of it; "dominant", "a few", "logistics", "PhD". -->
+<!-- Wave 20 (ultracode), 2026-09-27: visible text rewritten from scratch in the Binkowski §8 register; contributions mapped to the final RQ1-RQ4 (components of the discrepancy, localization of the gap and task-relevant invariance, budgeted real-data selection correcting model and simulation, generality across environments and tasks); relevance to distribution shift, representation learning, active learning and foundation-model adaptation; code release; applications. No numbers, no model names. -->
 <!-- Wave 18-W (issue #35), 2026-09-26: rewritten after pivot decision v7 (research/pivot-decision.md, top):
 key contribution = a method that REDUCES real data (three reduction mechanisms, one per loop step); the
 budget curves, the one unit (operator minutes), the budget grid, the proxy protocol and the code are how

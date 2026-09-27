@@ -1,6 +1,6 @@
 # §11 Termin oddania do druku artykułu naukowego / Date of submission for publication
 
-May 2027 (planned submission to the NeurIPS 2027 conference, 200 points on the ministerial list).
+September 2027 (planned submission to a robotics conference or journal from the ministerial list, e.g. ICRA 2028 or IEEE Robotics and Automation Letters).
 
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top): "P1: NeurIPS 2027.

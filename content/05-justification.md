@@ -24,7 +24,7 @@ is not known which properties of the digital twin and of the learned representat
 model generalizes to reality.
 
 Therefore, the dissertation aims to improve the generalization of deep learning models in
-real-to-simulation-to-real transfer at the points of the loop where the simulation-to-reality gap arises. The research shall
+real-to-simulation-to-real transfer with representation learning methods, at the points of the loop where the simulation-to-reality gap arises. The research shall
 focus on understanding which reconstruction errors of a digital twin are harmful to generalization, on
 localizing where inside a model the gap arises and reducing it there, and on choosing the small amount of
 real data that corrects both the digital twin and the model most efficiently. It shall also verify whether

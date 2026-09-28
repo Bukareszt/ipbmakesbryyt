@@ -2,16 +2,17 @@
 
 | Semestr | Brief description of the task |
 |---|---|
-| 1 | Doctoral School courses; reading the literature and considering possible research directions |
-| 2 | Doctoral School courses; literature review; choice of the dissertation topic with the supervisor; preparing the Individual Research Plan |
-| 3 | Preparing the research environment (digital twins, simulators, public datasets); initial experiments on harmful reconstruction errors (RQ1) |
-| 4 | Further experiments on RQ1; preparing and submitting the first publication to a robotics conference or journal (e.g. ICRA or RA-L); first experiments on RQ2 |
-| 5 | Experiments on localizing the gap inside models and aligning representations (RQ2); preparing a scientific publication |
-| 6 | Experiments on selecting real data (RQ3) and on transfer to unseen scenes and between tasks (RQ4); preparing a publication; tests on a real robot if access allows |
-| 7 | Final experiments and submission of a paper to a conference or journal; first draft of the dissertation |
-| 8 | Completing, revising and submitting the doctoral dissertation |
+| 1 | Doctoral School courses. Reading the literature and considering possible research directions |
+| 2 | Doctoral School courses and literature review. Choosing the dissertation topic with the supervisor and preparing the Individual Research Plan |
+| 3 | Preparing the research environment with digital twins, simulators and public datasets. Initial experiments on harmful reconstruction errors (RQ1) |
+| 4 | Further experiments on RQ1. Preparing and submitting the first publication to a robotics conference or journal such as ICRA or RA-L. First experiments on RQ2 |
+| 5 | Experiments on localizing the gap inside models and aligning representations (RQ2). Preparing a scientific publication |
+| 6 | Experiments on selecting real data (RQ3) and on transfer to unseen scenes and between tasks (RQ4). Preparing a publication and, if access allows, tests on a real robot |
+| 7 | Final experiments and submitting a paper to a conference or journal. First draft of the dissertation |
+| 8 | Completing and revising the doctoral dissertation, then submitting it |
 
 
+<!-- Wave 29: humanized (no semicolons) -->
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §3 one short line per semester in the accepted plan's style: sem. 1-2 courses, literature review, topic choice and IPB; research from sem. 3; RQ1 paper submitted in sem. 4 to a robotics venue (ICRA or RA-L), consistent with §11; RQ2 sem. 5; RQ3/RQ4 and optional robot sem. 6; sem. 7-8 copied from the accepted plan. Numbered sub-items, grant, internship and conference items dropped. -->
 <!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §3 semester 4: per-region randomization follows the estimated reconstruction error (uncertainty complemented by held-out discrepancy), as in §6, §7 and §9. -->
 <!-- Wave 24: humanized (2026-09-27). §3 light touch: dash in the recurring literature-review item replaced; 'in the scope of', 'with regard to', 'Conducting/Carrying out research' simplified; the stacked sem. 3 environment item split into sentences; article topics moved out of parentheses; 'sketch' -> 'outline'. All tasks, venues, conditions and semester placement unchanged. -->

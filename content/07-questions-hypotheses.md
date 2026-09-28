@@ -1,43 +1,44 @@
 # §7 Pytania i hipotezy badawcze / Research questions and hypotheses (max 1 page)
 
 The aim of my dissertation is to develop representation learning methods that improve the
-generalization of deep learning models trained in digital twins built from real data, so that the models
-work reliably in reality and in places not seen during training. The methods should not be tied to a
+generalization of deep learning models trained in digital twins built from real data. The models should
+work reliably in reality and in places not seen during training, and the methods should not depend on a
 particular robot, scene or task.
 
-I will not have a robot of my own at the start, and I will train models on academic GPU clusters, so the
-methods must work at this scale. I will rely on public datasets that contain independent captures of the
-same real scenes. I will study two tasks, robot navigation and robotic manipulation, and all results must
-be measured on held-out scenes that were not used for training or model selection.
+I will not have my own robot at the start and will train models on academic GPU clusters, so the methods
+must work at this scale. I will rely on public datasets that contain independent captures of the same real
+scenes. I will study two tasks, robot navigation and robotic manipulation, and measure all results on
+held-out scenes that were not used for training or model selection.
 
-The questions (RQ) and hypotheses (H) of my research are:
+My research questions (RQ) and hypotheses (H) are as follows.
 
 1. RQ1. Which reconstruction errors of a digital twin, varying across a scene, harm the generalization of
    navigation and manipulation models trained in it?
 2. H1. The harm caused by an error in a region is predicted better by how much it changes the features of
    a fixed pretrained visual encoder on views rendered with and without the error than by its size in the
-   image or geometry, e.g., PSNR, LPIPS or depth error. Second, randomizing each region according to its
-   estimated reconstruction error and task relevance generalizes better than uniform randomization of equal
-   total strength.
+   image or geometry, as measured by PSNR, LPIPS or depth error. Also, randomizing each region according to
+   its estimated reconstruction error and task relevance generalizes better than uniform randomization of
+   equal total strength.
 3. RQ2. At which stage of a model trained or fine-tuned in a twin do real inputs first lose task information
-   that is available for simulated inputs? I expect an identifiable earliest stage, or a narrow range of
-   stages, found by linear probes checked against control tasks, and I will test with causal interventions
-   whether the model uses this information.
+   that is available for simulated inputs? I expect linear probes checked against control tasks to identify
+   an earliest stage or a narrow range of stages. I will test with causal interventions whether the model
+   uses this information.
 4. H2. Aligning simulated and real representations at that stage reduces the simulation-to-reality gap
    more than the same alignment at the input, at the final features, at all stages or at layers chosen by
-   existing criteria, under equal real data and training effort.
-5. RQ3. Which real data, chosen under a fixed budget using the representation-based signals of RQ1 and
-   RQ2, best correct both the digital twin and the model? I expect that using the same selected data to correct both reduces the gap more than correcting either
-   one alone, and I will compare my selection with random and failure-driven selection.
-6. RQ4. Do the gains transfer, with unchanged settings, to unseen scenes and from one task to the other, and
-   can properties of the shift measured beforehand predict this better than simple indicators, such as
-   the size of the gap or the image-level discrepancy?
-7. Fallback. If harm follows the size of the error rather than the change in features, reconstruction
-   uncertainty and action sensitivity can guide randomization and data selection instead, although
-   uncertainty misses errors that the reconstruction reproduces consistently. I will use this only if the
-   representation-based signals prove uninformative.
+   existing criteria, given the same real data and training effort.
+5. RQ3. Which real data, chosen under a fixed budget with the representation-based signals of RQ1 and
+   RQ2, best correct both the digital twin and the model? I expect that correcting both with the same
+   selected data reduces the gap more than correcting only one of them. I will compare my selection with
+   random and failure-driven selection.
+6. RQ4. Do the gains transfer with unchanged settings to unseen scenes and from one task to the other? Can
+   properties of the shift measured beforehand predict this better than simple indicators such as the size
+   of the gap or the image-level discrepancy?
+7. Fallback. If harm tracks the size of the error more closely than the change in features, I will guide
+   randomization and data selection with reconstruction uncertainty and action sensitivity instead.
+   Uncertainty misses errors that the reconstruction reproduces consistently, so I will use this fallback
+   only if the representation-based signals turn out to be uninformative.
 
-
+<!-- Wave 29: humanized (no semicolons) -->
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §7 accepted-plan structure: goal paragraph, constraints paragraph (no own robot, academic GPUs, public data with independent captures, two tasks, held-out scenes), then 7 numbered items mixing questions and hypotheses (RQ1 Q+H, RQ2 Q with probes/control tasks/causal test + H alignment, RQ3 Q+H, RQ4 Q) and a fallback item 7 (uncertainty + action sensitivity, with the consistent-error caveat). No numeric thresholds; invariance wording not in §7. -->
 <!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §7 rewritten to fit 1 page with the report's K/P rows: RQ1 hypothesis = counterfactual feature distance of a fixed pretrained visual encoder (views rendered with and without the error) vs error size (PSNR, LPIPS, depth error); randomization of appearance and geometry growing with estimated reconstruction error and task relevance at equal total strength; test = per-region correction (laser scan) or injection into a high-fidelity reference; uncertainty misses consistently reproduced errors. RQ2 title = stage where real inputs first lose task information; hypothesis = linear probe beyond a control-task baseline, information influences actions; paired alignment loss vs input, final features, all stages, existing layer-selection criteria at equal data and effort; activation patching of the probed subspace. RQ3 title fixed budget; RialTo-type correction of both with different unselected data acknowledged; joint-error sentence corrected (invariance does not target it and can increase it when actions differ; bringing the simulation closer can reduce it directly), bound sentence moved here from RQ1 as 'joint error term of the domain adaptation bound'; equal budget; candidate scoring by uncertainty at the pose, action change under perturbation within it, representation distance when an unlabelled real image exists; baselines random and failure-driven over a range of budgets. RQ4 title = methods with unchanged settings, properties measured beforehand; hypothesis = rank correlation with gap reduction across held-out scenes vs base-model gap and image-level discrepancy; about a hundred navigation scenes with tests for dependent correlations, manipulation and cross-task exploratory. RQ2 context sentence on domain distinguishability dropped for space (kept in §6 [9]). -->
 <!-- Wave 24: humanized (2026-09-27, humanizer skill, voice of the accepted Binkowski and ipb4 §7). Visible §7 only: intro, bold RQs, *Hypothesis:* labels and the plan-B sentence kept; RQ2 not-X-but-Y ("..., not by whether the domains can be told apart") restated positively; RQ3 "cannot be reduced by invariance, only by ..." restated; "valuable" -> "useful"; repeated "The research will ..." openings varied; RQ3/RQ4 hypothesis sentences merged. No claim, term or hypothesis changed; length slightly shorter. -->

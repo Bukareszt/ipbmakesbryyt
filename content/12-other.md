@@ -1,8 +1,8 @@
 # §12 Inne / Other comments (max 1 page)
 
-I prepared this plan with the help of AI tools (Claude, used through Claude Code). I used them to search and check the
-literature, draft text, proofread, edit and format. I have reviewed all content, and the
-references were checked against publisher and preprint records.
+I prepared this plan with the help of Claude, an AI tool that I used through Claude Code. I used it to
+search and check the literature, draft text, proofread, edit and format. I reviewed all content myself, and
+the references were checked against publisher and preprint records.
 
 ### Bibliography
 [1] Kadian, A., et al. (2020). Sim2Real predictivity: Does evaluation in simulation predict real-world performance? RA-L.
@@ -30,6 +30,7 @@ references were checked against publisher and preprint records.
 [23] Xie, A., et al. (2024). Decomposing the generalization gap in imitation learning for visual robotic manipulation. ICRA.
 
 
+<!-- Wave 29: humanized (no semicolons) -->
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §12 now holds the AI-use disclosure (Claude via Claude Code) and the Bibliography moved from §6, numbering [1]-[23] unchanged. -->
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top) and the

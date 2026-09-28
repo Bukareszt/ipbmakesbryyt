@@ -1,30 +1,23 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
-The proposed PhD dissertation aims to contribute to the development of the scientific discipline by
-addressing the generalization of deep learning models trained in simulations built from real data, which
-remains one of the main obstacles to applying machine learning in physical AI. The working assumption of
-the dissertation is that the simulation-to-reality gap is caused mainly by a limited set of task-relevant
-discrepancies. These may be identified among the reconstruction errors of a digital twin, localized inside
-the model, and reduced with a small amount of well-chosen real data. The methods are intended to be
-general, i.e., not tied to a particular robot, scene or task, and will be examined on robot navigation and
-robotic manipulation.
+The main expected contribution of my dissertation is a set of representation learning methods that make
+deep learning models trained in digital twins generalize better to reality and to unseen places. The work
+will also show whether the simulation-to-reality gap is caused mainly by a limited set of task-relevant
+discrepancies, which can be found among the reconstruction errors of a twin, located inside the model and
+reduced with a small amount of well-chosen real data.
 
-First, the research is intended to provide a better understanding of which reconstruction errors of a
-digital twin harm generalization, together with a method that varies the twin accordingly rather than
-uniformly. Second, it aims to develop a way of locating the stage of a deep model at which task information available
-for simulated inputs is lost for real ones, using probes with control tasks and causal interventions, and of
-reducing the gap by aligning simulated and real representations at that stage. Third, it aims to propose a rule for selecting a small amount of
-real data that corrects both the digital twin and the model. Finally, it will examine when such
-improvements carry over to unseen environments and between tasks. This knowledge could complement the
-currently dominant randomization heuristics with more principled and interpretable approaches.
+The work should provide evidence about which reconstruction errors harm generalization, at which stage of
+a model task information is lost on real inputs, when correcting both the twin and the model with the
+same real data pays off, and whether such gains carry over to new scenes and between navigation and
+manipulation. Because transfer from simulation to reality is a case of learning under distribution shift,
+these findings may also be relevant to domain adaptation, representation learning and active learning in
+general. I plan to release the code, the evaluation protocol and, where licences allow, the trained
+models, so that others can compare methods on held-out scenes in the same way. My work should be a
+scientific contribution bridging artificial intelligence and robotics, with practical significance for
+deploying learning-based robots in new environments such as warehouses, hospitals and homes.
 
-Since transfer from simulation to reality is an instance of learning under distribution shift, the
-findings may also be relevant to machine learning in general, in particular to domain adaptation,
-representation learning and active learning. Apart from purely scientific results, the methods could
-reduce the cost of deploying learning-based robots in new environments, e.g., in service, logistics and
-inspection robotics. The source code is planned to be released, which could facilitate further research
-in the field.
 
+<!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §8 shortened to about 200 words, first person: main contribution, evidence, released code/evaluation/models, bridge between AI and robotics. -->
 <!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §8: second contribution = locating the stage where task information is lost on real inputs (probes with control tasks, causal interventions) and aligning representations there. -->
 <!-- Wave 24: humanized -->
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §8: methods examined on two equal tasks (navigation and manipulation) instead of "mainly navigation, manipulation as a controlled confirmation test"; RQ4 contribution "across environments and from one task to another". -->

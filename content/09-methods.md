@@ -1,57 +1,56 @@
 # §9 Planowane metody badawcze / Planned research methods (max 2 pages)
 
-The research will follow the methods commonly adopted in machine learning and robot learning projects. Since
-no established theory guarantees generalization from simulation to reality, the dominant part of the work
-will be empirical. Domain adaptation theory relates the error of a model in reality to its error in
-simulation, the discrepancy between the two distributions and the error of the best model on both. It is used as motivation, and the properties of the
-proposed methods will be analysed theoretically whenever possible.
+My work will focus on building digital twins of real scenes, training and fine-tuning deep learning models
+in them, and designing methods that analyse and align the representations these models learn. Since no
+established theory guarantees generalization from simulation to reality, most of the work will be
+empirical. I will use domain adaptation theory as motivation and analyse the properties of my methods
+theoretically where possible.
 
-The methods will be examined on two physical AI tasks, robot navigation and robotic manipulation, which share
-the reconstruction tools. Digital twins will be built from real images with neural scene reconstruction, e.g.,
-3D Gaussian Splatting [10], and coupled with simulators for navigation (e.g., Habitat) and manipulation (e.g.,
-ManiSkill3). Models that map camera images to actions will be trained or fine-tuned in these simulators,
-starting from pretrained models where possible.
+I will use tools commonly employed in machine learning and robot learning. This includes PyTorch
+for model training, gsplat for 3D Gaussian Splatting [10] and COLMAP for camera poses, the Habitat
+simulator for navigation and ManiSkill3 for manipulation, Git with GitHub repositories for version
+control, and Hugging Face for retrieving and publishing models and datasets. I will start from pretrained
+models where possible. I intend to work in the open and release code and evaluation scripts, and, where
+licences allow, trained models and derived data.
 
-The research does not rely on a robot of its own, so the evaluation will use public data. For navigation, it
-will use public datasets of real indoor scenes with independent captures of the same scenes (e.g., ScanNet++).
-The twin will be built from one capture, and the other will provide real frames and a dataset-based reference
-simulation. This reference isolates the gap caused by reconstruction fidelity and leaves out differences in
-actuation and sensors. For manipulation, twins of real tabletop scenes will be built from images of public
-robot datasets, following the visual matching of SIMPLER [14], and compared with published real-robot results
-of the same policies. New models will also be evaluated in simulations whose parameters are hidden from the
-learner.
+I will not have a robot of my own at the start, so the evaluation will use public data, and I will state
+this openly. For navigation, I will use public datasets of real indoor scenes with independent
+captures of the same scenes, such as ScanNet++ and MuSHRoom. I will build the twin from one capture, and
+the other will provide real frames and a dataset-based reference. This reference is a proxy for reality.
+It measures the gap caused by reconstruction fidelity and leaves out differences in actuation and sensors.
+For manipulation, I will build twins of real tabletop scenes from images of public robot datasets,
+following the visual matching of SIMPLER [14], and compare them with published real-robot results of the
+same policies. If access to a robotics laboratory of the university allows, I will use a real robot to
+check the direction of selected results and the validity of the proxy.
 
-For the first research question, the research will examine variants of the twin in which one type of
-reconstruction error is corrected in selected regions using a more accurate reference, e.g., the laser scans
-of ScanNet++, or injected in a controlled way, to attribute the gap to types of error, and will study
-randomization of appearance and geometry whose per-region strength follows the estimated reconstruction
-error and task relevance, compared with uniform randomization of equal total strength. For the second
-question, linear probes with control tasks, trained on simulated hidden states and tested on paired real
-ones, will show at which stage task information is lost on real inputs. Causal interventions on hidden
-states will test whether this information is used, and a paired alignment loss attached at that stage will
-be compared with the same loss at the input, at the final features, at all stages and at layers chosen by
-existing criteria. For the third question, rules for selecting a small amount of real data will be compared
-at equal budgets with random and failure-driven selection. The selected data will refine the reconstruction
-of the twin and enter the training of the model, and correcting both will be compared with correcting only
-one. For the fourth question, the methods will be applied to held-out scenes of both tasks to check whether
-the attribution and localization measured before applying a method predict its gain in each scene better
-than simple predictors, using rank correlations compared with tests for dependent correlations.
+For the first research question, I will correct one type of reconstruction error at a time in selected
+regions using a more accurate reference, such as the laser scans of ScanNet++, or inject it in a controlled
+way, and measure the effect on the trained model. For the second question, I will train linear probes
+with control tasks on simulated hidden states and test them on paired real ones. Causal interventions on
+hidden states, such as patching the probed subspace from simulated into real inputs, will test whether the
+model uses the lost information. For the third question, I will compare rules for selecting real data
+with random and failure-driven selection at equal budgets, and compare correcting both the twin and the
+model with correcting only one. For the fourth question, I will apply the methods with unchanged settings
+to held-out scenes and test whether measurements taken beforehand predict the gains, comparing rank
+correlations with tests for dependent correlations.
 
-The evaluation will rely on standard metrics, such as success rate, and on the simulation-to-reality gap, i.e., the difference
-between the performance of the same model in the twin and in reality or its reference, measured per
-held-out scene in both tasks and complemented where possible by open-loop measures on real frames. Methods
-will be compared with relevant baselines under comparable training effort and real data. Statistical methods
-will be used to provide reliable outcomes, including repeated runs over seeds and scenes and statistical tests
-for comparisons, and ablation studies will determine the contribution of individual components. Data for
-training, model selection and final evaluation will be kept separate. If access allows, a real robot in a robotics laboratory of the
-university will be used to check the direction of selected results and the validity of the dataset-based
-proxy.
+I will measure the success rate and the simulation-to-reality gap, that is, the difference between the
+performance of the same model in the twin and in reality or its reference, on held-out scenes. I will
+compare methods with relevant baselines under comparable training effort and real data. To obtain
+reliable results, I will repeat runs over random seeds and scenes, use statistical tests for comparisons
+and run ablation studies. Data for training, model selection and final evaluation will be kept separate.
 
-Experiments will be implemented mainly in Python with PyTorch, with source code managed in Git, and run on GPU
-clusters of the Department, WCSS and PLGrid. Code and data will be released whenever licences allow,
-following open science standards. The findings will be published at leading conferences from the ministerial
-list, such as ICRA, IROS, RSS and IEEE RA-L, as well as NeurIPS, ICML, ICLR and CVPR, and presented at smaller venues such as MLinPL.
+I will run experiments on the supercomputers of the Wrocław Centre for Networking and Supercomputing
+(WCSS), using their SLURM installation for job management, and on PLGrid resources. I intend to use AI
+coding assistants, such as Claude Code, to accelerate writing and testing code and to help with routine
+tasks, such as monitoring long experiments and proofreading.
 
+I plan to publish my results at conferences and in journals from the ministerial list, such as ICRA,
+IROS, RSS and IEEE RA-L in robotics and NeurIPS, ICML, ICLR and CVPR in machine learning and computer
+vision. When the rules allow, I will also publish preprints on arXiv.
+
+
+<!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §9 practical first-person methods as in the accepted plan: tools (PyTorch, gsplat, COLMAP, Habitat, ManiSkill3, Git/GitHub, Hugging Face), open release, public data (ScanNet++, MuSHRoom, public robot datasets, SIMPLER [14]), honest proxy statement, optional robot, per-RQ protocol, metrics and statistics, WCSS SLURM + PLGrid, AI coding assistants, venues and arXiv. MLinPL and department clusters dropped. -->
 <!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §9: bound with the joint error term; 3D Gaussian Splatting [10] cited; RQ1 per-region correction with a more accurate reference (ScanNet++ laser scans) or controlled injection, randomization of appearance and geometry following the estimated reconstruction error and task relevance at equal total strength; RQ2 linear probes with control tasks, causal interventions, paired alignment loss vs input/final features/all stages/existing layer-selection criteria; RQ3 equal budgets, random and failure-driven baselines, same data refine twin and model; RQ4 gain per scene, rank correlations with tests for dependent correlations; gap defined; robot = check of the direction of results and of the proxy, if access allows. -->
 <!-- Wave 24: humanized (2026-09-27, humanizer skill, voice of the accepted Binkowski and ipb4 §9). Visible §9 only: "will serve as motivation" -> "is used as motivation" (bound sentence split); long passive chain on training in the simulators split and made active; "Since the research does not rely on an own robot" -> "does not rely on a robot of its own, so"; not-X-but-Y "reconstruction fidelity, not differences in actuation and sensors" -> "isolates ... and leaves out ..."; RQ paragraph passive chains given the research as actor. No claim, term or citation changed. -->
 <!-- Wave 23: trimmed to reference length (2026-09-27, student decision: avoid over-promising; register of the accepted Binkowski and ipb4 §9, ~370-450 words). Visible §9 cut from ~1275 to ~600 words: general empirical ML methodology with theory where possible; twins from real data with neural reconstruction in navigation and manipulation simulators (Habitat, ManiSkill3 as e.g. only); evaluation without an own robot (navigation: independent captures of public datasets, dataset-based reference = reconstruction-fidelity gap; manipulation: SIMPLER-style twins of real tabletop scenes vs published real-robot results [14]); one sentence per RQ; metrics, statistics, ablations; real-robot validation only "if access allows" (semester and robot type dropped); tools, compute, open code; dissemination. Removed: per-RQ baselines and citations [4], [5], [6], [9], [13], real-data units, SPL, BridgeData V2 / Open X-Embodiment / MuSHRoom names, phone captures, uncertainty-estimation detail, rank correlation, the "numbers in brackets" note. -->

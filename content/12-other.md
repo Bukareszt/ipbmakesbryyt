@@ -1,5 +1,36 @@
 # §12 Inne / Other comments (max 1 page)
 
+I prepared this plan with the help of AI tools (Claude, used through Claude Code). They were used for support in searching and checking the literature, drafting,
+proofreading and editorial support, and formatting assistance. I have reviewed all content, and the
+references were checked against publisher and preprint records.
+
+### Bibliography
+[1] Kadian, A., et al. (2020). Sim2Real predictivity: Does evaluation in simulation predict real-world performance? RA-L.
+[2] Ben-David, S., et al. (2010). A theory of learning from different domains. Machine Learning.
+[3] Tobin, J., et al. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. IROS.
+[4] Chebotar, Y., et al. (2019). Closing the sim-to-real loop: Adapting simulation randomization with real world experience. ICRA.
+[5] Tiboni, G., et al. (2024). Domain randomization via entropy maximization. ICLR.
+[6] Ganin, Y., et al. (2016). Domain-adversarial training of neural networks. JMLR.
+[7] Cheng, S., et al. (2025). Generalizable domain adaptation for sim-and-real policy co-training. NeurIPS.
+[8] Zhao, H., et al. (2019). On learning invariant representations for domain adaptation. ICML.
+[9] Lei, Y., et al. (2026). A mechanistic analysis of sim-and-real co-training in generative robot policies. arXiv preprint arXiv:2604.13645.
+[10] Kerbl, B., et al. (2023). 3D Gaussian splatting for real-time radiance field rendering. ACM TOG.
+[11] Torne, M., et al. (2024). Reconciling reality through simulation: A real-to-sim-to-real approach for robust manipulation. RSS.
+[12] Qureshi, M. N., et al. (2025). SplatSim: Zero-shot Sim2Real transfer of RGB manipulation policies using Gaussian splatting. ICRA.
+[13] Xu, Q., et al. (2026). TwinRL-VLA: Digital twin-driven reinforcement learning for real-world robotic manipulation. ACM MM (arXiv:2602.09023).
+[14] Li, X., et al. (2024). Evaluating real-world robot manipulation policies in simulation. CoRL.
+[15] Chhablani, G., et al. (2025). EmbodiedSplat: Personalized real-to-sim-to-real navigation with Gaussian splats from a mobile device. ICCV.
+[16] Xie, Z., et al. (2025). Vid2Sim: Realistic and interactive simulation from video for urban navigation. CVPR.
+[17] Jin, R., et al. (2026). Grounding sim-to-real generalization in robotic manipulation: An empirical study with vision-language-action models. ECCV.
+[18] Wang, X., et al. (2026). ReVeal: A reconstruction-aware real-to-sim framework for VLA policy evaluation. arXiv preprint arXiv:2609.23910.
+[19] Kachaev, N., et al. (2026). Don't blind your VLA: Aligning visual representations for OOD generalization. AAMAS.
+[20] Lee, Y., et al. (2023). Surgical fine-tuning improves adaptation to distribution shifts. ICLR.
+[21] Maddukuri, A., et al. (2025). Sim-and-real co-training: A simple recipe for vision-based robotic manipulation. RSS.
+[22] Memmel, M., et al. (2024). ASID: Active exploration for system identification in robotic manipulation. ICLR.
+[23] Xie, A., et al. (2024). Decomposing the generalization gap in imitation learning for visual robotic manipulation. ICRA.
+
+
+<!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §12 now holds the AI-use disclosure (Claude via Claude Code) and the Bibliography moved from §6, numbering [1]-[23] unchanged. -->
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top) and the
 deep-research report (reports/Uczenie nawigacji w cyfrowych bliźniakach.md, "Walidność proxy i wyścig z

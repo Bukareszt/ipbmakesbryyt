@@ -1,48 +1,42 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Deep learning has made great progress in computer vision and natural language processing, largely thanks
-to vast amounts of data collected from the web. Physical AI, i.e., AI in robots and other embodied systems
-that perceive and act in the real world, cannot rely on such data. Its models need interaction data, which
-are slow, expensive and sometimes unsafe to collect with real robots, so they are commonly trained in
-simulation. Recently, digital twins, i.e., simulations built from real data, have become a promising
-alternative to hand-crafted simulators. Neural scene reconstruction methods, such as 3D Gaussian
-Splatting, turn a short recording of a real place into a photorealistic digital twin in which a model can
-be trained at scale. Real data are turned into a simulation, a model is trained there and then transferred
-back to reality, which forms a real-to-simulation-to-real loop.
+Deep learning has made great progress in computer vision and language processing, largely thanks to vast
+amounts of data collected from the web. Physical AI, that is, AI in robots and other systems that perceive
+and act in the real world, cannot rely on such data. Collecting interaction data with real robots is slow,
+expensive and sometimes unsafe, so robot models are commonly trained in simulation. Recently, digital
+twins, that is, simulations built from real data, have become a promising alternative to hand-crafted
+simulators. Neural scene reconstruction methods such as 3D Gaussian Splatting turn a short recording of a
+real place into a photorealistic copy, in which a model can be trained and then transferred back to
+reality.
 
-However, the value of this loop depends on how well the trained models generalize. A model that performs
-well in simulation often fails in reality, since no simulation reproduces the real world exactly:
-appearance, geometry, lighting and physics are only approximated, and reconstruction errors differ between
-regions of a scene. The resulting drop in performance is called the simulation-to-reality gap. It is caused by the
-shift between the distributions of simulated and real data, so it is a particular case of learning under
-distribution shift and one of the main obstacles to physical AI. The methods proposed so far have several
-limitations. Domain randomization, even when fitted to real data, varies a few global parameters
-regardless of where the simulation is inaccurate, and invariant representations may discard information
-needed for the task. Moreover, the few real data used for adaptation usually correct either the model or
-the simulation, but not both. Finally, most methods are evaluated on a single task and a few scenes, and it
-is not known which properties of the digital twin and of the learned representations determine whether a
-model generalizes to reality.
+However, a model that performs well in its digital twin often fails in reality, and even more often in
+places it has never seen. No twin reproduces the world exactly. Appearance, geometry, lighting and physics
+are only approximated, and reconstruction errors differ between regions of a scene. The resulting drop in
+performance is called the simulation-to-reality gap. It is a case of learning under distribution shift and
+one of the main obstacles to physical AI.
 
-Therefore, the dissertation aims to improve the generalization of deep learning models in
-real-to-simulation-to-real transfer with methods that analyse and align the models' learned representations,
-applied at the points of the loop where the simulation-to-reality gap arises. The research shall focus on
-understanding which reconstruction errors of a digital twin are harmful to generalization, on localizing the
-stage of a model at which task information is lost on real inputs and reducing the gap there, and on
-choosing, under a fixed budget, the small amount of real data that best corrects both the digital twin and
-the model. It shall also verify whether the obtained improvements carry over to unseen environments and from
-one physical task to another, and whether properties of the shift measured beforehand predict when they do. The methods shall not be tied to a particular task;
-robot navigation and robotic manipulation are planned as two equal testbeds. For navigation, a second,
-independent capture in public recordings of real scenes shall measure the reconstruction-fidelity gap, and,
-if access allows, a real robot shall check the direction of the results and the validity of this proxy. For manipulation, digital twins of real tabletop scenes shall be built from images of public
-robot datasets and compared with published real-robot results of the same policies. Apart from more
-reliable models, the research could help explain why models trained on synthetic data succeed or fail on
-real data, which is relevant to machine learning in general.
+The methods used today address it only in part. Domain randomization varies a few global simulator
+parameters, regardless of where the twin is actually wrong. Invariant representations may discard
+information that the task needs. The few real data collected for adaptation usually correct either the
+model or the simulation, but not both. Most methods are also evaluated on a single task and a few scenes,
+so it is not known which properties of a twin and of the learned representations decide whether a model
+will work in reality.
+
+My research aims to reduce this gap with methods that analyse and align the representations learned by
+the models, applied where the gap arises. I want to find out which reconstruction errors of a twin
+actually harm a model, at which stage inside the model task information is lost on real inputs, and which
+small set of real data best corrects both the twin and the model. I will also check whether the
+improvements carry over to unseen scenes and from one task to another. I will study two tasks of equal
+weight, robot navigation and robotic manipulation, and measure all results on scenes that were not used
+for training.
 
 The results could be applied in service, logistics and assistive robotics, where a robot could be trained
-in a digital copy of a new warehouse, hospital or home and then operate there reliably after little
-real-world adaptation. They also concern other domains in which models are trained on simulated or
-reconstructed data and deployed on real sensor data, such as autonomous driving or inspection robots.
+in a digital copy of a new warehouse, hospital or home and then work there reliably after little
+real-world adaptation. They also concern autonomous driving and inspection robots, whose models are
+likewise trained on simulated or reconstructed data.
 
+
+<!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §5 narrative motivation, first person, about 440 words; content unchanged (twins, gap as distribution shift, limits of DR/invariance/one-sided correction, aim with representation methods, two equal tasks, held-out scenes, applications). Proxy and robot details moved to §9 only. -->
 <!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §5: aim names the representation methods (analyse and align learned representations); RQ2 = stage where task information is lost on real inputs; RQ3 = fixed budget; RQ4 = properties measured beforehand; robot = optional check of the direction of results and of the proxy's validity, if access allows (consistent with §9). -->
 <!-- Wave 24: humanized -->
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §5: navigation and manipulation are two equal testbeds for task-agnostic methods; RQ4 wording "from one physical task to another"; proxy honesty kept for navigation (independent capture = reconstruction-fidelity gap, robot = actuation and sensors); manipulation = twins of real tabletop scenes from public robot dataset images, compared with published real-robot results of the same policies. No model/checkpoint names. -->

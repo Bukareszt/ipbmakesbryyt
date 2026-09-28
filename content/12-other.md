@@ -1,7 +1,7 @@
 # §12 Inne / Other comments (max 1 page)
 
-I prepared this plan with the help of AI tools (Claude, used through Claude Code). They were used for support in searching and checking the literature, drafting,
-proofreading and editorial support, and formatting assistance. I have reviewed all content, and the
+I prepared this plan with the help of AI tools (Claude, used through Claude Code). I used them to search and check the
+literature, draft text, proofread, edit and format. I have reviewed all content, and the
 references were checked against publisher and preprint records.
 
 ### Bibliography

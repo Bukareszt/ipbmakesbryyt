@@ -1,20 +1,18 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
 The main expected contribution of my dissertation is a set of representation learning methods that make
-deep learning models trained in digital twins generalize better to reality and to unseen places. The work
-will also show whether the simulation-to-reality gap is caused mainly by a limited set of task-relevant
+deep learning models trained in digital twins generalize better to reality and to unseen places. I also expect to learn whether the simulation-to-reality gap is caused mainly by a limited set of task-relevant
 discrepancies, which can be found among the reconstruction errors of a twin, located inside the model and
 reduced with a small amount of well-chosen real data.
 
-The work should provide evidence about which reconstruction errors harm generalization, at which stage of
+The experiments should indicate which reconstruction errors harm generalization, at which stage of
 a model task information is lost on real inputs, when correcting both the twin and the model with the
 same real data pays off, and whether such gains carry over to new scenes and between navigation and
-manipulation. Because transfer from simulation to reality is a case of learning under distribution shift,
-these findings may also be relevant to domain adaptation, representation learning and active learning in
+manipulation. As these questions concern learning under distribution shift, the findings may also be relevant to domain adaptation, representation learning and active learning in
 general. I plan to release the code, the evaluation protocol and, where licences allow, the trained
-models, so that others can compare methods on held-out scenes in the same way. My work should be a
-scientific contribution bridging artificial intelligence and robotics, with practical significance for
-deploying learning-based robots in new environments such as warehouses, hospitals and homes.
+models, so that others can compare methods on held-out scenes in the same way. I hope the dissertation will connect machine learning research on distribution shift with
+robotics practice and make it easier to deploy learning-based robots in new warehouses, hospitals and
+homes.
 
 
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §8 shortened to about 200 words, first person: main contribution, evidence, released code/evaluation/models, bridge between AI and robotics. -->

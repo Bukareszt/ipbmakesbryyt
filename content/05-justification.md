@@ -22,8 +22,8 @@ model or the simulation, but not both. Most methods are also evaluated on a sing
 so it is not known which properties of a twin and of the learned representations decide whether a model
 will work in reality.
 
-My research aims to reduce this gap with methods that analyse and align the representations learned by
-the models, applied where the gap arises. I want to find out which reconstruction errors of a twin
+My research aims to reduce this gap with methods that analyse the representations learned by the models
+and align them at the stage where the gap arises. I want to find out which reconstruction errors of a twin
 actually harm a model, at which stage inside the model task information is lost on real inputs, and which
 small set of real data best corrects both the twin and the model. I will also check whether the
 improvements carry over to unseen scenes and from one task to another. I will study two tasks of equal

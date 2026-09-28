@@ -10,32 +10,32 @@ methods must work at this scale. I will rely on public datasets that contain ind
 same real scenes. I will study two tasks, robot navigation and robotic manipulation, and all results must
 be measured on held-out scenes that were not used for training or model selection.
 
-My research questions and hypotheses are as follows:
+The questions (RQ) and hypotheses (H) of my research are:
 
-1. Which reconstruction errors of a digital twin, varying across a scene, harm the generalization of
+1. RQ1. Which reconstruction errors of a digital twin, varying across a scene, harm the generalization of
    navigation and manipulation models trained in it?
-2. That the harm caused by an error in a region is predicted better by how much it changes the features of
+2. H1. The harm caused by an error in a region is predicted better by how much it changes the features of
    a fixed pretrained visual encoder on views rendered with and without the error than by its size in the
-   image or geometry, e.g., PSNR, LPIPS or depth error. And that randomizing each region according to its
+   image or geometry, e.g., PSNR, LPIPS or depth error. Second, randomizing each region according to its
    estimated reconstruction error and task relevance generalizes better than uniform randomization of equal
    total strength.
-3. At which stage of a model trained or fine-tuned in a twin do real inputs first lose task information
+3. RQ2. At which stage of a model trained or fine-tuned in a twin do real inputs first lose task information
    that is available for simulated inputs? I expect an identifiable earliest stage, or a narrow range of
    stages, found by linear probes checked against control tasks, and I will test with causal interventions
    whether the model uses this information.
-4. That aligning simulated and real representations at that stage reduces the simulation-to-reality gap
+4. H2. Aligning simulated and real representations at that stage reduces the simulation-to-reality gap
    more than the same alignment at the input, at the final features, at all stages or at layers chosen by
    existing criteria, under equal real data and training effort.
-5. Which real data, chosen under a fixed budget, best correct both the digital twin and the model? I
-   expect that using the same selected data to correct both reduces the gap more than correcting either
+5. RQ3. Which real data, chosen under a fixed budget using the representation-based signals of RQ1 and
+   RQ2, best correct both the digital twin and the model? I expect that using the same selected data to correct both reduces the gap more than correcting either
    one alone, and I will compare my selection with random and failure-driven selection.
-6. Do the gains transfer, with unchanged settings, to unseen scenes and from one task to the other, and
+6. RQ4. Do the gains transfer, with unchanged settings, to unseen scenes and from one task to the other, and
    can properties of the shift measured beforehand predict this better than simple indicators, such as
    the size of the gap or the image-level discrepancy?
-7. That, if the harm follows the size of the error rather than the change in features, reconstruction
-   uncertainty and action sensitivity could still guide randomization and data selection, although
-   uncertainty misses errors that the reconstruction reproduces consistently; I will follow this route mainly if the
-   representation-based signals turn out to be uninformative.
+7. Fallback. If harm follows the size of the error rather than the change in features, reconstruction
+   uncertainty and action sensitivity can guide randomization and data selection instead, although
+   uncertainty misses errors that the reconstruction reproduces consistently. I will use this only if the
+   representation-based signals prove uninformative.
 
 
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §7 accepted-plan structure: goal paragraph, constraints paragraph (no own robot, academic GPUs, public data with independent captures, two tasks, held-out scenes), then 7 numbered items mixing questions and hypotheses (RQ1 Q+H, RQ2 Q with probes/control tasks/causal test + H alignment, RQ3 Q+H, RQ4 Q) and a fallback item 7 (uncertainty + action sensitivity, with the consistent-error caveat). No numeric thresholds; invariance wording not in §7. -->

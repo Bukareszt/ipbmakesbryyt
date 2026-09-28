@@ -228,3 +228,36 @@ No required fixes remain. One optional wording point:
 2. Optional. §6 RAE-NWM could name SACSoN too: EN "planned better with them on SACSoN and SCAND but not on RECON", PL "planował z nimi lepiej na zbiorach SACSoN i SCAND, ale nie na RECON".
 
 No other new or unresolved problems found.
+
+## Round 5: citations after restyle
+
+Date: 2026-09-28. Inputs: commit 51241c6, visible text (before the first "<!--") of content/05 to 09, "### Bibliography" in content/12-other.md (25 entries), output/IPB_Grzegorz_Piotrowski_PL.md.
+Sources: rounds 1 to 4 (old numbering mapped to new), arXiv API abstracts re-fetched for 2310.06114 (UniSim), 2505.12705 (DreamGen), 2606.23444 (SkyJEPA), 2606.05015 (quadrotor world models), 2605.06388 (Nilaksh et al.), 2606.31101 (WAM sim-to-real).
+
+Mapping old to new: [1] [2] unchanged, Cosmos 4 to 3, VLAW 5 to 4, World-in-World 6 to 5, WAM sim-to-real 7 to 6, LeCun 8 to 7, NWM 3 to 8, Isaac Lab 12 to 9, Cosmos Transfer 13 to 10, DreamGen 14 to 11, DreamZero 15 to 12, DINO-WM 16 to 13, V-JEPA 2 9 to 14, SkyJEPA 10 to 15, quadrotor study 17 to 16, Nilaksh 18 to 17, RAE-NWM 19 to 18, Ctrl-World 20 to 19, SIMPLER 21 to 20, DR 22 to 21, co-training 23 to 22, SimDist 24 to 23, Wang et al. 25 to 24, LoRA 30 to 25. Removed: DreamerV3, the Interactive World Simulator, the VLA representation and layer-selection papers, and the paired-view paper. Their claims are gone from the text.
+
+### A. Sentences with stronger or new wording
+
+- §5 "UniSim [2] trained robot policies only inside such a model and then used them on real robots" and §6 "Yang et al. [2] showed with UniSim that policies trained purely in such a model transferred to the real world without further training". S. Abstract: policies "can be deployed in the real world in zero shot after training purely in simulation".
+- §5 "a world action model trained only on simulated demonstrations succeeded in about a third of the trials on a real robot arm [6]", "the first such study I have found". S. About 800 synthetic demonstrations per task from simulation with domain randomization, "no real demonstrations", 35% on a Franka, "first successful sim-to-real transfer of a world-action model". §6 "without any real robot demonstrations" S.
+- §6 DreamGen [11] "a humanoid robot learned 22 new behaviours from teleoperation data of a single pick-and-place task". S (abstract, near quote).
+- §6 SkyJEPA [15] "trained such a world model on automatically generated data and reported zero-shot simulation-to-reality control ... in outdoor flights, with state inputs rather than images". S. Abstract: "structured pipeline for automated dataset generation", "outdoor closed-loop experiments", "robust zero-shot sim-to-real transfer". State input per round 1 full text.
+- §6 [16] "the model that scored best in simulation failed on the real platform, while the robustness of the learned representation across environments predicted real transfer". S. Abstract: "the model that dominated simulation policy evaluation failed on the real platform", "world model robustness during SSL pretraining is a strong predictor of sim-to-real transfer".
+- §6 Nilaksh et al. [17] "compared six encoders ... on BridgeData V2 ... encoders pretrained on semantic content were better for planning and for evaluating a fixed policy than encoders trained to reconstruct pixels". S. Abstract: six reconstruction and semantic encoders on BridgeV2, semantic encoders "generally excel" on planning and downstream policy performance. The hedge "generally" is dropped, acceptable for a one-line summary.
+- §6 RAE-NWM [18] "on SACSoN and SCAND but not on RECON" S (round 4 Table 2), "Neither work trained policies inside the models" S.
+- §6 VLAW [4] "lack the physical accuracy needed to improve policies" S (causal clause removed, still true). World-in-World [5], Ctrl-World [19], SIMPLER [20] "showed ... nearly the same order" S as in rounds 1 to 4.
+- §6 LeCun [7] "such as texture or sensor noise": examples are the author's gloss of "unpredictable details", acceptable. DINO-WM [13] S. V-JEPA 2 [14] S. DreamZero [12] S. Isaac Lab [9] and Cosmos Transfer [10] sentence S.
+- §6 DR [21], co-training [22], SimDist [23] (adapts only the dynamics, frozen encoder trained on simulation data), Wang et al. [24] (encoder and policy, object poses), LoRA [25] "cheaply" S.
+- §9 SIMPLER [20] "rebuilds some BridgeData V2 scenes in a physics simulator" S. V-JEPA 2 [14] as an encoder pretrained on real video S. "the setup of Nilaksh et al. [17], whose code is public" S (github.com/chandar-lab/semantic-wm). RAE-NWM [18] on RECON and SCAND with released settings S (public code and weights). Isaac Lab [9], Cosmos Transfer [10] driven by depth, LoRA [25], DR [21], co-training [22] S as tool and baseline references. Ctrl-World no longer appears in §9, so the round 4 optional point is moot.
+
+### B. Numbering, bibliography and Polish copy
+
+- First appearance across §5 to §9 is exactly 1 to 25 (45 markers). Every entry is cited, no marker points to a missing entry.
+- Bibliography metadata unchanged from round 4 for all kept entries (only renumbered).
+- EN and PL bibliographies [1] to [25] are identical line by line.
+- Citation sequences match in all 12 citing paragraphs of EN and PL.
+- PL cited sentences say the same as EN, including "bez dalszego treningu" [2], "zawiódł" [16], "automatycznie wygenerowanych danych" [15], "SACSoN i SCAND, ale nie na RECON" [18], "bez żadnych demonstracji z rzeczywistego robota" [6].
+
+### C. Problems
+
+None. No required or optional citation fixes remain.

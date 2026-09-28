@@ -5,7 +5,7 @@
 | 1 | Doctoral School courses. Reading the literature and considering possible research directions |
 | 2 | Doctoral School courses and literature review. Choosing the dissertation topic with the supervisor and preparing the Individual Research Plan |
 | 3 | Preparing the research environment with digital twins, simulators and public datasets. Initial experiments on harmful reconstruction errors (RQ1) |
-| 4 | Further experiments on RQ1. Preparing and submitting the first publication to a robotics conference or journal such as ICRA or RA-L. First experiments on RQ2 |
+| 4 | Further experiments on RQ1. Preparing and submitting the first publication to a 200-point venue in machine learning or robot learning, such as ICLR, RSS or IEEE RA-L. First experiments on RQ2 |
 | 5 | Experiments on localizing the gap inside models and aligning representations (RQ2). Preparing a scientific publication |
 | 6 | Experiments on selecting real data (RQ3) and on transfer to unseen scenes and between tasks (RQ4). Preparing a publication and, if access allows, tests on a real robot |
 | 7 | Final experiments and submitting a paper to a conference or journal. First draft of the dissertation |

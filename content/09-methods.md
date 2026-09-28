@@ -47,9 +47,9 @@ I will run experiments on the supercomputers of the Wrocław Centre for Networki
 Claude Code to speed up writing and testing code. They will also help with routine work such as
 monitoring long experiments and proofreading.
 
-I plan to publish my results at conferences and in journals from the ministerial list. In robotics these
-include ICRA, IROS, RSS and IEEE RA-L, and in machine learning and computer vision NeurIPS, ICML, ICLR and
-CVPR. Where possible, I will also post the papers as arXiv preprints.
+I plan to publish my results at conferences and in journals worth 200 points on the ministerial list. In
+machine learning these are NeurIPS, ICML and ICLR, in computer vision CVPR, ICCV and ECCV, and in robot
+learning RSS and the journal IEEE RA-L. Where possible, I will also post the papers as arXiv preprints.
 
 <!-- Wave 29: humanized (no semicolons) -->
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §9 practical first-person methods as in the accepted plan: tools (PyTorch, gsplat, COLMAP, Habitat, ManiSkill3, Git/GitHub, Hugging Face), open release, public data (ScanNet++, MuSHRoom, public robot datasets, SIMPLER [14]), honest proxy statement, optional robot, per-RQ protocol, metrics and statistics, WCSS SLURM + PLGrid, AI coding assistants, venues and arXiv. MLinPL and department clusters dropped. -->

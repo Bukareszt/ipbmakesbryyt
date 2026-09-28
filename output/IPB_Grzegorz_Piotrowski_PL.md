@@ -26,7 +26,7 @@ Metody uczenia reprezentacji dla generalizacji modeli uczenia głębokiego międ
 | 1 | Udział w zajęciach Szkoły Doktorskiej, zapoznanie się z literaturą i rozważenie możliwych kierunków badań |
 | 2 | Udział w zajęciach Szkoły Doktorskiej, przegląd literatury, wybór tematu rozprawy doktorskiej wspólnie z promotorem i przygotowanie Indywidualnego Planu Badawczego |
 | 3 | Przygotowanie środowiska badawczego z cyfrowymi bliźniakami, symulatorami i publicznymi zbiorami danych oraz wstępne eksperymenty z RQ1 dotyczące szkodliwych błędów rekonstrukcji |
-| 4 | Dalsze eksperymenty z RQ1, przygotowanie pierwszej publikacji i zgłoszenie jej na konferencję lub do czasopisma z zakresu robotyki, na przykład na ICRA lub do RA-L, a także pierwsze eksperymenty z RQ2 |
+| 4 | Dalsze eksperymenty z RQ1, przygotowanie pierwszej publikacji i zgłoszenie jej na konferencję lub do czasopisma za 200 punktów z zakresu uczenia maszynowego lub uczenia robotów, na przykład na ICLR, RSS lub do IEEE RA-L, a także pierwsze eksperymenty z RQ2 |
 | 5 | Eksperymenty z RQ2 dotyczące lokalizacji luki wewnątrz modeli i wyrównywania reprezentacji oraz przygotowanie publikacji naukowej |
 | 6 | Eksperymenty z RQ3 dotyczące doboru danych rzeczywistych i z RQ4 dotyczące transferu do niewidzianych scen i między zadaniami, przygotowanie publikacji oraz testy na rzeczywistym robocie, jeśli pozwoli na to dostęp |
 | 7 | Końcowe eksperymenty, zgłoszenie artykułu na konferencję lub do czasopisma i pierwsza wersja rozprawy doktorskiej |
@@ -102,7 +102,7 @@ Na odłożonych scenach będę mierzył odsetek sukcesów oraz lukę między sym
 
 Eksperymenty uruchomię na superkomputerach WCSS, czyli Wrocławskiego Centrum Sieciowo-Superkomputerowego, gdzie zadaniami zarządza SLURM, oraz na zasobach PLGrid. Zamierzam korzystać z asystentów programowania opartych na sztucznej inteligencji, takich jak Claude Code. Pomogą mi szybciej pisać i testować kod oraz wykonywać rutynowe zadania, jak monitorowanie długich eksperymentów i korekta tekstu.
 
-Wyniki planuję publikować na konferencjach i w czasopismach z listy ministerialnej. W robotyce są to między innymi ICRA, IROS, RSS i IEEE RA-L, a w uczeniu maszynowym i widzeniu komputerowym NeurIPS, ICML, ICLR i CVPR. Tam, gdzie to możliwe, udostępnię artykuły także jako preprinty w serwisie arXiv.
+Wyniki planuję publikować na konferencjach i w czasopismach za 200 punktów z listy ministerialnej. W uczeniu maszynowym są to NeurIPS, ICML i ICLR, w widzeniu komputerowym CVPR, ICCV i ECCV, a w uczeniu robotów RSS i czasopismo IEEE RA-L. Tam, gdzie to możliwe, udostępnię artykuły także jako preprinty w serwisie arXiv.
 
 ## 10. Streszczenie popularnonaukowe
 
@@ -116,7 +116,7 @@ Robots are increasingly trained in digital twins, that is, virtual copies of rea
 
 ## 11. Termin oddania do druku artykułu naukowego lub monografii
 
-Wrzesień 2027 (planowane zgłoszenie na konferencję lub do czasopisma z listy ministerialnej poświęcone robotyce, np. ICRA 2028 lub IEEE Robotics and Automation Letters).
+Wrzesień 2027 (planowane zgłoszenie na konferencję lub do czasopisma za 200 punktów z listy ministerialnej, np. na konferencję ICLR 2028 lub do czasopisma IEEE Robotics and Automation Letters).
 
 ## 12. Inne
 

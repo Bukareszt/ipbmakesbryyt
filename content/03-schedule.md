@@ -4,14 +4,14 @@
 |---|---|
 | 1 | Doctoral School courses. Reading the literature and considering possible research directions |
 | 2 | Doctoral School courses and literature review. Choosing the dissertation topic with the supervisor and preparing the Individual Research Plan |
-| 3 | Preparing the research environment with digital twins, simulators and public datasets. Initial experiments on harmful reconstruction errors (RQ1) |
+| 3 | Setting up the research environment with world models, a physics simulator and public robot datasets. Initial experiments on harmful errors of world-model simulations (RQ1) |
 | 4 | Further experiments on RQ1. Preparing and submitting the first publication to a 200-point venue in machine learning or robot learning, such as ICLR, RSS or IEEE RA-L. First experiments on RQ2 |
-| 5 | Experiments on localizing the gap inside models and aligning representations (RQ2). Preparing a scientific publication |
-| 6 | Experiments on selecting real data (RQ3) and on transfer to unseen scenes and between tasks (RQ4). Preparing a publication and, if access allows, tests on a real robot |
+| 5 | Experiments on localizing the gap inside policies and aligning representations (RQ2). Preparing a scientific publication |
+| 6 | Experiments on selecting real rollouts (RQ3) and on transfer to unseen scenes and between tasks (RQ4). Preparing a publication and, if access allows, tests on a real robot |
 | 7 | Final experiments and submitting a paper to a conference or journal. First draft of the dissertation |
 | 8 | Completing and revising the doctoral dissertation, then submitting it |
 
-
+<!-- Wave 32: rewritten around world models -->
 <!-- Wave 29: humanized (no semicolons) -->
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §3 one short line per semester in the accepted plan's style: sem. 1-2 courses, literature review, topic choice and IPB; research from sem. 3; RQ1 paper submitted in sem. 4 to a robotics venue (ICRA or RA-L), consistent with §11; RQ2 sem. 5; RQ3/RQ4 and optional robot sem. 6; sem. 7-8 copied from the accepted plan. Numbered sub-items, grant, internship and conference items dropped. -->
 <!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §3 semester 4: per-region randomization follows the estimated reconstruction error (uncertainty complemented by held-out discrepancy), as in §6, §7 and §9. -->

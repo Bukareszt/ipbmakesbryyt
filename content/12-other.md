@@ -3,33 +3,35 @@
 I used Claude (via Claude Code) for literature search, drafting and editing, and I reviewed all content and references myself.
 
 ### Bibliography
-[1] Torne, M., et al. (2024). Reconciling reality through simulation: A real-to-sim-to-real approach for robust manipulation. RSS.
-[2] Chhablani, G., et al. (2025). EmbodiedSplat: Personalized real-to-sim-to-real navigation with Gaussian splats from a mobile device. ICCV.
-[3] Jain, A., et al. (2025). PolaRiS: Scalable real-to-sim evaluations for generalist robot policies. arXiv:2512.16881.
-[4] Tobin, J., et al. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. IROS.
-[5] Chebotar, Y., et al. (2019). Closing the sim-to-real loop: Adapting simulation randomization with real world experience. ICRA.
-[6] Tiboni, G., et al. (2024). Domain randomization via entropy maximization. ICLR.
-[7] Memmel, M., et al. (2024). ASID: Active exploration for system identification in robotic manipulation. ICLR.
-[8] Cheng, S., et al. (2025). Generalizable domain adaptation for sim-and-real policy co-training. NeurIPS.
-[9] Maddukuri, A., et al. (2025). Sim-and-real co-training: A simple recipe for vision-based robotic manipulation. RSS.
-[10] Jin, R., et al. (2026). Grounding sim-to-real generalization in robotic manipulation: An empirical study with vision-language-action models. ECCV.
-[11] Xie, A., et al. (2024). Decomposing the generalization gap in imitation learning for visual robotic manipulation. ICRA.
-[12] Ben-David, S., et al. (2010). A theory of learning from different domains. Machine Learning.
-[13] Kachaev, N., et al. (2026). Don't blind your VLA: Aligning visual representations for OOD generalization. AAMAS.
-[14] Kadian, A., et al. (2020). Sim2Real predictivity: Does evaluation in simulation predict real-world performance? RA-L.
-[15] Zhao, H., et al. (2019). On learning invariant representations for domain adaptation. ICML.
-[16] Ganin, Y., et al. (2016). Domain-adversarial training of neural networks. JMLR.
-[17] Lei, Y., et al. (2026). A mechanistic analysis of sim-and-real co-training in generative robot policies. arXiv:2604.13645.
-[18] Kerbl, B., et al. (2023). 3D Gaussian splatting for real-time radiance field rendering. ACM TOG.
-[19] Qureshi, M. N., et al. (2025). SplatSim: Zero-shot Sim2Real transfer of RGB manipulation policies using Gaussian splatting. ICRA.
-[20] Xu, Q., et al. (2026). TwinRL: Digital twin-driven reinforcement learning for real-world robotic manipulation. arXiv:2602.09023.
-[21] Li, X., et al. (2024). Evaluating real-world robot manipulation policies in simulation. CoRL.
-[22] Xie, Z., et al. (2025). Vid2Sim: Realistic and interactive simulation from video for urban navigation. CVPR.
-[23] Wang, X., et al. (2026). ReVeal: A reconstruction-aware real-to-sim framework for VLA policy evaluation. arXiv:2609.23910.
-[24] Lee, Y., et al. (2023). Surgical fine-tuning improves adaptation to distribution shifts. ICLR.
-[25] Agia, C., et al. (2025). CUPID: Curating data your robot loves with influence functions. CoRL.
-[26] Liao, A., et al. (2026). Active real-world factor-based evaluation for generalist robot policies. arXiv:2607.14439.
+[1] Ha, D., & Schmidhuber, J. (2018). World models. arXiv:1803.10122.
+[2] Yang, S., et al. (2024). Learning interactive real-world simulators. ICLR.
+[3] Bar, A., et al. (2025). Navigation world models. CVPR.
+[4] Agarwal, N., et al. (2025). Cosmos world foundation model platform for physical AI. arXiv:2501.03575.
+[5] Guo, Y., et al. (2026). VLAW: Iterative co-improvement of vision-language-action policy and world model. arXiv:2602.12063.
+[6] Zhang, J., et al. (2026). World-in-World: World models in a closed-loop world. ICLR.
+[7] Wang, Z., et al. (2026). Efficient sim-to-real transfer of world-action models from synthetic priors. arXiv:2606.31101.
+[8] LeCun, Y. (2022). A path towards autonomous machine intelligence. OpenReview.
+[9] Assran, M., et al. (2025). V-JEPA 2: Self-supervised video models enable understanding, prediction and planning. arXiv:2506.09985.
+[10] Kachaev, N., et al. (2026). Don't blind your VLA: Aligning visual representations for OOD generalization. AAMAS.
+[11] Hafner, D., et al. (2025). Mastering diverse control tasks through world models. Nature.
+[12] Mittal, M., et al. (2025). Isaac Lab: A GPU-accelerated simulation framework for multi-modal robot learning. arXiv:2511.04831.
+[13] Jang, J., et al. (2025). DreamGen: Unlocking generalization in robot learning through video world models. CoRL.
+[14] Ye, S., et al. (2026). World action models are zero-shot policies. arXiv:2602.15922.
+[15] Zhou, G., et al. (2025). DINO-WM: World models on pre-trained visual features enable zero-shot planning. ICML.
+[16] Rao, P., et al. (2026). SkyJEPA: Learning long-horizon world models for zero-shot sim-to-real control of quadrotors. arXiv:2606.23444.
+[17] Guo, Y., et al. (2026). Ctrl-World: A controllable generative world model for robot manipulation. ICLR.
+[18] Gemini Robotics Team (2025). Evaluating Gemini Robotics policies in a Veo world simulator. arXiv:2512.10675.
+[19] Li, X., et al. (2024). Evaluating real-world robot manipulation policies in simulation. CoRL.
+[20] Ben-David, S., et al. (2010). A theory of learning from different domains. Machine Learning.
+[21] Zhao, H., et al. (2019). On learning invariant representations for domain adaptation. ICML.
+[22] Tobin, J., et al. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. IROS.
+[23] Maddukuri, A., et al. (2025). Sim-and-real co-training: A simple recipe for vision-based robotic manipulation. RSS.
+[24] Lei, Y., et al. (2026). A mechanistic analysis of sim-and-real co-training in generative robot policies. arXiv:2604.13645.
+[25] Lee, Y., et al. (2023). Surgical fine-tuning improves adaptation to distribution shifts. ICLR.
+[26] Xu, Q., et al. (2026). TwinRL: Digital twin-driven reinforcement learning for real-world robotic manipulation. arXiv:2602.09023.
+[27] Xie, A., et al. (2024). Decomposing the generalization gap in imitation learning for visual robotic manipulation. ICRA.
 
+<!-- Wave 32: rewritten around world models -->
 <!-- Wave 31: grounding + clarity (ultracode) -->
 <!-- Wave 29: humanized (no semicolons) -->
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §12 now holds the AI-use disclosure (Claude via Claude Code) and the Bibliography moved from §6, numbering [1]-[23] unchanged. -->

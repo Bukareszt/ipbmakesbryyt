@@ -1,7 +1,8 @@
 # §2 Temat rozprawy doktorskiej / Topic of doctoral dissertation
 
-Metody uczenia reprezentacji dla generalizacji modeli uczenia głębokiego między symulacją a rzeczywistością w fizycznej sztucznej inteligencji / Representation learning methods for simulation-to-reality generalization of deep learning models in physical AI
+Metody uczenia reprezentacji dla generalizacji polityk uczonych w modelach świata do rzeczywistości w fizycznej sztucznej inteligencji / Representation learning methods for the simulation-to-reality generalization of policies trained in world models for physical AI
 
+<!-- Wave 32: rewritten around world models -->
 <!-- Wave 26: topic phrased like the accepted K46 IPB of J. Binkowski ("Representation learning methods for ..."); RQ1-RQ3 all work at the level of representations -->
 <!-- Wave 22: navigation + manipulation equal (2026-09-27, binding student decision). §2 checked: topic is general (real-to-sim-to-real for physical AI), unchanged. -->
 <!-- Review-6 (2026-09-27): PL topic now uses "uczenia głębokiego" (same term as §10). -->

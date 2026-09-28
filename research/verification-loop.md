@@ -282,3 +282,74 @@ These add detail an accepted plan would not carry. Removing them changes no comm
 - [SIMPLER, arXiv 2405.05941](https://arxiv.org/abs/2405.05941), Appendix B
 - [BridgeData V2](https://rail-berkeley.github.io/bridgedata/), [BridgeData V2 paper](https://arxiv.org/html/2308.12952v3)
 - [SimplerEnv](https://github.com/simpler-env/SimplerEnv)
+
+## Round 4: realism
+
+Reviewer scope: visible text of §2, §3, §5, §6, §7, §8, §9, §10 at commit a5c2998, after the round 3 fixes (state on 2026-09-28). I checked N1, N2 and the cuts against the current text, then read the whole plan once more for medium or high problems. Fixes are in the plan's style.
+
+### Status of round 3 findings
+
+- N1 resolved in wording. §9 now checks in the first weeks how many BridgeData V2 recordings come from the SIMPLER scenes, leaves them out of world model training in every RQ and names a fallback. The data question itself is still open, see P2.
+- N2 resolved differently from my proposal, and the new version is consistent across sections. §7 says navigation runs RQ1 only with the settings chosen on manipulation and that these runs test H4, §3 semester 4 has RQ1 in manipulation only, semester 6 has "for RQ1, to navigation (RQ4)", and §9 repeats "with only the settings chosen on manipulation and no new tuning". What "settings" means across two predictors is not defined, see P1.
+- The low item on RQ2 is resolved (§7 RQ2 now says "measured in open loop").
+- Ctrl-World wording is correct. Its paper selected successful imagined rollouts by human judgement before fine-tuning.
+- The cuts left no dangling references. All thirty references are still cited in the visible text, and "the baselines named above" still points to the policy trained on real data.
+
+### What I verified
+
+- BridgeData V2 does contain toy sink and tabletop environments. The raw release lists `toysink1_room8052`, `toysink2_bww`, `toysink3_bww`, `tabletop_dark_wood`, `tabletop_light_wood` and `tabletop_white` under the Berkeley part of BridgeData v1, and `datacol2_tabletop_dark_wood` under BridgeData v2. The SIMPLER paper says only that its WidowX tasks come from "environments from the BridgeData V2 dataset" and describes a tabletop with a square layout and a sink with a yellow basket. It does not name the environment folder or say how many recordings were made there. So the count is still unknown, and the check planned in §9 is needed.
+- In the SIMPLER paper, released policies trained on all of BridgeData V2 (RT-1-X, Octo-Base, Octo-Small) reached low average success in the WidowX visual matching tasks, with about 24 trials per task and several task averages near zero.
+- RAE-NWM predicts dense DINOv2 features with its own predictor and training recipe, and planned better than NWM on SCAND but not on RECON.
+
+### Findings
+
+**P1. §7, §9 and H4: "settings chosen on manipulation and no new tuning" cannot be applied literally to navigation. Severity: medium. New, follows from the N2 resolution.**
+Quoted (§7): "In navigation I run RQ1 only with the settings chosen on manipulation, without new tuning, and these runs are the test of H4." (§9): "For navigation I will do the same with the predictor of RAE-NWM [19] ... with only the settings chosen on manipulation and no new tuning."
+Problem: the manipulation models use the predictor of [18], a video encoder such as V-JEPA 2 compressed by an adapter, and a manipulation policy. The navigation models use the RAE-NWM predictor, which was built around dense DINOv2 features, and a goal conditioned policy. Learning rates, adapter size, training length and the amount of imagined data measured in trajectories do not carry over between these models, so some settings must be chosen anew in navigation. If they are chosen by looking at navigation results, the test of H4 is lost. If they are copied, a failure in navigation cannot be told apart from a poor fit of the copied values. What can carry over is the choice itself: which prediction target, which encoder of the policy and whether imagined data are added.
+Fix (§9, replace "with only the settings chosen on manipulation and no new tuning"): "I will carry over from manipulation only the choices that won there, and I will train every navigation model with the released settings of RAE-NWM, without looking at navigation results. I will read a gain in navigation as support for H4, and a lack of gain as a limit of the choice that I will report without claiming its cause."
+
+**P2. §9: the pool of SIMPLER scene recordings has to serve several roles, and their split is not stated. Severity: medium. Unresolved part of N1.**
+Quoted (§9): "In every RQ I will leave them out of world model training and use them as the unseen scenes" and "co-training with a small set of real trajectories" (RQ2) and "adapt a world model and a policy to held-out BridgeData V2 scenes with a small set of real trajectories" (RQ3).
+Problem: the same recordings are the RQ2 test set, the unseen test set in RQ1 and RQ4, the adaptation data of RQ3 at several amounts, and possibly the small real set for RQ2 co-training. RQ3 cannot adapt to these scenes without training on some of their recordings, which contradicts "in every RQ I will leave them out". If the RQ2 co-training set also comes from them, RQ2 is tested on scenes it trained on. With an unknown and possibly small number of recordings, the largest amount in RQ3, called "all available real data" in H3, may be small.
+Fix (§9, after "and use them as the unseen scenes"): "In RQ3 I will split these recordings into a part for adaptation and a part for evaluation, and the small real set for co-training in RQ2 will come from other BridgeData V2 scenes."
+
+**P3. §7 RQ4 and §9: the unseen scene part of RQ4 has no test of its own. Severity: medium. New, follows from the N1 fix.**
+Quoted (§9): "In every RQ I will leave them out of world model training and use them as the unseen scenes" and "For RQ4 I will apply the best choices with unchanged settings to held-out scenes".
+Problem: since the SIMPLER scenes are unseen in every RQ, the closed loop results of RQ1 to RQ3 are already results in unseen scenes. RQ4 then repeats them, and H4 for unseen scenes has no observation that could tell it apart from RQ1.
+Fix (§9, replace "For RQ4 I will apply the best choices with unchanged settings to held-out scenes and, for RQ1, to navigation."): "For RQ4 I will compare the gain of each best choice on held-out trajectories of the training scenes with its gain in the unseen scenes, and I will test it in navigation for RQ1."
+
+**P4. §9 RQ1: success in SIMPLER may be too rare to separate the variants. Severity: medium. New.**
+Quoted: "I will report whether imagined data helps beyond it, mainly in SIMPLER, where the policy acts in closed loop."
+Problem: policies trained on all of BridgeData V2 by large teams reached low success in SIMPLER's WidowX tasks. My policies are smaller, trained from a world model, and tested in scenes left out of training. If most runs score near zero on about 24 trials per task, differences between prediction targets and the gain over the real data baseline will be within noise, and RQ1 loses its only closed loop measure.
+Fix (§9, after the baseline sentence): "Before the main comparison I will check that the baseline policy succeeds in SIMPLER often enough to show differences, and if it does not, I will judge RQ1 mainly by action matching and say so."
+
+**P5. §9 RQ1: the success classifier sees frames of different quality for the two prediction targets. Severity: medium. New, not covered by the R3 fix.**
+Quoted: "keep the rollouts that the same success classifier judges successful" and "For feature models I will compare frames from a decoder trained separately from the world model".
+Problem: the classifier must judge decoded frames, and the feature model is decoded by a light decoder while the autoencoder model is decoded by its own. If the classifier is less accurate on one kind of frame, it keeps more failed rollouts for that target, and the policy trained on them is worse for a reason that has nothing to do with the representation. This confounds H1 in the same way R3 did.
+Fix (§9, after the classifier sentence): "I will check the classifier by hand on a sample of rollouts from every world model and report how often it is right for each."
+
+**P6. §7 H1: the rival test needs models that follow actions equally well, but RQ1 has only two per predictor. Severity: medium. Unresolved part of R8.**
+Quoted: "If the gain disappears between models that follow actions equally well, this supports the rival."
+Problem: with one model per prediction target, the two will almost surely differ in action following, so there is no pair that follows actions equally well and the rival cannot be tested.
+Fix (§9, after the action following sentence): "To compare models that follow actions equally well, I will also train policies in earlier checkpoints of each world model and compare targets at similar action following."
+
+### Low items
+
+- §6: "Neither work trained policies inside the models or tested them on real data". RAE-NWM evaluated planning on real RECON and SCAND trajectories offline, which is the same kind of test as my navigation measure. Shorten to "Neither work trained policies inside the models, and this step is what RQ1 adds."
+- §7: "these runs are the test of H4" should be "these runs are part of the test of H4", since H4 also covers unseen scenes.
+- §9: "one world model that predicts video and one that predicts features" while H1 says "codes of an autoencoder". Use "one that predicts the codes of an image autoencoder" for consistency.
+- §9: in navigation, the policy that is rolled out with action noise and the success classifier (for example reaching the goal image) are not named. One clause would do.
+- RAE-NWM gained on SCAND but not on RECON, so in navigation I should report the two datasets separately.
+- §7 Fallback studies "amount and diversity" of data, which RQ1 already varies for imagined data. It still reads as a fallback because it adds mixing ratios with simulated data, so it can stay.
+
+### Summary
+
+I found no high severity problem. Six medium ones remain (P1 to P6). None needs a new direction or more work than a sentence in §9, and P1 and P3 make H4 testable as written. §3, §5, §7, §8 and §10 are consistent with each other and with §9 on the role of navigation. The overall scope is feasible for one student with the [18] and RAE-NWM code, a fixed Cosmos Transfer subset and the larger models optional.
+
+### Sources
+
+- [SIMPLER, arXiv 2405.05941](https://arxiv.org/abs/2405.05941), Table V and Appendix B
+- [BridgeData raw release, BridgeData v1 Berkeley environments](https://rail.eecs.berkeley.edu/datasets/bridge_release/raw/bridge_data_v1/berkeley/), [BridgeData v2 environments](https://rail.eecs.berkeley.edu/datasets/bridge_release/raw/bridge_data_v2/), [BridgeData V2 paper](https://arxiv.org/html/2308.12952v3)
+- [Ctrl-World, arXiv 2510.10125](https://arxiv.org/abs/2510.10125)
+- [RAE-NWM, arXiv 2603.09241](https://arxiv.org/abs/2603.09241)
+- [SimplerEnv](https://github.com/simpler-env/SimplerEnv)

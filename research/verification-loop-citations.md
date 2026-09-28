@@ -190,3 +190,41 @@ Sources: arXiv API and arXiv HTML full text for 2603.09241 (RAE-NWM), 2510.10125
 3. Optional. [19] could read "ECCV" (provisionally accepted per the repository), in EN and PL.
 
 No other new or unresolved problems found.
+
+## Round 4: citations
+
+Date: 2026-09-28. Inputs: committed version a5c2998, visible text (before the first "<!--") of content/05 to 09, "### Bibliography" in content/12-other.md (30 entries), output/IPB_Grzegorz_Piotrowski_PL.md.
+Sources: arXiv API (all 28 arXiv ids re-fetched: titles, author lists, dates, comments), arXiv HTML full text of 2603.09241 (RAE-NWM, §5.1, §5.3, Table 2, §5.5) and 2510.10125 (Ctrl-World, §4.2, Algorithm 1, §5, appendix), GitHub API for isaac-sim/IsaacLab releases.
+
+### A. Sentences changed in round 3
+
+- §6 RAE-NWM [19] "predicted DINOv2 features instead of the autoencoder codes of NWM and planned better with them on SCAND but not on RECON." S. Table 2 (CEM planning, ATE/RPE, 2 s): SCAND 1.14/0.28 vs NWM 1.28/0.33, RECON 1.36/0.37 vs 1.13/0.35, and the text says "NWM obtains lower ATE and RPE on RECON". RAE-NWM is also better on SACSoN (2.91/0.70 vs 4.12/0.96). The sentence leaves SACSoN out but says nothing false. PL says the same.
+- §6 "Neither work trained policies inside the models or tested them on real data" S. [18] runs fixed VLAs inside the model, RAE-NWM plans with CEM and tests closed loop only in Habitat.
+- §9 Ctrl-World [20] "kept imagined rollouts that people judged successful and fine-tuned the policy on them." S. §4.2 "we label each trajectory as a success or failure based on human preference judgments", §5 "retain 25 to 50 successful trajectories based on human preference judgments", then fine-tune on them. PL says the same.
+- §9 "version 3.0 of NVIDIA Isaac Lab [12], an early access release as of September 2026." S. Release v3.0.0-EA "Isaac Lab 3.0 Early Access", published 2026-09-16, is still the latest release. [12] supports only that Isaac Lab exists, which is all the sentence now cites it for. PL says the same.
+
+### B. Sentences whose context changed after the cuts
+
+- §6 SIMPLER [21] now stands alone after the "common indicator" sentence was cut. Still S and still reads correctly.
+- §9 V-JEPA 2 [9] now appears only as "an encoder pretrained on real video, such as V-JEPA 2 [9]", and Ctrl-World [20] only in the rollout sentence. Both S. No citation lost its only occurrence through the cuts.
+- §9 kit-less mode, Newton and ray-tracing sentences are gone, so the round 1 problem with [12] is fully resolved.
+- All other cited sentences in §5 to §9 are unchanged from round 3 and still S.
+
+### C. Numbering, bibliography and Polish copy
+
+- First appearance across §5 to §9 is exactly 1 to 30 (57 markers). Every bibliography entry is cited, no marker points to a missing entry.
+- Metadata of all 30 entries matches the sources (arXiv first authors, titles, years, venue comments, [11] Nature per round 1, [8] OpenReview per round 1). No changes since round 3.
+- EN and PL bibliographies are identical line by line (30 of 30).
+- Citation sequences match in all 15 citing paragraphs (57 markers each).
+- PL cited sentences say the same as EN, including all round 3 changes.
+
+### D. New or unresolved problems
+
+No required fixes remain. One optional wording point:
+
+1. Optional. §9 "I will instead run a policy trained on real data with added action noise ..." can read as if Ctrl-World did not perturb actions, but its Algorithm 1 samples actions from a "perturbed policy" (the concrete perturbations in the text are rephrased instructions and random start states). What differs is the judge. Minimal fix that keeps both sentences:
+   EN: "I will instead keep the rollouts that one success classifier, the same for every world model, judges successful, and I will create varied rollouts by adding action noise to a policy trained on real data."
+   PL: "Ja zamiast tego zachowam przebiegi, które jeden klasyfikator sukcesu, ten sam dla każdego modelu świata, uzna za udane, a różne przebiegi uzyskam, dodając szum akcji do polityki wytrenowanej na danych rzeczywistych."
+2. Optional. §6 RAE-NWM could name SACSoN too: EN "planned better with them on SACSoN and SCAND but not on RECON", PL "planował z nimi lepiej na zbiorach SACSoN i SCAND, ale nie na RECON".
+
+No other new or unresolved problems found.

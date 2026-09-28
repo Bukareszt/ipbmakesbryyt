@@ -1,6 +1,6 @@
 # §13 Forma współpracy z promotorem / Planned cooperation with the supervisor
 
-My supervisor and I plan to meet weekly. At these meetings I will present my progress and recent results, and we will agree on the next steps and discuss our joint papers. I will also attend the weekly meetings of my supervisor's group of PhD students, where we discuss current results, problems and new work in the field. For daily contact we will use email and instant messaging. Code, trained models and the LaTeX sources of papers will be kept in shared Git repositories.
+My supervisor and I plan to meet every week. At each meeting I will report my progress and results, and we will agree on the next steps and discuss our joint papers. I will also take part in the weekly meetings of my supervisor's group of PhD students. Between meetings we will stay in touch by email and instant messaging. We will keep code, trained models and the LaTeX sources of papers in shared Git repositories.
 
 <!-- Wave 31: grounding + clarity (ultracode) -->
 <!-- Wave 29: humanized (no semicolons) -->

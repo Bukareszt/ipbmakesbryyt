@@ -4,12 +4,12 @@
 |---|---|
 | 1 | Doctoral School courses. Reading the literature and considering possible research directions |
 | 2 | Doctoral School courses and literature review. Choosing the dissertation topic with the supervisor and preparing the Individual Research Plan |
-| 3 | Setting up the research environment with world models, public real robot datasets and the SIMPLER simulator. Initial experiments on how the prediction target of a world model and the encoder of the policy affect the performance on real data of policies trained in it (RQ1). Starting to build the pipeline for simulation data and its photorealistic transfer (RQ2) |
-| 4 | Further experiments on RQ1 in manipulation. Preparing and submitting the first publication to a 200-point venue in machine learning or robot learning, such as ICLR or IEEE RA-L. First experiments on world models trained on simulation data (RQ2) |
-| 5 | Experiments on world models trained on simulation data that transfer to real data (RQ2) and first experiments on pretraining that reduces the real data needed for adaptation (RQ3). Preparing a scientific publication |
-| 6 | Experiments on reducing the real data needed for adaptation (RQ3) and on transfer to unseen scenes and, for RQ1, to navigation (RQ4). Preparing a publication and, if access allows, tests on a real robot |
-| 7 | Final experiments and submitting a paper to a conference or journal. First draft of the dissertation |
-| 8 | Completing and revising the doctoral dissertation, then submitting it |
+| 3 | Setting up world models, BridgeData V2 and SIMPLER on the WCSS supercomputers. First experiments on RQ1 at the K46 department. Building the pipeline for simulation data and its photorealistic transfer (RQ2) |
+| 4 | Completing the RQ1 study in manipulation and analysing its results (H1). Preparing and submitting the first article to a 200-point venue such as ICLR or IEEE RA-L. First experiments on RQ2 |
+| 5 | Completing the RQ2 study and analysing its results (H2). First experiments on RQ3. Preparing a second publication |
+| 6 | Completing the RQ3 study (H3). Experiments on RQ4 in unseen scenes and in navigation. Tests on a real robot in a university laboratory if access allows |
+| 7 | Completing the RQ4 study and analysing all results (H4). Submitting a paper to a conference or journal. First draft of the dissertation |
+| 8 | Completing, revising and submitting the doctoral dissertation |
 
 <!-- Wave 33 (2026-09-28): re-centred on three threads: world models as simulators and real-to-simulation-to-real generalization (RQ1), world models trained on physics simulation data that transfer to reality (RQ2), reducing the real data needed for adaptation (RQ3), generality across scenes and tasks (RQ4). The old RQ3 on choosing real rollouts to correct both the world model and the policy was removed at the owner's request. References renumbered by first appearance across §5-§9. Older notes below are history. -->
 

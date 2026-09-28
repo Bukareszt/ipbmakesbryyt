@@ -5,34 +5,29 @@ I used Claude (via Claude Code) for literature search, drafting and editing, and
 ### Bibliography
 [1] Ha, D., & Schmidhuber, J. (2018). World models. arXiv:1803.10122.
 [2] Yang, S., et al. (2024). Learning interactive real-world simulators. ICLR.
-[3] Bar, A., et al. (2025). Navigation world models. CVPR.
-[4] Agarwal, N., et al. (2025). Cosmos world foundation model platform for physical AI. arXiv:2501.03575.
-[5] Guo, Y., et al. (2026). VLAW: Iterative co-improvement of vision-language-action policy and world model. ICML.
-[6] Zhang, J., et al. (2026). World-in-World: World models in a closed-loop world. ICLR.
-[7] Wang, Z., et al. (2026). Efficient sim-to-real transfer of world-action models from synthetic priors. arXiv:2606.31101.
-[8] LeCun, Y. (2022). A path towards autonomous machine intelligence. OpenReview.
-[9] Assran, M., et al. (2025). V-JEPA 2: Self-supervised video models enable understanding, prediction and planning. arXiv:2506.09985.
-[10] Rao, P., et al. (2026). SkyJEPA: Learning long-horizon world models for zero-shot sim-to-real control of quadrotors. arXiv:2606.23444.
-[11] Hafner, D., et al. (2025). Mastering diverse control tasks through world models. Nature.
-[12] Mittal, M., et al. (2025). Isaac Lab: A GPU-accelerated simulation framework for multi-modal robot learning. arXiv:2511.04831.
-[13] Abu Alhaija, H., et al. (2025). Cosmos-Transfer1: Conditional world generation with adaptive multimodal control. arXiv:2503.14492.
-[14] Jang, J., et al. (2025). DreamGen: Unlocking generalization in robot learning through video world models. CoRL.
-[15] Ye, S., et al. (2026). World action models are zero-shot policies. arXiv:2602.15922.
-[16] Zhou, G., et al. (2025). DINO-WM: World models on pre-trained visual features enable zero-shot planning. ICML.
-[17] Zanatta, L., Malczyk, G., & Alexis, K. (2026). Generalization of world models under environmental variability for vision-based quadrotor navigation. arXiv:2606.05015.
-[18] Nilaksh, Jha, S., Zholus, A., & Chandar, S. (2026). Reconstruction or semantics? What makes a latent space useful for robotic world models. arXiv:2605.06388.
-[19] Zhang, M., et al. (2026). RAE-NWM: Navigation world model in dense visual representation space. arXiv:2603.09241.
-[20] Guo, Y., et al. (2026). Ctrl-World: A controllable generative world model for robot manipulation. ICLR.
-[21] Li, X., et al. (2024). Evaluating real-world robot manipulation policies in simulation. CoRL.
-[22] Tobin, J., et al. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. IROS.
-[23] Maddukuri, A., et al. (2025). Sim-and-real co-training: A simple recipe for vision-based robotic manipulation. RSS.
-[24] Lei, Y., et al. (2026). A mechanistic analysis of sim-and-real co-training in generative robot policies. arXiv:2604.13645.
-[25] Levy, J., et al. (2026). Simulation distillation: Pretraining world models in simulation for rapid real-world adaptation. RSS.
-[26] Wang, Y., et al. (2025). A recipe for efficient sim-to-real transfer in manipulation with online imitation-pretrained world models. arXiv:2510.02538.
-[27] Wang, Y., et al. (2026). Interactive world simulator for robot policy training and evaluation. RSS.
-[28] Hu, E. J., et al. (2022). LoRA: Low-rank adaptation of large language models. ICLR.
-[29] Kachaev, N., et al. (2026). Don't blind your VLA: Aligning visual representations for OOD generalization. AAMAS.
-[30] Lee, Y., et al. (2023). Surgical fine-tuning improves adaptation to distribution shifts. ICLR.
+[3] Agarwal, N., et al. (2025). Cosmos world foundation model platform for physical AI. arXiv:2501.03575.
+[4] Guo, Y., et al. (2026). VLAW: Iterative co-improvement of vision-language-action policy and world model. ICML.
+[5] Zhang, J., et al. (2026). World-in-World: World models in a closed-loop world. ICLR.
+[6] Wang, Z., et al. (2026). Efficient sim-to-real transfer of world-action models from synthetic priors. arXiv:2606.31101.
+[7] LeCun, Y. (2022). A path towards autonomous machine intelligence. OpenReview.
+[8] Bar, A., et al. (2025). Navigation world models. CVPR.
+[9] Mittal, M., et al. (2025). Isaac Lab: A GPU-accelerated simulation framework for multi-modal robot learning. arXiv:2511.04831.
+[10] Abu Alhaija, H., et al. (2025). Cosmos-Transfer1: Conditional world generation with adaptive multimodal control. arXiv:2503.14492.
+[11] Jang, J., et al. (2025). DreamGen: Unlocking generalization in robot learning through video world models. CoRL.
+[12] Ye, S., et al. (2026). World action models are zero-shot policies. arXiv:2602.15922.
+[13] Zhou, G., et al. (2025). DINO-WM: World models on pre-trained visual features enable zero-shot planning. ICML.
+[14] Assran, M., et al. (2025). V-JEPA 2: Self-supervised video models enable understanding, prediction and planning. arXiv:2506.09985.
+[15] Rao, P., et al. (2026). SkyJEPA: Learning long-horizon world models for zero-shot sim-to-real control of quadrotors. arXiv:2606.23444.
+[16] Zanatta, L., Malczyk, G., & Alexis, K. (2026). Generalization of world models under environmental variability for vision-based quadrotor navigation. arXiv:2606.05015.
+[17] Nilaksh, Jha, S., Zholus, A., & Chandar, S. (2026). Reconstruction or semantics? What makes a latent space useful for robotic world models. arXiv:2605.06388.
+[18] Zhang, M., et al. (2026). RAE-NWM: Navigation world model in dense visual representation space. arXiv:2603.09241.
+[19] Guo, Y., et al. (2026). Ctrl-World: A controllable generative world model for robot manipulation. ICLR.
+[20] Li, X., et al. (2024). Evaluating real-world robot manipulation policies in simulation. CoRL.
+[21] Tobin, J., et al. (2017). Domain randomization for transferring deep neural networks from simulation to the real world. IROS.
+[22] Maddukuri, A., et al. (2025). Sim-and-real co-training: A simple recipe for vision-based robotic manipulation. RSS.
+[23] Levy, J., et al. (2026). Simulation distillation: Pretraining world models in simulation for rapid real-world adaptation. RSS.
+[24] Wang, Y., et al. (2025). A recipe for efficient sim-to-real transfer in manipulation with online imitation-pretrained world models. arXiv:2510.02538.
+[25] Hu, E. J., et al. (2022). LoRA: Low-rank adaptation of large language models. ICLR.
 
 <!-- Wave 33 (2026-09-28): re-centred on three threads: world models as simulators and real-to-simulation-to-real generalization (RQ1), world models trained on physics simulation data that transfer to reality (RQ2), reducing the real data needed for adaptation (RQ3), generality across scenes and tasks (RQ4). The old RQ3 on choosing real rollouts to correct both the world model and the policy was removed at the owner's request. References renumbered by first appearance across §5-§9. Older notes below are history. -->
 

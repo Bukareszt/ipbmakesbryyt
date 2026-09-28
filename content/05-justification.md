@@ -1,40 +1,41 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Deep learning has made great progress in computer vision and language processing, largely because vast
-amounts of data could be collected from the web. Physical AI, meaning AI in robots and other systems that
-perceive and act in the real world, cannot rely on such data. Collecting interaction data with real robots
-is slow and expensive, and sometimes unsafe, so robot models are commonly trained in simulation. Recently,
-digital twins, which are simulations built from real data, have become a promising alternative to
-hand-crafted simulators. Neural scene reconstruction methods such as 3D Gaussian Splatting turn a short
-recording of a real place into a photorealistic copy. A model can be trained in this copy and then
-transferred back to reality.
+Robots that learn from experience need a very large number of trials, far more than can be collected on a
+real robot. For this reason robot models are usually trained in simulation. A newer and very promising
+kind of simulation is the digital twin: a short video of a real room or table is turned into a
+photorealistic 3D copy with methods such as 3D Gaussian Splatting, the robot model is trained in this
+copy, and then it is used in the real place.
 
-However, a model that performs well in its digital twin often fails in reality, and even more often
-in places it has never seen. No twin reproduces the world exactly. Appearance, geometry, lighting and
-physics are only approximated, and reconstruction errors differ between regions of a scene. The resulting
-drop in performance is called the simulation-to-reality gap. It is a case of learning under distribution
-shift and one of the main obstacles to physical AI.
+The weak point of this approach is that the copy is never exact. A glass door may be reconstructed as a
+wall, a reflection in a mirror as an open passage, and textures and lighting are always slightly different.
+A model that works well in the copy can therefore fail in reality, and it fails even more often in places
+it has never seen. This drop in performance is called the simulation-to-reality gap, and it is one of the
+main reasons why learned robot models are still hard to deploy.
 
-Current methods address it in part. Domain randomization varies a few global simulator parameters,
-regardless of where the twin is wrong. Invariant representations may discard information that the task
-needs. The few real data collected for adaptation usually correct either the model or the simulation, but
-not both. Most methods are also evaluated on a single task and a few scenes, so it is still unclear which
-properties of a twin and of the learned representations decide whether a model will work in reality.
+The usual remedies treat the problem only roughly. Domain randomization adds random changes to colours,
+textures or physics everywhere, without knowing which errors of the copy actually matter. Other methods
+force the model to see simulated and real images the same way, but in doing so they can also remove
+information the robot needs. When a few real examples are collected to fix the problem, they are used to
+correct either the model or the copy, not both. As a result, it is still not known which differences
+between a twin and reality really harm a model, and why.
 
-My research aims to reduce this gap with methods that analyse the representations learned by the models
-and align them at the stage where the gap arises. I want to find out which reconstruction errors of a twin
-harm a model and at which stage inside the model task information is lost on real inputs. I also want to
-find the small set of real data that best corrects both the twin and the model, and to check whether the
-improvements carry over to unseen scenes and from one task to another. I will study two tasks of equal
-weight, robot navigation and robotic manipulation, and measure all results on scenes that were not used
-for training.
+I want to answer this question by looking inside the models. A neural network does not use the image
+directly. It turns it into internal features, called representations, and makes its decision from them.
+If an error in the copy leaves these features unchanged, it is harmless, and if it changes the features the
+decision depends on, it causes failures. This gives a measurable way to study the gap. I will check which
+reconstruction errors change the representations in a harmful way, find the stage inside the model at
+which information needed for the task is lost for real images, and correct the representations at that
+stage. I will also study how to choose the few real examples that best improve both the copy and the model,
+and whether the improvements hold in new places and in a second task. I will work on two tasks of equal
+weight, robot navigation and robotic manipulation, and always test on scenes not used for training.
 
-The results could be applied in service, logistics and assistive robotics. A robot could be trained in a
-digital copy of a new warehouse, hospital or home and then work there reliably after little real-world
-adaptation. They also apply to autonomous driving and inspection robots, whose models are likewise
-trained on simulated or reconstructed data.
+The answer matters beyond one method. It would tell how accurate a digital twin has to be and where extra
+real data is worth collecting. In practice, a robot could be trained in a digital copy of a new warehouse,
+hospital or home and work there reliably after little real-world adaptation. The same questions arise in
+autonomous driving and inspection robots, whose models are also trained on simulated or reconstructed
+data.
 
-
+<!-- Wave 30: §5 rewritten as a clear argument (problem, example, open question, representation-level approach, relevance) at the student's request ("not gibberish") -->
 <!-- Wave 29: humanized (no semicolons) -->
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §5 narrative motivation, first person, about 440 words; content unchanged (twins, gap as distribution shift, limits of DR/invariance/one-sided correction, aim with representation methods, two equal tasks, held-out scenes, applications). Proxy and robot details moved to §9 only. -->
 <!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §5: aim names the representation methods (analyse and align learned representations); RQ2 = stage where task information is lost on real inputs; RQ3 = fixed budget; RQ4 = properties measured beforehand; robot = optional check of the direction of results and of the proxy's validity, if access allows (consistent with §9). -->

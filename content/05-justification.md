@@ -1,40 +1,16 @@
 # §5 Uzasadnienie wyboru tematu / Justification (max 1 page)
 
-Robots that learn from experience need a very large number of trials, far more than can be collected on a
-real robot. For this reason robot models are usually trained in simulation. A newer and very promising
-kind of simulation is the digital twin: a short video of a real room or table is turned into a
-photorealistic 3D copy with methods such as 3D Gaussian Splatting, the robot model is trained in this
-copy, and then it is used in the real place.
+Robots that learn by trial and error need a very large number of attempts, more than is practical or safe to collect on a real robot [12]. For this reason such models are usually trained in simulation [17]. A newer kind of simulation is the digital twin. A short video of a real room or table is turned into a photorealistic 3D copy with methods such as 3D Gaussian Splatting. The robot model is trained in this copy and then used in the real place.
 
-The weak point of this approach is that the copy is never exact. A glass door may be reconstructed as a
-wall, a reflection in a mirror as an open passage, and textures and lighting are always slightly different.
-A model that works well in the copy can therefore fail in reality, and it fails even more often in places
-it has never seen. This drop in performance is called the simulation-to-reality gap, and it is one of the
-main reasons why learned robot models are still hard to deploy.
+The weak point of this approach is that the copy is never exact. A glass door may be missing from the copy, a mirror may look like an open room behind it, and textures and lighting are always slightly different. A model that works well in the copy can therefore fail in reality [16], and it does even worse in real places for which no copy was made [17]. This drop in performance is called the simulation-to-reality gap, and it is one of the main reasons why learned robot models are still hard to deploy.
 
-The usual remedies treat the problem only roughly. Domain randomization adds random changes to colours,
-textures or physics everywhere, without knowing which errors of the copy actually matter. Other methods
-force the model to see simulated and real images the same way, but in doing so they can also remove
-information the robot needs. When a few real examples are collected to fix the problem, they are used to
-correct either the model or the copy, not both. As a result, it is still not known which differences
-between a twin and reality really harm a model, and why.
+The usual remedies do not use knowledge of where the copy is wrong. Domain randomization adds random changes to colours, textures or physics [5]. Newer variants learn how wide these changes should be [6],[7], but they tune physical parameters and do not ask which visual errors of the copy actually matter. Other methods force the model to see simulated and real images the same way, but in doing so they can also remove information the robot needs. When a few real examples are collected, they are mostly used to correct either the copy [6],[23] or the model [9],[1], and I found no method that chooses them to improve both at once. Earlier studies measured how factors such as lighting, texture or physics realism affect transfer [19],[25], but it is still not known which local reconstruction errors of a digital twin harm a model and at which stage inside it the harm appears.
 
-I want to answer this question by looking inside the models. A neural network does not use the image
-directly. It turns it into internal features, called representations, and makes its decision from them.
-If an error in the copy leaves these features unchanged, it is harmless, and if it changes the features the
-decision depends on, it causes failures. This gives a measurable way to study the gap. I will check which
-reconstruction errors change the representations in a harmful way, find the stage inside the model at
-which information needed for the task is lost for real images, and correct the representations at that
-stage. I will also study how to choose the few real examples that best improve both the copy and the model,
-and whether the improvements hold in new places and in a second task. I will work on two tasks of equal
-weight, robot navigation and robotic manipulation, and always test on scenes not used for training.
+I want to answer this question by looking inside the models. A neural network does not use the image directly. It turns it into internal features, called representations, and makes its decision from them. My working assumption is that an error in the copy that leaves these features unchanged does little harm, while an error that changes the features the decision depends on is likely to cause failures [3],[21]. This gives a measurable way to study the gap. First, I will check which reconstruction errors change the representations in a harmful way. Then I will find the stage inside the model at which real images lose information needed for the task, and correct the representations there. I will also study how to choose the few real examples that best improve both the copy and the model, and whether the improvements hold in new places and in a second task. I will work on two tasks of equal weight, robot navigation and robotic manipulation, and always test on scenes not used for training.
 
-The answer matters beyond one method. It would tell how accurate a digital twin has to be and where extra
-real data is worth collecting. In practice, a robot could be trained in a digital copy of a new warehouse,
-hospital or home and work there reliably after little real-world adaptation. The same questions arise in
-autonomous driving and inspection robots, whose models are also trained on simulated or reconstructed
-data.
+The answer would help decide which parts of a digital twin need to be accurate and where extra real data is worth collecting. In practice, a robot could be trained in a digital copy of a new warehouse, hospital or home and work there reliably after little real-world adaptation. The same questions arise in autonomous driving, where simulators and reconstructions of recorded drives are widely used to train and test models.
 
+<!-- Wave 31: grounding + clarity (ultracode) -->
 <!-- Wave 30: §5 rewritten as a clear argument (problem, example, open question, representation-level approach, relevance) at the student's request ("not gibberish") -->
 <!-- Wave 29: humanized (no semicolons) -->
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §5 narrative motivation, first person, about 440 words; content unchanged (twins, gap as distribution shift, limits of DR/invariance/one-sided correction, aim with representation methods, two equal tasks, held-out scenes, applications). Proxy and robot details moved to §9 only. -->

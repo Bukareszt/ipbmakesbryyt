@@ -1,6 +1,6 @@
 # §11 Termin oddania do druku artykułu naukowego / Date of submission for publication
 
-September 2027 (planned submission to a venue worth 200 points on the ministerial list, e.g. the ICLR 2028 conference or the journal IEEE Robotics and Automation Letters).
+September 2027 (planned submission to a venue worth 200 points on the ministerial list, such as the ICLR 2028 conference or the journal IEEE Robotics and Automation Letters).
 
 <!--
 Wave 18-W (issue #35), 2026-09-26: pivot decision v7 (research/pivot-decision.md, top): "P1: NeurIPS 2027.

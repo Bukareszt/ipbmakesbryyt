@@ -1,21 +1,10 @@
 # §8 Wkład w rozwój dyscypliny / Contribution to the discipline (max 1 page)
 
-The main expected contribution of my dissertation is a set of representation learning methods that help
-deep learning models trained in digital twins generalize better to reality and to unseen places. I also
-want to learn whether the simulation-to-reality gap comes mainly from a limited set of task-relevant
-discrepancies that can be found among the reconstruction errors of a twin, located inside the model and
-reduced with a small amount of well-chosen real data.
+The main expected contribution of my dissertation is a set of representation learning methods that help deep learning models trained in digital twins generalize better to reality and to unseen places. I also want to learn whether most of the simulation-to-reality gap comes from a small number of reconstruction errors that matter for the task, whether their effect can be traced to a specific stage of the model, and whether a small amount of well-chosen real data is enough to reduce it.
 
-The experiments should indicate which reconstruction errors harm generalization, at which stage of a
-model task information is lost on real inputs and when it pays off to correct both the twin and the model
-with the same real data. They should also show whether the gains carry over to new scenes and between
-navigation and manipulation. These questions concern learning under distribution shift, so the findings
-may also matter for domain adaptation, representation learning and active learning in general. I plan to
-release the code, the evaluation protocol and, where licences allow, the trained models, so that others
-can compare methods on held-out scenes in the same way. I hope the dissertation will bring machine learning
-research on distribution shift closer to robotics practice and make it easier to deploy learning-based
-robots in new warehouses, hospitals and homes.
+The experiments should indicate which reconstruction errors harm generalization, at which stage of a model task information is lost on real inputs and when it pays off to correct both the twin and the model with the same real data. They should also show whether the gains carry over to new scenes and between navigation and manipulation. Because these questions concern learning under distribution shift, the results on where to align representations and which data to select may also be useful in domain adaptation and active learning. I plan to release the code, the evaluation protocol and, where licences allow, the trained models, so that others can compare methods on held-out scenes in the same way. I hope the results will tell practitioners how accurate a digital twin must be for a given task and which real data are worth collecting, so that learning-based robots can be deployed in new places with less effort.
 
+<!-- Wave 31: grounding + clarity (ultracode) -->
 <!-- Wave 29: humanized (no semicolons) -->
 <!-- Wave 28: restyled after the accepted 2025 IPB (2026-09-28, research/accepted_plan_tts_2025.txt). §8 shortened to about 200 words, first person: main contribution, evidence, released code/evaluation/models, bridge between AI and robotics. -->
 <!-- Wave 27: mechanisms + citation audit fixes (2026-09-27, reports/Mechanizmy uczenia reprezentacji IPB.md). §8: second contribution = locating the stage where task information is lost on real inputs (probes with control tasks, causal interventions) and aligning representations there. -->

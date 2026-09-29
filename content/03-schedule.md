@@ -7,7 +7,7 @@
 | 3 | Setting up world models, BridgeData V2 and SIMPLER on the WCSS supercomputers. First experiments on RQ1 at the K46 department. Building the pipeline for simulation data and its photorealistic transfer (RQ2) |
 | 4 | Completing the RQ1 study in manipulation and analysing its results (H1). Preparing and submitting the first article to a 200-point venue such as ICLR or IEEE RA-L. First experiments on RQ2 |
 | 5 | Completing the RQ2 study and analysing its results (H2). First experiments on RQ3. Preparing a second publication |
-| 6 | Completing the RQ3 study (H3). Experiments on RQ4 in unseen scenes and in navigation. Tests on a real robot in a university laboratory if access allows |
+| 6 | Completing the RQ3 study (H3). Experiments on RQ4 in unseen scenes and in navigation. Tests on real robots: the Wojtek robot dog built at Wrocław University of Science and Technology and the humanoid robot of the Department of Artificial Intelligence |
 | 7 | Completing the RQ4 study and analysing all results (H4). Submitting a paper to a conference or journal. First draft of the dissertation |
 | 8 | Completing, revising and submitting the doctoral dissertation |
 
